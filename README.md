@@ -1,8 +1,7 @@
 # 🏥 Hospital City
 
-A blocky 3D city where every building is a class and every room is a coded HTML lesson.
+A blocky 3D city with one big hospital. Every class is a floor, every hallway is a quarter, and every room is a coded HTML lesson.
 
-- Open the website, press **▶ PLAY**.
-- Click a hospital (or press 1–9) — the ambulance drives there and you go inside.
-- Each floor = a quarter, each door = a lesson.
-- Lessons are saved in the browser of the computer you use. Use **💾 Backup / Restore** to move them to another computer.
+- Sign in, press **▶ PLAY**.
+- Tap the hospital (or a class button) — the ambulance drives there, then the elevator takes you to your class floor.
+- Lessons are saved to the teacher's account, so they open on any computer, projector or iPad.
