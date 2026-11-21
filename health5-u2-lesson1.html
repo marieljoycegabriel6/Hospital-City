@@ -562,6 +562,45 @@ body.solo-only #zhHelp{display:block}
 .avg button span{display:block;font-size:22px;font-weight:900}
 .avg button:hover,.avg button.on{transform:translateY(-8px) scale(1.05);border-color:var(--sun);background:#ffc23d33}
 .rankcard{display:inline-block;margin-top:10px;padding:10px 26px;border-radius:20px;background:linear-gradient(135deg,#7c5cd6,#3a9ad9);color:#fff;font-size:30px;font-weight:900;box-shadow:0 6px 0 #3f2a85}
+/* ===== iPad fit (student games) ===== */
+body.solo-only .gmain{display:flex;flex-direction:column;justify-content:center}
+body.solo-only .xpic{height:400px}
+body.solo-only .xo img{width:180px;height:130px}
+/* ===== iPad portrait layouts (student games) ===== */
+body.portrait .ghead h2{font-size:0}body.portrait .ghead h2:first-letter{font-size:30px}
+body.portrait .hud{margin-left:8px;gap:8px}body.portrait .hud .xpb{max-width:200px}body.portrait .hud .combo{min-width:60px;font-size:22px}
+body.portrait .rdots{margin-left:6px}
+body.portrait .gcols{grid-template-columns:1fr 1fr;grid-template-rows:auto auto;height:auto;gap:16px}
+body.portrait .gcols .machine{grid-column:1 / 3;grid-row:2;flex-direction:row;justify-content:center;gap:20px;align-items:center}
+body.portrait .gcols .before{grid-column:1;grid-row:1}
+body.portrait .gcols .after{grid-column:2;grid-row:1}
+body.portrait .funnel{width:220px;height:110px;clip-path:polygon(0 0,100% 0,100% 100%,0 100%);border-radius:24px;padding-bottom:0}
+body.portrait .mbody{width:300px;height:220px;padding-top:14px}
+body.portrait .mbody .gear{font-size:56px;margin-top:6px}
+body.portrait .slot{display:none}
+body.portrait .before .pic,body.portrait .after .pic,body.portrait .after .waiting{height:300px}
+body.portrait .tray{flex-wrap:wrap;margin-top:18px}
+body.portrait .tile{width:170px}
+body.portrait .gnext{position:static;margin:18px auto 0}
+body.portrait .gmain{display:flex;flex-direction:column}
+body.portrait .l2main{grid-template-columns:1fr}
+body.portrait .l2main .pic{height:420px}
+body.portrait .xpic{height:420px}
+body.portrait .xq{font-size:42px}
+body.portrait .chart{min-width:0;width:90%}
+body.portrait .dmain{grid-template-columns:240px 1fr;grid-template-rows:auto 1fr auto;bottom:16px}
+body.portrait .dleft{grid-column:1;grid-row:1}
+body.portrait .dleft img{height:300px}
+body.portrait .dright{grid-column:2;grid-row:1}
+body.portrait .dcanvas{grid-column:1 / 3;grid-row:2 / 4}
+body.portrait .dshare img{max-width:94%}
+body.portrait .dsbar{flex-wrap:wrap;justify-content:center}
+body.portrait #solo .sb{grid-template-columns:1fr;grid-template-rows:1fr auto}
+body.portrait #solo .side{flex-direction:row}
+body.portrait #solo .side .card{flex:1}
+body.portrait .gend .buddy{width:240px;height:240px}
+body.portrait .gend h3{font-size:44px}
+body.portrait .dfr{flex-wrap:wrap;justify-content:center}
 /* dialog */
 #dlg{position:absolute;inset:0;background:rgba(10,30,35,.55);display:none;place-items:center;z-index:90}
 #dlg.on{display:grid}
@@ -2246,7 +2285,7 @@ let pool=[],picked=null,cur=0;
 
 /* ---------- scale ---------- */
 const stage=$('stage');let SC=1;
-function fit(){const W=innerWidth,H=innerHeight;SC=Math.min(W/1600,H/900);stage.style.width=(W/SC)+'px';stage.style.height=(H/SC)+'px';stage.style.transform=`translate(-50%,-50%) scale(${SC})`}
+function fit(){const W=innerWidth,H=innerHeight;const por=!!window.STANDALONE&&H>W*1.05;document.body.classList.toggle('portrait',por);SC=por?W/1000:Math.min(W/1600,H/900);stage.style.width=(W/SC)+'px';stage.style.height=(H/SC)+'px';stage.style.transform=`translate(-50%,-50%) scale(${SC})`}
 addEventListener('orientationchange',()=>setTimeout(fit,300));document.addEventListener('fullscreenchange',()=>setTimeout(fit,100));
 addEventListener('resize',fit);fit();
 function toStage(x,y){const r=stage.getBoundingClientRect();return{x:(x-r.left)/SC,y:(y-r.top)/SC}}
@@ -2645,7 +2684,7 @@ function zhNow(){const sh=s=>s;try{
 $('zhW').innerHTML=[...SUBORDER.map(k=>[SUBS[k].en,SUBS[k].zh]),...Object.keys(WORDS).map(k=>[k,WORDS[k].zh]),['addictive','會上癮'],['used','用了'],['Now he/she is','現在他／她']].map(([e,z])=>`<span><b>${e}</b>${z}</span>`).join('');
 $('zhHelp').onclick=()=>{$('zhQ').textContent=zhNow();$('zhPanel').classList.toggle('on')};$('zhX').onclick=()=>$('zhPanel').classList.remove('on');
 /* ---------- online-game layer: avatar, XP, combo, timer, levels, music ---------- */
-const XP={av:null,avn:'',xp:0,lv:1,combo:0,best:0,t0:0,tIv:null,hud:[],
+const XP={av:'🩺',avn:'',xp:0,lv:1,combo:0,best:0,t0:0,tIv:null,hud:[],
  AV:[['🦊','Dr. Fox'],['🐼','Dr. Panda'],['🐯','Dr. Tiger'],['🐰','Dr. Bunny'],['🐸','Dr. Frog'],['🦁','Dr. Lion'],['🐨','Dr. Koala'],['🦄','Dr. Unicorn']],
  need:400,
  mount(host){const h=document.createElement('div');h.className='hud';h.innerHTML=`<div class="av">${this.av||'🩺'}</div><div class="lv">Lv.1</div><div class="xpb"><i></i><span>0 XP</span></div><div class="combo">🔥x2</div><div class="tring"><b>10</b></div><button class="mus" title="Music">🎵</button>`;
@@ -2662,8 +2701,7 @@ const XP={av:null,avn:'',xp:0,lv:1,combo:0,best:0,t0:0,tIv:null,hud:[],
  fly(host,txt){const d=document.createElement('div');d.className='xpfly';d.textContent=txt;d.style.left=(host.offsetWidth/2-120)+'px';d.style.top='120px';host.appendChild(d);setTimeout(()=>d.remove(),1150)},
  levelUp(host){const d=document.createElement('div');d.className='lvup';d.innerHTML=`<div>LEVEL ${this.lv}!</div>`;host.appendChild(d);sfx('fan');const r=host.getBoundingClientRect(),c=toStage(r.left+r.width/2,r.top+r.height/3);confetti(c.x,c.y,60,1.3);setTimeout(()=>d.remove(),1700)},
  rank(){const x=this.xp;return x>=1800?'🌟 Legendary Doctor':x>=1300?'🏅 Chief Doctor':x>=700?'🩺 City Doctor':'🌱 Junior Doctor'},
- pick(cb){if(this.av){cb();return}const P=$('avPick');$('avg').innerHTML=this.AV.map(([e,n])=>`<button data-e="${e}" data-n="${n}">${e}<span>${n}</span></button>`).join('');P.classList.add('on');
-  $('avg').onclick=e=>{const b=e.target.closest('button');if(!b)return;this.av=b.dataset.e;this.avn=b.dataset.n;b.classList.add('on');sfx('pick');MUS.start();setTimeout(()=>{P.classList.remove('on');this.draw();speak(`Hello, ${this.avn}! Let's go!`);cb()},450)}}};
+ pick(cb){if(!this.avn){S2P.name().then(n=>{if(n){this.avn=n;this.draw()}})}MUS.start();cb()}};
 const MUS={on:false,ctx:null,iv:null,step:0,
  start(){if(this.on)return;try{this.ctx=window._ac||(window._ac=new (window.AudioContext||window.webkitAudioContext)());this.on=true;const N=[262,330,392,523,392,330,294,349,440,587,440,349];
   this.iv=setInterval(()=>{if(!this.on)return;const A=this.ctx,n=A.currentTime,o=A.createOscillator(),g=A.createGain();o.type='triangle';o.frequency.value=N[this.step%N.length]*(this.step%24<12?1:1.122);o.connect(g);g.connect(A.destination);g.gain.setValueAtTime(.035,n);g.gain.exponentialRampToValueAtTime(.001,n+.22);o.start(n);o.stop(n+.24);
