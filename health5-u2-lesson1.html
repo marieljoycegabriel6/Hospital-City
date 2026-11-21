@@ -528,6 +528,14 @@ body.s2p #dHint{display:none}
 body.teacher .qlinkedit{display:flex}
 .qlinkedit input{flex:1;min-width:0;font:700 14px inherit;padding:6px 8px;border-radius:10px;border:2px solid #cfe9e3;-webkit-user-select:text;user-select:text}
 .qlinkedit button{font:900 14px inherit;padding:6px 10px;border-radius:10px;background:var(--teal);color:#fff}
+#zhHelp{display:none;position:absolute;right:20px;bottom:20px;z-index:95;width:84px;height:84px;border-radius:50%;background:#c2453a;color:#fff;font:900 26px "PingFang TC","Microsoft JhengHei",sans-serif;box-shadow:0 6px 0 #8f2f27}
+body.solo-only #zhHelp{display:block}
+#zhPanel{display:none;position:absolute;right:20px;bottom:120px;z-index:96;width:560px;background:#fff;border-radius:24px;padding:20px 24px;box-shadow:0 12px 40px #0003;border:4px solid #ffd9d4;font-family:"PingFang TC","Microsoft JhengHei",sans-serif}
+#zhPanel.on{display:block;animation:pop .3s}
+.zq{font-size:30px;font-weight:900;color:#c2453a;margin-bottom:12px}
+.zw{display:grid;grid-template-columns:1fr 1fr;gap:6px 18px;font-size:22px;font-weight:700}
+.zw span b{font-family:Nunito,sans-serif;color:#17323a;margin-right:8px}
+#dRec.recording{animation:glow 1s infinite;background:#e0473a}
 /* dialog */
 #dlg{position:absolute;inset:0;background:rgba(10,30,35,.55);display:none;place-items:center;z-index:90}
 #dlg.on{display:grid}
@@ -909,6 +917,7 @@ body.teacher .qlinkedit{display:flex}
       <img id="dOut" alt="My drawing">
       <div class="dsbar">
         <button class="btn" id="dSave">📤 Save / AirDrop</button>
+        <button class="btn coral" id="dRec">🎤 Say my sentence</button>
         <button class="btn plum" id="dShow">🙋 Show my class</button>
         <button class="btn ghost" id="dBack">✏️ Keep drawing</button>
       </div>
@@ -921,6 +930,8 @@ body.teacher .qlinkedit{display:flex}
     <div class="sh">🩺 Doctor's Chart<span class="xp" id="xProg"></span></div>
     <div class="xbody" id="xBody"></div>
   </div>
+  <button id="zhHelp">中文</button>
+  <div id="zhPanel"><div class="zq" id="zhQ"></div><div class="zw" id="zhW"></div><button class="btn ghost" id="zhX" style="font-size:20px;margin-top:10px">OK</button></div>
   <div id="splash"><div class="fl" id="floaters"></div><div class="sp-in">
     <div class="badge">🏥 HOSPITAL CITY · DOCTOR MISSION</div>
     <div class="ico">🩺</div><h1>Hospital City Doctors</h1>
@@ -2451,7 +2462,7 @@ let soloBest=null,soloFin=0;
 function openSolo(){$('solo').classList.add('on');$('soloTries').innerHTML='';$('soloMsg').style.display='none';soloBest=null;$('soloBest').textContent='';
  stopGame($('arena3'),s=>{const li=document.createElement('li');li.textContent=s+' s';$('soloTries').appendChild(li);
   if(soloBest===null||+s<soloBest)soloBest=+s;$('soloBest').textContent='🏆 Best: '+soloBest.toFixed(1)+' s';
-  $('soloMsg').style.display='block';speak("Easy to stop? No! They can't stop.");const stars=s<5?3:s<9?2:1;S2P.a({question:'Stop the Craving! time (try '+$('soloTries').children.length+')',answer:s+' s',correct:true,points:stars});if(!soloFin){soloFin=1;S2P.f({score:stars,maxScore:3})}})}
+  $('soloMsg').style.display='block';speak("Easy to stop? No! They can't stop.");S2P.a({question:'Stop the Craving! time (try '+$('soloTries').children.length+')',answer:s+' s'});if(!soloFin){soloFin=1;S2P.f({})}})}
 /* ---------- cool layer ---------- */
 function sfx(k){try{const A=window._ac||(window._ac=new (window.AudioContext||window.webkitAudioContext)());const n=A.currentTime;
  const tn=(f,d,ty,v,at=0,f2)=>{const o=A.createOscillator(),g=A.createGain();o.type=ty;o.frequency.setValueAtTime(f,n+at);if(f2)o.frequency.exponentialRampToValueAtTime(f2,n+at+d);o.connect(g);g.connect(A.destination);g.gain.setValueAtTime(v,n+at);g.gain.exponentialRampToValueAtTime(.001,n+at+d);o.start(n+at);o.stop(n+at+d+.02)};
@@ -2515,7 +2526,7 @@ const GAL=[];
  const up=()=>{drawing=false};cv.addEventListener('pointerup',up);cv.addEventListener('pointercancel',up);
  function sentence(){const f=df;const w=[...chosen];return `${f.n} used ${SUBS[f.sub].pl}. Now ${f.he} is ${w.length?w.join(' and '):'___'}.`}
  function renderSent(){const f=df,w=[...chosen];$('dSent').innerHTML=`${f.n} used <span class="kw-s">${SUBS[f.sub].pl}</span>.<br>Now ${f.he} is <span class="gap">${w.length?w.join(' and '):'?'}</span>.`}
- function pickFriend(i){df=FR[i];chosen.clear();$('dPick').classList.add('off');$('dMain').classList.add('on');$('dBefore').src=IMG['b_'+df.n];
+ function pickFriend(i){df=FR[i];window.curDraw=df;chosen.clear();$('dPick').classList.add('off');$('dMain').classList.add('on');$('dBefore').src=IMG['b_'+df.n];
   $('dWords').innerHTML=Object.keys(WORDS).map(k=>`<button data-k="${k}">${WORDS[k].e} ${k}</button>`).join('');renderSent();hist=[];
   setTimeout(()=>{sizeCv();cx.fillStyle='#fff';cx.fillRect(0,0,cv.width,cv.height);$('wm').style.display='';$('wm').textContent=df.n+' AFTER'},50);speak(`Draw ${df.n}. How is ${df.he} now?`)}
  $('dFr').innerHTML=FR.map((f,i)=>`<button data-i="${i}"><img src="${IMG['b_'+f.n]}" alt="">${f.n}</button>`).join('');
@@ -2534,8 +2545,12 @@ const GAL=[];
    const ax=620,aw=930,ah=700;o.fillStyle='#fff';o.fillRect(ax,120,aw,ah);const s2=Math.min(aw/cv.width,ah/cv.height);o.drawImage(cv,ax+(aw-cv.width*s2)/2,120+(ah-cv.height*s2)/2,cv.width*s2,cv.height*s2);
    o.strokeStyle='#7c5cd6';o.lineWidth=6;o.strokeRect(ax,120,aw,ah);o.fillStyle='#7c5cd6';o.font='900 34px Nunito, sans-serif';o.textAlign='left';o.fillText('After',ax+14,160);
    o.fillStyle='#17323a';o.font='900 50px Nunito, sans-serif';o.textAlign='center';o.fillText(sentence(),800,910);
-   {const ok=[...chosen].every(w=>df.w.includes(w));S2P.a({question:`Draw ${df.n} AFTER (drawing)`,answer:O.toDataURL('image/jpeg',.8)});S2P.a({question:`Draw ${df.n} AFTER: Now ${df.he} is...?`,answer:sentence(),correct:ok,points:ok?1:0});S2P.f({score:ok?1:0,maxScore:1});if(IN_S2P){$('dSave').style.display='none';$('dSent2').style.display='block'}}outURL=O.toDataURL('image/png');O.toBlob(b=>outBlob=b,'image/png');$('dOut').src=outURL;$('dShare').classList.add('on');sfx('fan');speak(sentence())};bi.src=IMG['b_'+df.n]};
+   {const ok=[...chosen].every(w=>df.w.includes(w));S2P.a({question:`Draw ${df.n} AFTER (drawing)`,answer:O.toDataURL('image/jpeg',.7)});S2P.a({question:`Draw ${df.n} AFTER: my sentence`,answer:sentence()});S2P.f({});if(IN_S2P){$('dSave').style.display='none';$('dSent2').style.display='block'}}outURL=O.toDataURL('image/png');O.toBlob(b=>outBlob=b,'image/png');$('dOut').src=outURL;$('dShare').classList.add('on');sfx('fan');speak(sentence())};bi.src=IMG['b_'+df.n]};
  $('dBack').onclick=()=>$('dShare').classList.remove('on');
+ let recOn=false;$('dRec').style.display=(IN_S2P&&window.Scan2Play&&Scan2Play.startRecording)?'':'none';
+ $('dRec').onclick=async()=>{try{if(!recOn){speechSynthesis&&speechSynthesis.cancel();await Scan2Play.startRecording({maxSeconds:30});recOn=true;$('dRec').textContent='⏹ Stop';$('dRec').classList.add('recording')}
+  else{const r=await Scan2Play.stopRecording();recOn=false;$('dRec').classList.remove('recording');S2P.a({question:`Say the sentence: ${df.n} (recording)`,answer:r.dataUrl});$('dRec').textContent='✅ Sent! 🎤 Again';sfx('pick')}}
+  catch(e){recOn=false;$('dRec').classList.remove('recording');$('dRec').textContent=e&&e.name==='NotAllowedError'?'🎤 Allow the microphone':'🎤 Try again'}};
  $('dSave').onclick=async()=>{const nm=(($('dName').value||'').trim()||'student').replace(/[^\w\- ]/g,'');const fn=`${df.n}-after-${nm}.png`;
   try{if(outBlob&&navigator.canShare){const f=new File([outBlob],fn,{type:'image/png'});if(navigator.canShare({files:[f]})){await navigator.share({files:[f],title:fn});return}}}catch(e){if(e&&e.name==='AbortError')return}
   const a=document.createElement('a');a.href=outURL;a.download=fn;document.body.appendChild(a);a.click();a.remove()};
@@ -2591,6 +2606,16 @@ const QRS=[['qrStop','stop'],['qrDraw','draw'],['qrGame','game'],['qrExit','exit
 QRS.forEach(([id,k])=>{const el=$(id);if(!el)return;const d=document.createElement('div');d.className='qlinkedit';d.innerHTML=`<input data-k="${k}" placeholder="Paste the Scan2Play link"><button>Save</button>`;el.after(d);
  d.querySelector('button').onclick=()=>{const v=d.querySelector('input').value.trim();if(v&&/^https?:\/\//.test(v))st.links[k]=v;else delete st.links[k];save();renderQRs()}});
 function renderQRs(){QRS.forEach(([id,k])=>{const el=$(id);if(!el)return;try{el.innerHTML=qrSvg(linkFor(k))}catch(e){}const i=el.nextElementSibling&&el.nextElementSibling.querySelector('input');if(i&&document.activeElement!==i)i.value=st.links[k]||''})}
+/* ---------- 中文 help in student games ---------- */
+function zhNow(){const sh=s=>s;try{
+ if($('exitq').classList.contains('on')){const q=$('xBody').querySelector('.xq');const tx=q?q.textContent:'';
+  if(/What did (\w+) use/.test(tx))return RegExp.$1+' 用了什麼？';if(/Now (he|she) is/.test(tx))return tx.split(' ')[0]+' 現在怎麼樣？';if(/can.t stop/.test(tx))return '他們一直想要更多，停不下來。這叫做……？';return '你叫什麼名字？';}
+ if($('gl2').classList.contains('on'))return '看圖，把句子照順序排好。';
+ if($('game').classList.contains('on')){const f=gOrder[gi];if(!f)return '';return gState==='how'?`${f.n} 現在怎麼樣？`:`${f.n} 用了什麼？把它拖進機器裡。`}
+ if($('draw').classList.contains('on')){const d=window.curDraw;if(!d||!$('dMain').classList.contains('on'))return '你要畫誰？';return `畫出 ${d.n} 之後的樣子。${d.he==='he'?'他':'她'}現在怎麼樣？`}
+ if($('solo').classList.contains('on'))return '點它三下！它會跑掉，而且越來越快！';}catch(e){}return ''}
+$('zhW').innerHTML=[...SUBORDER.map(k=>[SUBS[k].en,SUBS[k].zh]),...Object.keys(WORDS).map(k=>[k,WORDS[k].zh]),['addictive','會上癮'],['used','用了'],['Now he/she is','現在他／她']].map(([e,z])=>`<span><b>${e}</b>${z}</span>`).join('');
+$('zhHelp').onclick=()=>{$('zhQ').textContent=zhNow();$('zhPanel').classList.toggle('on')};$('zhX').onclick=()=>$('zhPanel').classList.remove('on');
 /* ---------- full screen start ---------- */
 function goFull(){try{const d=document.documentElement;(d.requestFullscreen||d.webkitRequestFullscreen||function(){}).call(d)}catch(e){}}
 $('bGo').onclick=()=>{goFull();$('splash').remove();setTimeout(fit,200)};
