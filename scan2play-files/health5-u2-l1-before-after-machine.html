@@ -528,14 +528,40 @@ body.s2p #dHint{display:none}
 body.teacher .qlinkedit{display:flex}
 .qlinkedit input{flex:1;min-width:0;font:700 14px inherit;padding:6px 8px;border-radius:10px;border:2px solid #cfe9e3;-webkit-user-select:text;user-select:text}
 .qlinkedit button{font:900 14px inherit;padding:6px 10px;border-radius:10px;background:var(--teal);color:#fff}
-#zhHelp{display:none;position:absolute;right:20px;bottom:20px;z-index:95;width:84px;height:84px;border-radius:50%;background:#c2453a;color:#fff;font:900 26px "PingFang TC","Microsoft JhengHei",sans-serif;box-shadow:0 6px 0 #8f2f27}
+#zhHelp{display:none;position:absolute;left:20px;bottom:20px;z-index:95;width:84px;height:84px;border-radius:50%;background:#c2453a;color:#fff;font:900 26px "PingFang TC","Microsoft JhengHei",sans-serif;box-shadow:0 6px 0 #8f2f27}
 body.solo-only #zhHelp{display:block}
-#zhPanel{display:none;position:absolute;right:20px;bottom:120px;z-index:96;width:560px;background:#fff;border-radius:24px;padding:20px 24px;box-shadow:0 12px 40px #0003;border:4px solid #ffd9d4;font-family:"PingFang TC","Microsoft JhengHei",sans-serif}
+#zhPanel{display:none;position:absolute;left:20px;bottom:120px;z-index:96;width:560px;background:#fff;border-radius:24px;padding:20px 24px;box-shadow:0 12px 40px #0003;border:4px solid #ffd9d4;font-family:"PingFang TC","Microsoft JhengHei",sans-serif}
 #zhPanel.on{display:block;animation:pop .3s}
 .zq{font-size:30px;font-weight:900;color:#c2453a;margin-bottom:12px}
 .zw{display:grid;grid-template-columns:1fr 1fr;gap:6px 18px;font-size:22px;font-weight:700}
 .zw span b{font-family:Nunito,sans-serif;color:#17323a;margin-right:8px}
 #dRec.recording{animation:glow 1s infinite;background:#e0473a}
+/* ===== online-game layer ===== */
+.hud{display:flex;align-items:center;gap:12px;margin-left:24px;flex:1}
+.hud .av{width:58px;height:58px;border-radius:16px;background:linear-gradient(135deg,#7c5cd6,#3a9ad9);display:grid;place-items:center;font-size:36px;box-shadow:0 4px 0 #3f2a85}
+.hud .lv{background:var(--plum);color:#fff;font-weight:900;font-size:20px;padding:4px 12px;border-radius:12px;white-space:nowrap}
+.hud .xpb{flex:1;max-width:320px;height:24px;border-radius:12px;background:#e6e0fb;overflow:hidden;position:relative}
+.hud .xpb i{position:absolute;left:0;top:0;bottom:0;width:0;background:linear-gradient(90deg,#7c5cd6,#c58bff);transition:width .4s}
+.hud .xpb span{position:absolute;inset:0;display:grid;place-items:center;font-size:14px;font-weight:900;color:#3f2a85}
+.hud .combo{font-size:26px;font-weight:900;color:#e0473a;min-width:90px;visibility:hidden}
+.hud .combo.on{visibility:visible;animation:pop .35s}
+.hud .tring{width:54px;height:54px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(#ffc23d var(--p,100%),#eee 0);font-weight:900;font-size:18px}
+.hud .tring b{width:42px;height:42px;border-radius:50%;background:#fff;display:grid;place-items:center}
+.hud .mus{width:48px;height:48px;border-radius:14px;background:var(--soft);border:3px solid #cfe9e3;font-size:22px}
+.xpfly{position:absolute;z-index:120;font-size:44px;font-weight:900;color:#7c5cd6;text-shadow:0 3px 0 #fff;pointer-events:none;animation:floatup 1.1s forwards;white-space:nowrap}
+.lvup{position:absolute;inset:0;z-index:118;display:grid;place-items:center;pointer-events:none}
+.lvup div{font-size:110px;font-weight:900;color:#fff;-webkit-text-stroke:6px #7c5cd6;paint-order:stroke;text-shadow:0 10px 0 #3f2a85;animation:lv 1.6s forwards}
+@keyframes lv{0%{transform:scale(.2) rotate(-10deg);opacity:0}25%{transform:scale(1.15);opacity:1}75%{transform:scale(1);opacity:1}100%{transform:scale(1.3);opacity:0}}
+.shk2{animation:shake .4s}
+#avPick{position:absolute;inset:0;z-index:110;display:none;place-items:center;background:radial-gradient(circle at 50% 30%,#3b1f78,#1d0f42);color:#fff;text-align:center}
+#avPick.on{display:grid}
+#avPick h2{font-size:60px;margin:0 0 6px}
+#avPick p{font-size:28px;font-weight:800;opacity:.85;margin:0 0 26px}
+.avg{display:grid;grid-template-columns:repeat(4,170px);gap:18px;justify-content:center}
+.avg button{height:190px;border-radius:28px;background:#ffffff14;border:4px solid #ffffff33;color:#fff;font-size:90px;transition:transform .15s}
+.avg button span{display:block;font-size:22px;font-weight:900}
+.avg button:hover,.avg button.on{transform:translateY(-8px) scale(1.05);border-color:var(--sun);background:#ffc23d33}
+.rankcard{display:inline-block;margin-top:10px;padding:10px 26px;border-radius:20px;background:linear-gradient(135deg,#7c5cd6,#3a9ad9);color:#fff;font-size:30px;font-weight:900;box-shadow:0 6px 0 #3f2a85}
 /* dialog */
 #dlg{position:absolute;inset:0;background:rgba(10,30,35,.55);display:none;place-items:center;z-index:90}
 #dlg.on{display:grid}
@@ -796,6 +822,7 @@ body.solo-only #zhHelp{display:block}
     <div class="ghead">
       <h2>🛠️ Before → After Machine</h2>
       <div class="rdots" id="rdots"></div>
+      <div id="gHud" style="display:contents"></div>
       <div class="gstars" id="gstars">⭐ 0</div>
       <button class="gx" id="gClose" title="Close">✕</button>
     </div>
@@ -927,11 +954,12 @@ body.solo-only #zhHelp{display:block}
     <div class="dshow" id="dShowFull"><img id="dShowImg" alt=""><button class="btn ghost" id="dShowX" style="position:absolute;right:24px;top:24px">✕</button></div>
   </div>
   <div id="exitq">
-    <div class="sh">🩺 Doctor's Chart<span class="xp" id="xProg"></span></div>
+    <div class="sh">🩺 Doctor's Chart<span id="xHud" style="display:contents"></span><span class="xp" id="xProg"></span></div>
     <div class="xbody" id="xBody"></div>
   </div>
   <button id="zhHelp">中文</button>
   <div id="zhPanel"><div class="zq" id="zhQ"></div><div class="zw" id="zhW"></div><button class="btn ghost" id="zhX" style="font-size:20px;margin-top:10px">OK</button></div>
+  <div id="avPick"><div><h2>🩺 Choose your doctor!</h2><p>Who will check on the five friends?</p><div class="avg" id="avg"></div></div></div>
   <div id="splash"><div class="fl" id="floaters"></div><div class="sp-in">
     <div class="badge">🏥 HOSPITAL CITY · DOCTOR MISSION</div>
     <div class="ico">🩺</div><h1>Hospital City Doctors</h1>
@@ -2411,14 +2439,14 @@ ENTER[10]=()=>renderPodium();
 /* ---------- iPad game ---------- */
 let gOrder=[],gi=0,gStars=0,gState='drop';
 let gScore=0;
-function openGame(){$('game').classList.add('on');gOrder=shuffle(FR).map(f=>Object.assign({},f));gScore=0;gi=0;gStars=0;$('gend').classList.remove('on');$('gbonus').classList.remove('on');gRound()}
+function openGame(){$('game').classList.add('on');XP.reset();gOrder=shuffle(FR).map(f=>Object.assign({},f));gScore=0;gi=0;gStars=0;$('gend').classList.remove('on');$('gbonus').classList.remove('on');XP.pick(()=>gRound())}
 $('gClose').onclick=()=>{$('game').classList.remove('on');speechSynthesis&&speechSynthesis.cancel()};
 $('gAgain').onclick=()=>{$('gl2').classList.remove('on');openGame()};
 $('gL2').onclick=openL2;
-$('l2next').onclick=()=>{l2i++;if(l2i>=l2Order.length){$('gl2').classList.remove('on');$('gend').classList.add('on');$('gScore').textContent=`⭐ ${gStars} · Level 2 done! 🏆`;sfx('fan')}else l2Round()};
+$('l2next').onclick=()=>{l2i++;if(l2i>=l2Order.length){$('gl2').classList.remove('on');$('gend').classList.add('on');$('gScore').innerHTML=`⭐ ${gStars} · Level 2 done! 🏆 · ${XP.xp} XP<br><span class="rankcard">${XP.av||''} ${XP.avn||'Doctor'} · ${XP.rank()}</span>`;XP.stopT();sfx('fan')}else l2Round()};
 $('gBonus').onclick=()=>{$('gbonus').classList.add('on');stopGame($('arena2'))};
 $('gBack').onclick=()=>$('gbonus').classList.remove('on');
-function gRound(){const f=gOrder[gi];gState='drop';
+function gRound(){const f=gOrder[gi];gState='drop';XP.qStart();
  $('rdots').innerHTML=gOrder.map((_,i)=>`<i class="${i<gi?'ok':i===gi?'on':''}">${i<gi?'✔':''}</i>`).join('');$('gstars').textContent='⭐ '+gStars;
  $('gBefore').src=IMG[f.tries];$('gCap').innerHTML=`<span class="say" data-say="${f.n} used...">${f.n} used <span class="blank" id="gBlank">?</span>.</span>`;
  $('gAfterWrap').innerHTML='<div class="waiting">After ?</div>';$('gSent').textContent='';$('gSent').removeAttribute('data-say');
@@ -2439,17 +2467,17 @@ document.addEventListener('pointermove',e=>{if(!drag)return;const p=toStage(e.cl
 document.addEventListener('pointerup',e=>{if(!drag)return;const d=drag;drag=null;const p=toStage(e.clientX,e.clientY);$('funnel').classList.remove('over');
  const into=!d.moved||overFunnel(p.x,p.y);d.g.remove();d.t.style.opacity='';if(into)drop(d.t)});
 document.addEventListener('pointercancel',()=>{if(drag){drag.g.remove();drag.t.style.opacity='';drag=null}});
-function drop(t){const f=gOrder[gi],k=t.dataset.k;if(!f._a1){f._a1=1;const ok=k===f.sub;S2P.a({question:`What did ${f.n} use?`,answer:SUBS[k].en,correct:ok,points:ok?1:0});if(ok)gScore++}
+function drop(t){const f=gOrder[gi],k=t.dataset.k;{const ok=k===f.sub;if(gState==='drop'){if(ok)XP.hit($('game'),f._a1?0.5:1);else XP.miss($('game'))}}if(!f._a1){f._a1=1;const ok=k===f.sub;S2P.a({question:`What did ${f.n} use?`,answer:SUBS[k].en,correct:ok,points:ok?1:0});if(ok)gScore++}
  if(k!==f.sub){t.classList.add('shake');ding(false);setTimeout(()=>t.classList.remove('shake'),500);const m=`Look at ${f.n}. What is in ${f.he==='he'?'his':'her'} hand?`;hint('🔍 '+m);speak(m);return}
  gState='run';t.classList.add('used');$('gBlank').textContent=SUBS[k].pl;ding(true);const mb=$('mbody');mb.classList.add('run');speak(`${f.n} used ${SUBS[k].pl}.`);
  setTimeout(()=>{mb.classList.remove('run');$('gAfterWrap').innerHTML=`<img class="pic out" src="${IMG[f.after]}" alt="After">`;
   $('gSent').textContent=`${f.n} used ${SUBS[k].pl}. Now ${f.he} is…?`;$('gSent').dataset.say=`${f.n} used ${SUBS[k].pl}. Now ${f.he} is...`;speak($('gSent').dataset.say);
-  $('howqT').innerHTML=`How is ${f.n} now?`;$('howq').classList.add('on');gState='how'},1500)}
+  $('howqT').innerHTML=`How is ${f.n} now?`;$('howq').classList.add('on');gState='how';XP.qStart()},1500)}
 $('howq').addEventListener('click',e=>{const b=e.target.closest('.hb');if(!b||gState!=='how')return;const f=gOrder[gi];if(!f._a2){f._a2=1;const ok=f.w.includes(b.dataset.w);S2P.a({question:`${f.n} used ${SUBS[f.sub].pl}. Now ${f.he} is...?`,answer:b.dataset.w,correct:ok,points:ok?1:0});if(ok)gScore++}
- if(f.w.includes(b.dataset.w)){b.classList.add('good');gState='done';gStars++;$('gstars').textContent='⭐ '+gStars;ding(true);fx('⭐',1300,300,$('game'));
+ if(f.w.includes(b.dataset.w)){XP.hit($('game'),f._miss2?0.5:1);b.classList.add('good');gState='done';gStars++;$('gstars').textContent='⭐ '+gStars;ding(true);fx('⭐',1300,300,$('game'));
   $('gSent').textContent='✔ '+f.sent;$('gSent').dataset.say=f.sent;speak(f.sent);$('gNext').classList.add('on')}
- else{b.classList.add('bad','shake');ding(false);setTimeout(()=>b.classList.remove('bad','shake'),600);const m=`Look at ${f.n}'s face. Try again!`;hint('🔍 '+m);speak(m)}});
-$('gNext').onclick=()=>{gi++;if(gi>=gOrder.length){$('rdots').innerHTML=gOrder.map(()=>'<i class="ok">✔</i>').join('');$('gend').classList.add('on');$('gScore').textContent=`⭐ ${gStars} / 5`;S2P.f({score:gScore,maxScore:10});speak('You are a Hospital City Doctor! This is your Body Buddy. Keep it healthy!')}else gRound()};
+ else{f._miss2=1;XP.miss($('game'));b.classList.add('bad','shake');ding(false);setTimeout(()=>b.classList.remove('bad','shake'),600);const m=`Look at ${f.n}'s face. Try again!`;hint('🔍 '+m);speak(m)}});
+$('gNext').onclick=()=>{gi++;if(gi>=gOrder.length){$('rdots').innerHTML=gOrder.map(()=>'<i class="ok">✔</i>').join('');$('gend').classList.add('on');$('gScore').innerHTML=`⭐ ${gStars} / 5 · ${XP.xp} XP · 🔥 best combo x${XP.best}<br><span class="rankcard">${XP.av||''} ${XP.avn||'Doctor'} · ${XP.rank()}</span>`;XP.stopT();S2P.f({score:gScore,maxScore:10});speak('You are a Hospital City Doctor! This is your Body Buddy. Keep it healthy!')}else gRound()};
 
 /* ---------- QR + solo stop ---------- */
 const DEFAULT_URL='https://marieljoycegabriel6.github.io/Hospital-City/health5-u2-lesson1.html';
@@ -2573,7 +2601,7 @@ $('ggrid').onclick=e=>{const im=e.target.closest('img');if(im){spI=+im.dataset.i
 $('spPrev').onclick=()=>{spI=(spI+GAL.length-1)%GAL.length;spShow()};$('spNext').onclick=()=>{spI=(spI+1)%GAL.length;spShow()};
 $('spClose').onclick=()=>$('spot').classList.remove('on');$('spStar').onclick=()=>star();
 /* ---------- Doctor's Chart exit (student iPad) ---------- */
-function openExit(){const X=$('exitq');X.classList.add('on');let name='',qs=[],qi=0,res=[];
+function openExit(){const X=$('exitq');X.classList.add('on');XP.reset();let name='',qs=[],qi=0,res=[];
  const prog=()=>{$('xProg').innerHTML=[0,1,2].map(i=>`<i class="${i<qi?(res[i]?'ok':'no'):i===qi?'on':''}"></i>`).join('')};
  function nameStep(){$('xProg').innerHTML='';$('xBody').innerHTML=`<div class="xname"><div class="xq">Hello, Doctor! What is your name?</div><input id="xNm" maxlength="20" placeholder="My name"><div style="margin-top:22px"><button class="btn sun" id="xGo" style="font-size:40px">Start ▶</button></div></div>`;
   $('xGo').onclick=()=>{name=$('xNm').value.trim();if(!name){$('xNm').focus();return}build();ask()}}
@@ -2581,24 +2609,24 @@ function openExit(){const X=$('exitq');X.classList.add('on');let name='',qs=[],q
   qs=[{q:`What did ${f1.n} use?`,say:`What did ${f1.n} use?`,img:IMG[f1.tries],opts:shuffle([f1.sub,...shuffle(SUBORDER.filter(k=>k!==f1.sub)).slice(0,2)]).map(k=>({k,html:`<img src="${IMG[SUBS[k].img]}" alt="">${SUBS[k].en}`})),ok:k=>k===f1.sub,label:'Who used what'},
    {q:`${f2.n} used ${SUBS[f2.sub].pl}. Now ${f2.he} is…?`,say:`${f2.n} used ${SUBS[f2.sub].pl}. Now ${f2.he} is...`,img:IMG[f2.after],opts:shuffle(Object.keys(WORDS)).map(k=>({k,html:`${WORDS[k].e} ${k}`})),ok:k=>f2.w.includes(k),label:'After word'},
    {q:'They want more and more. They can’t stop. That is…',say:"They want more and more. They can't stop. That is...",img:IMG.p21,opts:shuffle(['addictive','healthy','happy']).map(k=>({k,html:k})),ok:k=>k==='addictive',label:'addictive'}]}
- function ask(){const q=qs[qi];prog();$('xBody').innerHTML=`<div><div class="xq">${q.q}</div><img class="xpic" src="${q.img}" alt=""><div class="xopts">${q.opts.map(o=>`<button class="xo" data-k="${o.k}">${o.html}</button>`).join('')}</div></div>`;speak(q.say);
-  $('xBody').querySelector('.xopts').onclick=e=>{const b=e.target.closest('.xo');if(!b||b.disabled)return;const ok=q.ok(b.dataset.k);res[qi]=ok;S2P.a({question:q.say,answer:SUBS[b.dataset.k]?SUBS[b.dataset.k].en:b.dataset.k,correct:ok,points:ok?1:0});
+ function ask(){const q=qs[qi];prog();XP.qStart();$('xBody').innerHTML=`<div><div class="xq">${q.q}</div><img class="xpic" src="${q.img}" alt=""><div class="xopts">${q.opts.map(o=>`<button class="xo" data-k="${o.k}">${o.html}</button>`).join('')}</div></div>`;speak(q.say);
+  $('xBody').querySelector('.xopts').onclick=e=>{const b=e.target.closest('.xo');if(!b||b.disabled)return;const ok=q.ok(b.dataset.k);res[qi]=ok;ok?XP.hit($('exitq')):XP.miss($('exitq'));S2P.a({question:q.say,answer:SUBS[b.dataset.k]?SUBS[b.dataset.k].en:b.dataset.k,correct:ok,points:ok?1:0});
    $('xBody').querySelectorAll('.xo').forEach(x=>{x.disabled=true;if(q.ok(x.dataset.k))x.classList.add('good')});if(!ok)b.classList.add('bad');ding(ok);
    setTimeout(()=>{qi++;if(qi<3)ask();else chart()},1300)}}
  function chart(){prog();const sc=res.filter(Boolean).length;S2P.f({score:sc,maxScore:3});sfx('fan');const s=document.querySelector('#exitq');const r=s.getBoundingClientRect(),c=toStage(r.left+r.width/2,r.top+r.height/3);if(sc===3)confetti(c.x,c.y,70,1.2);
   $('xBody').innerHTML=`<div class="chart"><div style="font-size:28px;font-weight:900;color:#5b7a80">📋 DOCTOR'S CHART</div><div class="nm">${name.replace(/[<>&]/g,'')}</div><div class="sc">${sc}/3</div><div style="font-size:60px">${'⭐'.repeat(sc)||'💪'}</div>
-   <div class="rows">${qs.map((q,i)=>`${res[i]?'✅':'❌'} ${q.label}`).join('<br>')}</div><div style="font-size:30px;font-weight:900;margin-top:14px;color:var(--plum)">🙋 Show Teacher Joyce!</div></div>`;speak(sc===3?'Great job, doctor!':'Good try, doctor!')}
- S2P.name().then(n=>{if(n){name=n;build();ask()}else nameStep()})}
+   <div class="rows">${qs.map((q,i)=>`${res[i]?'✅':'❌'} ${q.label}`).join('<br>')}</div><div><span class="rankcard">${XP.av||''} ${XP.avn||'Doctor'} · ${XP.xp} XP</span></div><div style="font-size:30px;font-weight:900;margin-top:14px;color:var(--plum)">🙋 Show Teacher Joyce!</div></div>`;XP.stopT();speak(sc===3?'Great job, doctor!':'Good try, doctor!')}
+ XP.pick(()=>S2P.name().then(n=>{if(n){name=n;build();ask()}else nameStep()}))}
 /* ---------- iPad game Level 2: build the sentence ---------- */
 let l2i=0,l2Order=[],l2miss=false;
 function openL2(){l2Order=shuffle(FR);l2i=0;$('gend').classList.remove('on');$('gl2').classList.add('on');l2Round()}
-function l2Round(){const f=l2Order[l2i];const parts=[`${f.n} used`,`${SUBS[f.sub].pl}.`,`Now ${f.he} is`,`${f.w.join(' and ')}.`];
+function l2Round(){const f=l2Order[l2i];XP.qStart();const parts=[`${f.n} used`,`${SUBS[f.sub].pl}.`,`Now ${f.he} is`,`${f.w.join(' and ')}.`];
  const wrong=rnd(SUBORDER.filter(k=>k!==f.sub));l2miss=false;const tiles=shuffle([...parts.map((p,i)=>({p,i})),{p:SUBS[wrong].pl+'.',i:-1}]);let need=0;
  $('l2dots').innerHTML=l2Order.map((_,i)=>`<i class="${i<l2i?'ok':i===l2i?'on':''}">${i<l2i?'✔':''}</i>`).join('');
  $('l2img').src=IMG[f.after];$('l2line').innerHTML=parts.map(()=>`<span class="slot2"></span>`).join('');$('l2tiles').innerHTML=tiles.map(t=>`<button class="t2" data-i="${t.i}">${t.p}</button>`).join('');$('l2next').classList.remove('on');
  $('l2tiles').onclick=e=>{const b=e.target.closest('.t2');if(!b||b.disabled)return;if(+b.dataset.i===need){const sl=$('l2line').children[need];sl.textContent=b.textContent;sl.classList.add('fill');b.disabled=true;b.classList.add('gone');ding(true);need++;
-   if(need===4){S2P.a({question:`Level 2: build the sentence (${f.n})`,answer:f.sent,correct:!l2miss,points:l2miss?0:1});gStars++;$('gstars').textContent='⭐ '+gStars;speak(f.sent);fx('⭐',800,300,$('game'));$('l2next').classList.add('on')}}
-  else{l2miss=true;b.classList.add('bad','shake');ding(false);setTimeout(()=>b.classList.remove('bad','shake'),500)}};
+   if(need===4){XP.hit($('game'),l2miss?0.5:1);S2P.a({question:`Level 2: build the sentence (${f.n})`,answer:f.sent,correct:!l2miss,points:l2miss?0:1});gStars++;$('gstars').textContent='⭐ '+gStars;speak(f.sent);fx('⭐',800,300,$('game'));$('l2next').classList.add('on')}}
+  else{l2miss=true;XP.miss($('game'));b.classList.add('bad','shake');ding(false);setTimeout(()=>b.classList.remove('bad','shake'),500)}};
  speak(`Look at ${f.n}. Build the sentence.`)}
 /* ---------- per-activity links (Scan2Play) ---------- */
 if(!st.links)st.links={};
@@ -2617,6 +2645,32 @@ function zhNow(){const sh=s=>s;try{
  if($('solo').classList.contains('on'))return '點它三下！它會跑掉，而且越來越快！';}catch(e){}return ''}
 $('zhW').innerHTML=[...SUBORDER.map(k=>[SUBS[k].en,SUBS[k].zh]),...Object.keys(WORDS).map(k=>[k,WORDS[k].zh]),['addictive','會上癮'],['used','用了'],['Now he/she is','現在他／她']].map(([e,z])=>`<span><b>${e}</b>${z}</span>`).join('');
 $('zhHelp').onclick=()=>{$('zhQ').textContent=zhNow();$('zhPanel').classList.toggle('on')};$('zhX').onclick=()=>$('zhPanel').classList.remove('on');
+/* ---------- online-game layer: avatar, XP, combo, timer, levels, music ---------- */
+const XP={av:null,avn:'',xp:0,lv:1,combo:0,best:0,t0:0,tIv:null,hud:[],
+ AV:[['🦊','Dr. Fox'],['🐼','Dr. Panda'],['🐯','Dr. Tiger'],['🐰','Dr. Bunny'],['🐸','Dr. Frog'],['🦁','Dr. Lion'],['🐨','Dr. Koala'],['🦄','Dr. Unicorn']],
+ need:400,
+ mount(host){const h=document.createElement('div');h.className='hud';h.innerHTML=`<div class="av">${this.av||'🩺'}</div><div class="lv">Lv.1</div><div class="xpb"><i></i><span>0 XP</span></div><div class="combo">🔥x2</div><div class="tring"><b>10</b></div><button class="mus" title="Music">🎵</button>`;
+  host.appendChild(h);h.querySelector('.mus').onclick=()=>MUS.toggle();this.hud.push(h);return h},
+ draw(){this.hud.forEach(h=>{h.querySelector('.av').textContent=this.av||'🩺';h.querySelector('.lv').textContent='Lv.'+this.lv;const into=this.xp%this.need;h.querySelector('.xpb i').style.width=(into/this.need*100)+'%';h.querySelector('.xpb span').textContent=this.xp+' XP';
+  const c=h.querySelector('.combo');if(this.combo>=2){c.textContent='🔥x'+this.combo;c.classList.remove('on');void c.offsetWidth;c.classList.add('on')}else c.classList.remove('on');h.querySelector('.mus').style.opacity=MUS.on?1:.45})},
+ reset(){this.xp=0;this.lv=1;this.combo=0;this.best=0;this.draw()},
+ qStart(){clearInterval(this.tIv);this.t0=performance.now();const tick=()=>{const left=Math.max(0,10-(performance.now()-this.t0)/1000);this.hud.forEach(h=>{const r=h.querySelector('.tring');r.style.setProperty('--p',(left*10)+'%');r.querySelector('b').textContent=Math.ceil(left)})};tick();this.tIv=setInterval(tick,200)},
+ hit(host,mult=1){clearInterval(this.tIv);const sec=(performance.now()-this.t0)/1000,speed=Math.max(0,Math.round((10-sec)*5));this.combo++;this.best=Math.max(this.best,this.combo);
+  const gain=Math.round((100+speed)*mult*Math.min(2,1+0.25*Math.max(0,this.combo-1)));const oldLv=this.lv;this.xp+=gain;this.lv=1+Math.floor(this.xp/this.need);
+  this.fly(host,`+${gain} XP${speed>25?' ⚡':''}`);if(this.combo>=2)sfx('fan');this.draw();if(this.lv>oldLv)setTimeout(()=>this.levelUp(host),500)},
+ miss(host){this.combo=0;this.draw();host.classList.remove('shk2');void host.offsetWidth;host.classList.add('shk2')},
+ stopT(){clearInterval(this.tIv)},
+ fly(host,txt){const d=document.createElement('div');d.className='xpfly';d.textContent=txt;d.style.left=(host.offsetWidth/2-120)+'px';d.style.top='120px';host.appendChild(d);setTimeout(()=>d.remove(),1150)},
+ levelUp(host){const d=document.createElement('div');d.className='lvup';d.innerHTML=`<div>LEVEL ${this.lv}!</div>`;host.appendChild(d);sfx('fan');const r=host.getBoundingClientRect(),c=toStage(r.left+r.width/2,r.top+r.height/3);confetti(c.x,c.y,60,1.3);setTimeout(()=>d.remove(),1700)},
+ rank(){const x=this.xp;return x>=1800?'🌟 Legendary Doctor':x>=1300?'🏅 Chief Doctor':x>=700?'🩺 City Doctor':'🌱 Junior Doctor'},
+ pick(cb){if(this.av){cb();return}const P=$('avPick');$('avg').innerHTML=this.AV.map(([e,n])=>`<button data-e="${e}" data-n="${n}">${e}<span>${n}</span></button>`).join('');P.classList.add('on');
+  $('avg').onclick=e=>{const b=e.target.closest('button');if(!b)return;this.av=b.dataset.e;this.avn=b.dataset.n;b.classList.add('on');sfx('pick');MUS.start();setTimeout(()=>{P.classList.remove('on');this.draw();speak(`Hello, ${this.avn}! Let's go!`);cb()},450)}}};
+const MUS={on:false,ctx:null,iv:null,step:0,
+ start(){if(this.on)return;try{this.ctx=window._ac||(window._ac=new (window.AudioContext||window.webkitAudioContext)());this.on=true;const N=[262,330,392,523,392,330,294,349,440,587,440,349];
+  this.iv=setInterval(()=>{if(!this.on)return;const A=this.ctx,n=A.currentTime,o=A.createOscillator(),g=A.createGain();o.type='triangle';o.frequency.value=N[this.step%N.length]*(this.step%24<12?1:1.122);o.connect(g);g.connect(A.destination);g.gain.setValueAtTime(.035,n);g.gain.exponentialRampToValueAtTime(.001,n+.22);o.start(n);o.stop(n+.24);
+   if(this.step%4===0){const b=A.createOscillator(),bg=A.createGain();b.type='sine';b.frequency.value=N[this.step%N.length]/2;b.connect(bg);bg.connect(A.destination);bg.gain.setValueAtTime(.05,n);bg.gain.exponentialRampToValueAtTime(.001,n+.4);b.start(n);b.stop(n+.42)}this.step++},240)}catch(e){}XP.draw()},
+ toggle(){if(this.on){this.on=false;clearInterval(this.iv)}else this.start();XP.draw()}};
+XP.mount($('gHud'));XP.mount($('xHud'));XP.draw();
 /* ---------- full screen start ---------- */
 function goFull(){try{const d=document.documentElement;(d.requestFullscreen||d.webkitRequestFullscreen||function(){}).call(d)}catch(e){}}
 $('bGo').onclick=()=>{goFull();$('splash').remove();setTimeout(fit,200)};
