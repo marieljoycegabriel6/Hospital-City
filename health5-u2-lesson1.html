@@ -317,6 +317,56 @@ body.teacher .qlink{display:block}body.teacher .qedit{display:flex}
 .sg-sub{font-size:30px;font-weight:800;margin:10px 0 22px;line-height:1.35}
 .sg-rate{font-size:64px}
 .sg-go{font-size:40px}
+/* ===== cool layer ===== */
+#stage:before{content:"";position:absolute;inset:-60px;background-image:radial-gradient(circle,#0f8f8614 2px,transparent 3px),linear-gradient(#0f8f860d 2px,transparent 2px),linear-gradient(90deg,#0f8f860d 2px,transparent 2px);background-size:60px 60px,60px 60px,60px 60px;background-position:0 0,30px 30px,30px 30px;animation:drift 40s linear infinite;pointer-events:none}
+@keyframes drift{to{transform:translate(60px,60px)}}
+.ecg polyline{fill:none;stroke:var(--teal2);stroke-width:4;stroke-linejoin:round;stroke-linecap:round;stroke-dasharray:700;stroke-dashoffset:700;animation:ecg 2.2s linear infinite}
+@keyframes ecg{to{stroke-dashoffset:0}}
+.ecg.mini{width:110px;height:34px;margin-left:6px}
+.ecg.mini polyline{stroke-width:3;stroke-dasharray:180;stroke-dashoffset:180;animation-duration:1.4s}
+.screen.on{animation:enter .45s cubic-bezier(.2,1,.3,1)}
+@keyframes enter{from{opacity:0;transform:translateX(60px) scale(.98);filter:blur(6px)}to{opacity:1;transform:none;filter:none}}
+.chip.on{position:relative;overflow:hidden}
+.chip.on:after{content:"";position:absolute;top:0;bottom:0;width:40px;left:-60px;background:linear-gradient(90deg,transparent,#ffffff88,transparent);animation:shine 2.6s infinite}
+@keyframes shine{60%,100%{left:120%}}
+.card{transition:transform .2s,box-shadow .2s}
+.wcard:hover,.scard:hover,.opt:hover{transform:translateY(-4px) scale(1.02)}
+.wcard.tap,.scard.tap{animation:tapb .4s}
+@keyframes tapb{40%{transform:scale(1.1) rotate(-2deg)}}
+#picked{transition:box-shadow .3s}
+#picked.pop{box-shadow:0 0 0 6px #ffc23d66,0 0 30px #ffc23d;border-color:var(--sun);background:#fffbea}
+/* splash */
+#splash{overflow:hidden}
+#splash .sp-in{position:relative;z-index:2}
+#splash .badge{display:inline-block;font-size:22px;font-weight:900;letter-spacing:.12em;padding:8px 20px;border-radius:30px;background:#ffffff22;border:2px solid #ffffff55}
+#splash .ico{animation:beat 1.1s infinite}
+@keyframes beat{0%,100%{transform:scale(1)}15%{transform:scale(1.15)}30%{transform:scale(.97)}45%{transform:scale(1.08)}}
+#splash .ecg.big{width:620px;height:80px;display:block;margin:6px auto}
+#splash .ecg.big polyline{stroke:#fff;stroke-width:5;stroke-dasharray:1300;stroke-dashoffset:1300}
+#splash .go{animation:glow 1.6s infinite}
+@keyframes glow{50%{box-shadow:0 8px 0 #d09400,0 0 40px 8px #ffc23daa}}
+.fl{position:absolute;inset:0}
+.fl img{position:absolute;width:120px;height:120px;object-fit:contain;border-radius:50%;background:#fff;padding:10px;opacity:.85;box-shadow:0 10px 30px #0003;animation:floaty 7s ease-in-out infinite}
+@keyframes floaty{0%,100%{transform:translateY(0) rotate(-6deg)}50%{transform:translateY(-30px) rotate(6deg)}}
+/* S1 monitor */
+.sick{position:relative}
+.monitor{position:absolute;left:16px;right:16px;bottom:96px;height:74px;border-radius:16px;background:#071a1fdd;display:flex;align-items:center;gap:12px;padding:0 16px;color:#7dffb0;font-weight:900}
+.monitor .ecg{flex:1;height:50px}.monitor .ecg polyline{stroke:#7dffb0;stroke-dasharray:500;stroke-dashoffset:500;animation-duration:1.5s}
+.monitor .hr{font-size:28px;color:#ff6b5b;animation:beat .9s infinite}
+.monitor .alert{font-size:18px;color:#ffc23d;animation:blink2 1s infinite}
+@keyframes blink2{50%{opacity:.25}}
+.doc.shown{animation:siren 1.2s 2}
+@keyframes siren{25%{box-shadow:0 0 0 10px #ff6b5b88,0 0 60px #ff6b5b}75%{box-shadow:0 0 0 10px #3a9ad988,0 0 60px #3a9ad9}}
+/* S5 scan */
+.scan{position:absolute;left:0;right:0;top:0;height:100%;border-radius:22px;pointer-events:none;overflow:hidden}
+.scan:before{content:"";position:absolute;left:0;right:0;height:70px;top:-70px;background:linear-gradient(transparent,#7dffb0aa,transparent);animation:scan 1.1s ease-in-out 2}
+@keyframes scan{to{top:100%}}
+/* flash */
+.flashfx{position:absolute;inset:0;background:#fff;animation:ffx .4s forwards;z-index:3}
+@keyframes ffx{from{opacity:1}to{opacity:0}}
+/* confetti */
+.cf{position:absolute;width:14px;height:20px;border-radius:3px;pointer-events:none;z-index:120;animation:cf 1.3s cubic-bezier(.2,.7,.4,1) forwards}
+@keyframes cf{to{transform:translate(var(--dx),var(--dy)) rotate(var(--r));opacity:0}}
 /* dialog */
 #dlg{position:absolute;inset:0;background:rgba(10,30,35,.55);display:none;place-items:center;z-index:90}
 #dlg.on{display:grid}
@@ -329,7 +379,7 @@ body.teacher .qlink{display:block}body.teacher .qedit{display:flex}
 <body>
 <div id="stage">
   <div id="top">
-    <div class="brand"><div class="logo">H</div><div><b>Hospital City</b><small>Health 5 · Unit 2 · Lesson 1</small></div></div>
+    <div class="brand"><div class="logo">H</div><div><b>Hospital City</b><small>Health 5 · Unit 2 · Lesson 1</small></div><svg class="ecg mini" viewBox="0 0 120 40" preserveAspectRatio="none"><polyline points="0,20 35,20 42,6 50,34 58,12 64,20 120,20"/></svg></div>
     <div id="steps"></div>
     <div class="tools">
       <button class="tbtn" id="bZh" title="Chinese (C)">中文</button>
@@ -342,7 +392,7 @@ body.teacher .qlink{display:block}body.teacher .qedit{display:flex}
   <section class="screen" id="s1">
     <div class="wrap">
       <div class="sick">
-        <img class="pic" data-img="p18" alt="Sam is sick">
+        <img class="pic" data-img="p18" alt="Sam is sick"><div class="monitor"><span class="hr">♥ <b id="bpm">128</b></span><svg class="ecg" viewBox="0 0 300 60" preserveAspectRatio="none"><polyline points="0,30 70,30 82,30 90,6 98,54 106,16 114,30 190,30 202,30 210,6 218,54 226,16 234,30 300,30"/></svg><span class="alert">⚠ CHECK-UP NEEDED</span></div>
         <div class="oh say" data-say="Oh no... Are our friends OK?">Oh no… Are our friends OK?
           <div class="zh">喔不……我們的好朋友還好嗎？<div class="py">Ō bù… wǒmen de hǎo péngyou hái hǎo ma?</div></div></div>
       </div>
@@ -659,7 +709,11 @@ body.teacher .qlink{display:block}body.teacher .qedit{display:flex}
       </div>
     </div>
   </div>
-  <div id="splash"><div><div class="ico">🩺</div><h1>Hospital City Doctors</h1><p>Health 5 · Unit 2 · Lesson 1 · Love Myself</p><button class="go" id="bGo">▶ Start</button></div></div>
+  <div id="splash"><div class="fl" id="floaters"></div><div class="sp-in">
+    <div class="badge">🏥 HOSPITAL CITY · DOCTOR MISSION</div>
+    <div class="ico">🩺</div><h1>Hospital City Doctors</h1>
+    <svg class="ecg big" viewBox="0 0 600 80" preserveAspectRatio="none"><polyline points="0,40 150,40 175,40 190,10 205,70 220,25 235,40 330,40 355,40 370,8 385,72 400,22 415,40 600,40"/></svg>
+    <p>Mission: check on our five friends! · Health 5 · Unit 2 · Lesson 1</p><button class="go" id="bGo">▶ Start the mission</button></div></div>
 </div>
 
 <script>
@@ -1968,13 +2022,13 @@ function ding(ok){try{const A=window._ac||(window._ac=new (window.AudioContext||
 const clsSel=$('cls');clsSel.value=st.cls;
 clsSel.onchange=()=>{st.cls=clsSel.value;pool=[];picked=null;$('picked').textContent='🩺 Tap 🎲 to pick a doctor';save();renderTop3();renderDone()};
 function pick(){const ns=st.names[st.cls].filter(Boolean);if(!ns.length)return null;if(!pool.length)pool=shuffle(ns);
- const el=$('picked');let k=0;const iv=setInterval(()=>{el.textContent='🎲 '+rnd(ns);if(++k>8){clearInterval(iv);picked=pool.pop();el.textContent='🩺 '+picked;el.classList.remove('pop');void el.offsetWidth;el.classList.add('pop')}},70);
+ const el=$('picked');let k=0;const iv=setInterval(()=>{el.textContent='🎲 '+rnd(ns);sfx('tick');if(++k>8){clearInterval(iv);picked=pool.pop();el.textContent='🩺 '+picked;el.classList.remove('pop');void el.offsetWidth;el.classList.add('pop');sfx('pick')}},70);
  return new Promise(r=>setTimeout(()=>r(picked),9*70+30))}
 function star(name){name=name||picked;if(!name){$('picked').classList.add('shake');setTimeout(()=>$('picked').classList.remove('shake'),500);return}
  const s=st.stars[st.cls];s[name]=(s[name]||0)+1;save();renderTop3();ding(true);fx('⭐',1060,770)}
 function ranked(){const s=st.stars[st.cls];return Object.keys(s).filter(n=>s[n]>0).sort((a,b)=>s[b]-s[a])}
 function renderTop3(){const s=st.stars[st.cls];$('top3').innerHTML=ranked().slice(0,3).map((n,i)=>`<span>${['🥇','🥈','🥉'][i]} ${n} ${s[n]}</span>`).join('');renderPodium()}
-function renderPodium(){const s=st.stars[st.cls],r=ranked();const order=[1,0,2],H=[200,250,160],C=['#9aa9b5','#f0b400','#d9895b'];
+function renderPodium(){const s=st.stars[st.cls],r=ranked();const order=[1,0,2],H=[200,250,160],C=['#f0b400','#9aa9b5','#d9895b'];
  $('podium').innerHTML=order.map(i=>r[i]?`<div class="pod" style="height:${H[order.indexOf(i)]}px;background:${C[i]}">${['🥇','🥈','🥉'][i]}<b>${r[i]}</b>${s[r[i]]} ⭐</div>`:'').join('')||'<div style="font-size:26px;color:#5b7a80;font-weight:800">No stars yet</div>'}
 $('bPick').onclick=()=>pick();$('bStar').onclick=()=>star();
 $('bNames').onclick=()=>{$('dlgCls').textContent=st.cls;$('dlgTxt').value=st.names[st.cls].join('\n');$('dlg').classList.add('on')};
@@ -2046,7 +2100,7 @@ $('baPredict').onclick=e=>{const b=e.target.closest('.pw');if(!b||revealed)retur
 function reveal321(){if(revealed)return;const cd=$('cd');cd.style.display='grid';let n=3;cd.textContent=n;speak('3');
  const iv=setInterval(()=>{n--;if(n>0){cd.textContent=n;speak(String(n))}else{clearInterval(iv);showAfter()}},900)}
 function showAfter(){const f=FR[bi];revealed=true;
- $('afterSide').innerHTML=`<img class="pic" src="${IMG[f.after]}" alt="After"><div class="lab">🤚 After: ${f.w.join(' and ')} ${f.w.map(w=>WORDS[w].e).join('')}</div>`;
+ $('afterSide').innerHTML=`<img class="pic" src="${IMG[f.after]}" alt="After"><div class="scan"></div><div class="lab">🤚 After: ${f.w.join(' and ')} ${f.w.map(w=>WORDS[w].e).join('')}</div>`;
  const ok=pred&&f.w.includes(pred);
  $('baRes').innerHTML=`<span class="say" data-say="${f.sent}">${f.sent}</span>${ok?' &nbsp;✔ ⭐':''}<span data-r="1" class="say" style="margin-left:18px;color:var(--plum)" data-say="Why didn't they stop?">Why didn't they stop? 🤔</span>`;
  speak(f.sent);if(ok)star();else if(pred)ding(false)}
@@ -2110,7 +2164,7 @@ const FITEMS=[...SUBORDER.map(k=>({img:IMG[SUBS[k].img],a:SUBS[k].en})),...Objec
 let fcur=null,vsP=[];
 $('bPick2').onclick=()=>{const ns=shuffle(st.names[st.cls].filter(Boolean));vsP=ns.slice(0,2);$('vs').innerHTML=vsP.map(n=>`<button class="vsb" data-n="${n}">${n}</button>`).join('')};
 $('vs').onclick=e=>{const b=e.target.closest('.vsb');if(b){star(b.dataset.n);fx('⭐',1200,500)}};
-$('bFlash').onclick=()=>{fcur=rnd(FITEMS);const box=$('flashBox');box.innerHTML=fcur.img?`<img src="${fcur.img}" alt="">`:`<div class="e">${fcur.e}</div>`;setTimeout(()=>{box.innerHTML='<div class="q">?</div>'},1000)};
+$('bFlash').onclick=()=>{fcur=rnd(FITEMS);const box=$('flashBox');sfx('zap');const fl=document.createElement('div');fl.className='flashfx';box.appendChild(fl);setTimeout(()=>fl.remove(),400);box.insertAdjacentHTML('afterbegin',fcur.img?`<img src="${fcur.img}" alt="">`:`<div class="e">${fcur.e}</div>`);box.querySelector('.q')&&box.querySelector('.q').remove();setTimeout(()=>{box.innerHTML='<div class="q">?</div>'},1000)};
 $('bFlashAns').onclick=()=>{if(!fcur)return;const box=$('flashBox');box.innerHTML=(fcur.img?`<img src="${fcur.img}" alt="">`:`<div class="e">${fcur.e}</div>`)+`<div class="ans">${fcur.a}</div>`;speak(fcur.a)};
 ENTER[7]=()=>{$('flashBox').innerHTML='<div class="q">?</div>';fcur=null};
 
@@ -2187,6 +2241,23 @@ function openSolo(){$('solo').classList.add('on');$('soloTries').innerHTML='';$(
  stopGame($('arena3'),s=>{const li=document.createElement('li');li.textContent=s+' s';$('soloTries').appendChild(li);
   if(soloBest===null||+s<soloBest)soloBest=+s;$('soloBest').textContent='🏆 Best: '+soloBest.toFixed(1)+' s';
   $('soloMsg').style.display='block';speak("Easy to stop? No! They can't stop.")})}
+/* ---------- cool layer ---------- */
+function sfx(k){try{const A=window._ac||(window._ac=new (window.AudioContext||window.webkitAudioContext)());const n=A.currentTime;
+ const tn=(f,d,ty,v,at=0,f2)=>{const o=A.createOscillator(),g=A.createGain();o.type=ty;o.frequency.setValueAtTime(f,n+at);if(f2)o.frequency.exponentialRampToValueAtTime(f2,n+at+d);o.connect(g);g.connect(A.destination);g.gain.setValueAtTime(v,n+at);g.gain.exponentialRampToValueAtTime(.001,n+at+d);o.start(n+at);o.stop(n+at+d+.02)};
+ if(k==='tick')tn(1200,.03,'square',.03);
+ if(k==='pick'){tn(523,.12,'triangle',.1);tn(784,.18,'triangle',.1,.1)}
+ if(k==='whoosh')tn(300,.25,'sine',.05,0,900);
+ if(k==='zap')tn(1800,.25,'sawtooth',.05,0,200);
+ if(k==='beep')tn(1000,.08,'sine',.08);
+ if(k==='fan'){[523,659,784,1047].forEach((f,i)=>tn(f,.25,'triangle',.09,i*.11))}}catch(e){}}
+function confetti(x,y,n=40,spread=1){const C=['#ff6b5b','#ffc23d','#14b3a6','#7c5cd6','#3a9ad9','#34c37a'];for(let i=0;i<n;i++){const d=document.createElement('div');d.className='cf';d.style.left=x+'px';d.style.top=y+'px';d.style.background=C[i%C.length];
+ const a=-Math.PI/2+(Math.random()-.5)*Math.PI*1.4*spread,r=150+Math.random()*350;d.style.setProperty('--dx',Math.cos(a)*r+'px');d.style.setProperty('--dy',(Math.sin(a)*r+250)+'px');d.style.setProperty('--r',(Math.random()*720-360)+'deg');stage.appendChild(d);setTimeout(()=>d.remove(),1400)}}
+{const _star=star;star=function(n){const before=Object.values(st.stars[st.cls]).reduce((a,b)=>a+b,0);_star(n);if(Object.values(st.stars[st.cls]).reduce((a,b)=>a+b,0)>before){const r=$('bStar').getBoundingClientRect(),p=toStage(r.left+r.width/2,r.top);confetti(p.x,p.y,36)}}}
+{const _go=go;go=function(i){const ch=i!==cur;_go(i);if(ch)sfx('whoosh')}}
+ENTER[10]=()=>{renderPodium();setTimeout(()=>{if(ranked().length){sfx('fan');const W=stage.offsetWidth;confetti(W*0.75,560,80,1.3)}},400)};
+document.addEventListener('pointerdown',e=>{const c=e.target.closest('.wcard,.scard');if(c){c.classList.remove('tap');void c.offsetWidth;c.classList.add('tap')}});
+setInterval(()=>{const b=$('bpm');if(b)b.textContent=118+(Math.random()*20|0)},900);
+(()=>{const fl=$('floaters');if(!fl)return;const pos=[[6,12],[80,8],[4,62],[84,58],[16,82],[72,84]];SUBORDER.concat(['cig']).slice(0,6).forEach((k,i)=>{const im=document.createElement('img');im.src=IMG[SUBS[k].img];im.style.left=pos[i][0]+'%';im.style.top=pos[i][1]+'%';im.style.animationDelay=(i*-1.1)+'s';fl.appendChild(im)})})();
 /* ---------- full screen start ---------- */
 function goFull(){try{const d=document.documentElement;(d.requestFullscreen||d.webkitRequestFullscreen||function(){}).call(d)}catch(e){}}
 $('bGo').onclick=()=>{goFull();$('splash').remove();setTimeout(fit,200)};
