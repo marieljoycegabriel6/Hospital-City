@@ -522,6 +522,12 @@ body.teacher .qlink{display:block}body.teacher .qedit{display:flex}
 .t2.gone{visibility:hidden}.t2.bad{background:var(--coral);color:#fff}
 #l2next.on{display:block}
 body.solo-only #gClose,body.solo-only #top,body.solo-only #bot{display:none!important}
+.dsent2{display:none;font-size:34px;font-weight:900;color:#0f8f86;margin-top:12px}
+body.s2p #dHint{display:none}
+.qlinkedit{display:none;gap:6px;margin-top:6px}
+body.teacher .qlinkedit{display:flex}
+.qlinkedit input{flex:1;min-width:0;font:700 14px inherit;padding:6px 8px;border-radius:10px;border:2px solid #cfe9e3;-webkit-user-select:text;user-select:text}
+.qlinkedit button{font:900 14px inherit;padding:6px 10px;border-radius:10px;background:var(--teal);color:#fff}
 /* dialog */
 #dlg{position:absolute;inset:0;background:rgba(10,30,35,.55);display:none;place-items:center;z-index:90}
 #dlg.on{display:grid}
@@ -876,7 +882,7 @@ body.solo-only #gClose,body.solo-only #top,body.solo-only #bot{display:none!impo
   <div id="gallery">
     <div class="sh">🖼 Class gallery · Before → After<span style="margin-left:auto;display:flex;gap:10px"><label class="btn sun" style="font-size:22px">➕ Add drawings<input type="file" id="galIn" accept="image/*" multiple hidden></label><button class="btn ghost" id="galClose" style="font-size:22px">✕ Close</button></span></div>
     <div class="ggrid" id="ggrid"></div>
-    <div class="gempty" id="gempty"><div style="font-size:90px">📲</div><b>No drawings yet.</b><br>Students tap <b>Save / AirDrop</b> and send them to this computer.<br>Then tap <b>➕ Add drawings</b> (or drag the pictures here).</div>
+    <div class="gempty" id="gempty"><div style="font-size:90px">📲</div><b>No drawings yet.</b><br>Using Scan2Play? Open the game's <b>Results → 🎨 Drawings gallery</b>.<br>Otherwise: students AirDrop their drawings to this computer,<br>then tap <b>➕ Add drawings</b> (or drag the pictures here).</div>
     <div class="spot" id="spot"><img id="spotImg" alt=""><div class="spbar"><button class="btn ghost" id="spPrev">◀</button><button class="btn sun" id="spStar">+⭐ Great drawing!</button><button class="btn ghost" id="spNext">▶</button><button class="btn" id="spClose">✕</button></div></div>
   </div>
   <div id="draw">
@@ -906,7 +912,8 @@ body.solo-only #gClose,body.solo-only #top,body.solo-only #bot{display:none!impo
         <button class="btn plum" id="dShow">🙋 Show my class</button>
         <button class="btn ghost" id="dBack">✏️ Keep drawing</button>
       </div>
-      <div class="qs" style="margin-top:10px">Tap <b>📤</b> → AirDrop it to Teacher Joyce, or Save Image.</div>
+      <div class="qs" id="dHint" style="margin-top:10px">Tap <b>📤</b> → AirDrop it to Teacher Joyce, or Save Image.</div>
+      <div class="dsent2" id="dSent2">✅ Sent to Teacher Joyce! 🎉</div>
     </div>
     <div class="dshow" id="dShowFull"><img id="dShowImg" alt=""><button class="btn ghost" id="dShowX" style="position:absolute;right:24px;top:24px">✕</button></div>
   </div>
@@ -922,6 +929,7 @@ body.solo-only #gClose,body.solo-only #top,body.solo-only #bot{display:none!impo
 </div>
 
 <script>
+const IN_S2P=(()=>{try{return window.parent!==window}catch(e){return true}})();
 const S2P={a(o){try{window.Scan2Play&&Scan2Play.answer&&Scan2Play.answer(o)}catch(e){}},f(o){try{window.Scan2Play&&Scan2Play.finish&&Scan2Play.finish(o)}catch(e){}},
  name(){try{if(window.Scan2Play&&Scan2Play.getStudent)return Promise.resolve(Scan2Play.getStudent()).then(s=>(s&&s.name)||'').catch(()=>'')}catch(e){}return Promise.resolve('')}};
 var QRLIB=(function(){var M={"./QRErrorCorrectLevel":function(module,exports,require){module.exports = {
@@ -2298,7 +2306,7 @@ $('baTabs').onclick=e=>{const t=e.target.closest('.tab');if(t){bi=+t.dataset.i;r
 function renderBA(){const f=FR[bi];pred=null;revealed=false;document.querySelectorAll('#baTabs .tab').forEach((t,i)=>t.classList.toggle('on',i===bi));
  $('afterSide').innerHTML=`<div class="mystery">?</div><div class="lab">🤚 After</div><div id="cd"></div>`;
  const q=`${f.n} used ${SUBS[f.sub].pl}. Now ${f.he} is...`;
- $('baBefore').src=IMG['b_'+f.n];$('baPredict').innerHTML=`<span class="say" style="font-size:38px;font-weight:900" data-say="${q}">${f.n} used ${SUBS[f.sub].pl}. Now ${f.he} is…?</span>`;try{$('qrDraw').innerHTML=qrSvg(pageUrl()+'#draw')}catch(e){}$('galN').textContent=GAL.length?'('+GAL.length+')':'';
+ $('baBefore').src=IMG['b_'+f.n];$('baPredict').innerHTML=`<span class="say" style="font-size:38px;font-weight:900" data-say="${q}">${f.n} used ${SUBS[f.sub].pl}. Now ${f.he} is…?</span>`;renderQRs();$('galN').textContent=GAL.length?'('+GAL.length+')':'';
  $('baRes').innerHTML=''}
 $('baPredict').onclick=e=>{const b=e.target.closest('.pw');if(!b||revealed)return;pred=b.dataset.k;document.querySelectorAll('.pw').forEach(x=>x.classList.toggle('sel',x===b));speak(pred)};
 function reveal321(){if(revealed)return;const cd=$('cd');cd.style.display='grid';let n=3;cd.textContent=n;speak('3');
@@ -2385,7 +2393,7 @@ function renderDone(){const d=st.exit[st.cls]||(st.exit[st.cls]={});const ns=st.
  $('doneList').innerHTML=ns.map(n=>{const v=d[n];return `<button class="exn s${v??'x'}" data-n="${n}"><span>${n}</span><b>${v==null?'–':v+'/3'}</b></button>`}).join('');
  const done=ns.filter(n=>d[n]!=null),full=done.filter(n=>d[n]===3).length;$('exSum').textContent=done.length?`${done.length}/${ns.length} checked · ${full} got 3/3 ⭐`:''}
 $('doneList').onclick=e=>{const b=e.target.closest('.exn');if(!b)return;const d=st.exit[st.cls],n=b.dataset.n,v=d[n];d[n]=v==null?0:v>=3?undefined:v+1;if(d[n]===undefined)delete d[n];if(d[n]===3){star(n)}save();renderDone()};
-ENTER[9]=()=>{renderDone();try{$('qrExit').innerHTML=qrSvg(pageUrl()+'#exit')}catch(e){}};
+ENTER[9]=()=>{renderDone();renderQRs();};
 ENTER[10]=()=>renderPodium();
 
 /* ---------- iPad game ---------- */
@@ -2437,8 +2445,8 @@ function pageUrl(){if(st.url)return st.url;try{const u=location.href.split('#')[
 function qrSvg(text){const q=new QRLIB.QRCode(-1,QRLIB.L.M);q.addData(text);q.make();const n=q.getModuleCount(),m=2;let d='';
  for(let r=0;r<n;r++)for(let c=0;c<n;c++)if(q.isDark(r,c))d+=`M${c+m} ${r+m}h1v1h-1z`;
  return `<svg viewBox="0 0 ${n+m*2} ${n+m*2}" shape-rendering="crispEdges"><rect width="100%" height="100%" fill="#fff"/><path d="${d}" fill="#17323a"/></svg>`}
-function renderQR(){const u=pageUrl()+'#stop';try{$('qrStop').innerHTML=qrSvg(u)}catch(e){$('qrStop').textContent='QR error'}$('qrLink').textContent=u;$('qrIn').value=pageUrl()}
-$('qrSave').onclick=()=>{const v=$('qrIn').value.trim();st.url=v&&/^https?:\/\//.test(v)?v.split('#')[0]:'';save();renderQR()};
+function renderQR(){$('qrLink').textContent=linkFor('stop');$('qrIn').value=pageUrl();renderQRs()}
+$('qrSave').onclick=()=>{const v=$('qrIn').value.trim();st.url=v&&/^https?:\/\//.test(v)?v.split('#')[0]:'';save();renderQR()};$('qrIn').parentElement.style.display='none';$('qrLink').style.display='none';
 let soloBest=null,soloFin=0;
 function openSolo(){$('solo').classList.add('on');$('soloTries').innerHTML='';$('soloMsg').style.display='none';soloBest=null;$('soloBest').textContent='';
  stopGame($('arena3'),s=>{const li=document.createElement('li');li.textContent=s+' s';$('soloTries').appendChild(li);
@@ -2481,7 +2489,7 @@ document.getElementById('loop').addEventListener('click',e=>{const n=e.target.cl
 {const fb=$('bFlash').onclick;$('bFlash').onclick=()=>{const box=$('flashBox');let n=3;box.innerHTML='<div class="q" style="color:#ffc23d">3</div>';sfx('beep');
  const iv=setInterval(()=>{n--;if(n>0){box.innerHTML=`<div class="q" style="color:#ffc23d">${n}</div>`;sfx('beep')}else{clearInterval(iv);box.innerHTML='';fb()}},600)}}
 /* S9 game QR */
-{const _e9=ENTER[8];ENTER[8]=()=>{_e9&&_e9();try{$('qrGame').innerHTML=qrSvg(pageUrl()+'#game')}catch(e){}}}
+{const _e9=ENTER[8];ENTER[8]=()=>{_e9&&_e9();renderQRs();}}
 /* ---------- draw the AFTER (student iPad) ---------- */
 const GAL=[];
 (()=>{const cv=$('cv'),cx=cv.getContext('2d');let col='#17323a',sz=14,er=false,stk=null,drawing=false,lx=0,ly=0,hist=[],df=null,chosen=new Set();
@@ -2526,7 +2534,7 @@ const GAL=[];
    const ax=620,aw=930,ah=700;o.fillStyle='#fff';o.fillRect(ax,120,aw,ah);const s2=Math.min(aw/cv.width,ah/cv.height);o.drawImage(cv,ax+(aw-cv.width*s2)/2,120+(ah-cv.height*s2)/2,cv.width*s2,cv.height*s2);
    o.strokeStyle='#7c5cd6';o.lineWidth=6;o.strokeRect(ax,120,aw,ah);o.fillStyle='#7c5cd6';o.font='900 34px Nunito, sans-serif';o.textAlign='left';o.fillText('After',ax+14,160);
    o.fillStyle='#17323a';o.font='900 50px Nunito, sans-serif';o.textAlign='center';o.fillText(sentence(),800,910);
-   {const ok=[...chosen].every(w=>df.w.includes(w));S2P.a({question:`Draw ${df.n} AFTER: Now ${df.he} is...?`,answer:sentence(),correct:ok,points:ok?1:0});S2P.f({score:ok?1:0,maxScore:1})}outURL=O.toDataURL('image/png');O.toBlob(b=>outBlob=b,'image/png');$('dOut').src=outURL;$('dShare').classList.add('on');sfx('fan');speak(sentence())};bi.src=IMG['b_'+df.n]};
+   {const ok=[...chosen].every(w=>df.w.includes(w));S2P.a({question:`Draw ${df.n} AFTER (drawing)`,answer:O.toDataURL('image/jpeg',.8)});S2P.a({question:`Draw ${df.n} AFTER: Now ${df.he} is...?`,answer:sentence(),correct:ok,points:ok?1:0});S2P.f({score:ok?1:0,maxScore:1});if(IN_S2P){$('dSave').style.display='none';$('dSent2').style.display='block'}}outURL=O.toDataURL('image/png');O.toBlob(b=>outBlob=b,'image/png');$('dOut').src=outURL;$('dShare').classList.add('on');sfx('fan');speak(sentence())};bi.src=IMG['b_'+df.n]};
  $('dBack').onclick=()=>$('dShare').classList.remove('on');
  $('dSave').onclick=async()=>{const nm=(($('dName').value||'').trim()||'student').replace(/[^\w\- ]/g,'');const fn=`${df.n}-after-${nm}.png`;
   try{if(outBlob&&navigator.canShare){const f=new File([outBlob],fn,{type:'image/png'});if(navigator.canShare({files:[f]})){await navigator.share({files:[f],title:fn});return}}}catch(e){if(e&&e.name==='AbortError')return}
@@ -2558,7 +2566,7 @@ function openExit(){const X=$('exitq');X.classList.add('on');let name='',qs=[],q
    {q:`${f2.n} used ${SUBS[f2.sub].pl}. Now ${f2.he} is…?`,say:`${f2.n} used ${SUBS[f2.sub].pl}. Now ${f2.he} is...`,img:IMG[f2.after],opts:shuffle(Object.keys(WORDS)).map(k=>({k,html:`${WORDS[k].e} ${k}`})),ok:k=>f2.w.includes(k),label:'After word'},
    {q:'They want more and more. They can’t stop. That is…',say:"They want more and more. They can't stop. That is...",img:IMG.p21,opts:shuffle(['addictive','healthy','happy']).map(k=>({k,html:k})),ok:k=>k==='addictive',label:'addictive'}]}
  function ask(){const q=qs[qi];prog();$('xBody').innerHTML=`<div><div class="xq">${q.q}</div><img class="xpic" src="${q.img}" alt=""><div class="xopts">${q.opts.map(o=>`<button class="xo" data-k="${o.k}">${o.html}</button>`).join('')}</div></div>`;speak(q.say);
-  $('xBody').querySelector('.xopts').onclick=e=>{const b=e.target.closest('.xo');if(!b||b.disabled)return;const ok=q.ok(b.dataset.k);res[qi]=ok;S2P.a({question:q.say,answer:b.textContent.trim(),correct:ok,points:ok?1:0});
+  $('xBody').querySelector('.xopts').onclick=e=>{const b=e.target.closest('.xo');if(!b||b.disabled)return;const ok=q.ok(b.dataset.k);res[qi]=ok;S2P.a({question:q.say,answer:SUBS[b.dataset.k]?SUBS[b.dataset.k].en:b.dataset.k,correct:ok,points:ok?1:0});
    $('xBody').querySelectorAll('.xo').forEach(x=>{x.disabled=true;if(q.ok(x.dataset.k))x.classList.add('good')});if(!ok)b.classList.add('bad');ding(ok);
    setTimeout(()=>{qi++;if(qi<3)ask();else chart()},1300)}}
  function chart(){prog();const sc=res.filter(Boolean).length;S2P.f({score:sc,maxScore:3});sfx('fan');const s=document.querySelector('#exitq');const r=s.getBoundingClientRect(),c=toStage(r.left+r.width/2,r.top+r.height/3);if(sc===3)confetti(c.x,c.y,70,1.2);
@@ -2576,13 +2584,20 @@ function l2Round(){const f=l2Order[l2i];const parts=[`${f.n} used`,`${SUBS[f.sub
    if(need===4){S2P.a({question:`Level 2: build the sentence (${f.n})`,answer:f.sent,correct:!l2miss,points:l2miss?0:1});gStars++;$('gstars').textContent='⭐ '+gStars;speak(f.sent);fx('⭐',800,300,$('game'));$('l2next').classList.add('on')}}
   else{l2miss=true;b.classList.add('bad','shake');ding(false);setTimeout(()=>b.classList.remove('bad','shake'),500)}};
  speak(`Look at ${f.n}. Build the sentence.`)}
+/* ---------- per-activity links (Scan2Play) ---------- */
+if(!st.links)st.links={};
+const linkFor=k=>st.links[k]||(pageUrl()+'#'+k);
+const QRS=[['qrStop','stop'],['qrDraw','draw'],['qrGame','game'],['qrExit','exit']];
+QRS.forEach(([id,k])=>{const el=$(id);if(!el)return;const d=document.createElement('div');d.className='qlinkedit';d.innerHTML=`<input data-k="${k}" placeholder="Paste the Scan2Play link"><button>Save</button>`;el.after(d);
+ d.querySelector('button').onclick=()=>{const v=d.querySelector('input').value.trim();if(v&&/^https?:\/\//.test(v))st.links[k]=v;else delete st.links[k];save();renderQRs()}});
+function renderQRs(){QRS.forEach(([id,k])=>{const el=$(id);if(!el)return;try{el.innerHTML=qrSvg(linkFor(k))}catch(e){}const i=el.nextElementSibling&&el.nextElementSibling.querySelector('input');if(i&&document.activeElement!==i)i.value=st.links[k]||''})}
 /* ---------- full screen start ---------- */
 function goFull(){try{const d=document.documentElement;(d.requestFullscreen||d.webkitRequestFullscreen||function(){}).call(d)}catch(e){}}
 $('bGo').onclick=()=>{goFull();$('splash').remove();setTimeout(fit,200)};
 $('bFs').onclick=()=>{try{if(document.fullscreenElement||document.webkitFullscreenElement)(document.exitFullscreen||document.webkitExitFullscreen).call(document);else goFull()}catch(e){}};
 /* ---------- start ---------- */
 renderTop3();renderDone();go(0);
-const MODEH=window.STANDALONE?'#'+window.STANDALONE:location.hash;if(window.STANDALONE){document.body.classList.add('solo-only');}
+const MODEH=window.STANDALONE?'#'+window.STANDALONE:location.hash;if(window.STANDALONE){document.body.classList.add('solo-only');}if(IN_S2P)document.body.classList.add('s2p');
 if(['#game','#stop','#draw','#exit'].includes(MODEH)){const sp=$('splash');if(sp)sp.remove();const h=MODEH;if(h==='#game')openGame();else if(h==='#draw')openDraw();else if(h==='#exit')openExit();else openSolo()}
 </script>
 </body>
