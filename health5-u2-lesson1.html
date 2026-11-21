@@ -367,6 +367,60 @@ body.teacher .qlink{display:block}body.teacher .qedit{display:flex}
 /* confetti */
 .cf{position:absolute;width:14px;height:20px;border-radius:3px;pointer-events:none;z-index:120;animation:cf 1.3s cubic-bezier(.2,.7,.4,1) forwards}
 @keyframes cf{to{transform:translate(var(--dx),var(--dy)) rotate(var(--r));opacity:0}}
+/* ===== appeal layer ===== */
+.screen.on .card,.screen.on .wcard,.screen.on .scard,.screen.on .opt,.screen.on .tab,.screen.on .pw{animation:rise .55s cubic-bezier(.2,1.2,.3,1) backwards}
+.screen.on .subs>*:nth-child(1),.screen.on .row>*:nth-child(1),.screen.on .opts>*:nth-child(1){animation-delay:.05s}
+.screen.on .subs>*:nth-child(2),.screen.on .row>*:nth-child(2),.screen.on .opts>*:nth-child(2){animation-delay:.13s}
+.screen.on .subs>*:nth-child(3),.screen.on .opts>*:nth-child(3){animation-delay:.21s}
+.screen.on .subs>*:nth-child(4),.screen.on .opts>*:nth-child(4){animation-delay:.29s}
+.screen.on .subs>*:nth-child(5),.screen.on .opts>*:nth-child(5){animation-delay:.37s}
+.screen.on .groups>.card:nth-child(2){animation-delay:.15s}
+@keyframes rise{from{opacity:0;transform:translateY(40px) scale(.94)}}
+.screen.on h1.q{animation:titlein .6s cubic-bezier(.2,1.2,.3,1) backwards}
+@keyframes titlein{from{opacity:0;transform:translateX(-50px)}}
+.kw-s{color:#e0473a;background:linear-gradient(transparent 62%,#ffd9d4 62%);padding:0 2px;border-radius:4px}
+.kw-f{color:#0f8f86;background:linear-gradient(transparent 62%,#c9f2ea 62%);padding:0 2px;border-radius:4px}
+.kw-n{color:#7c5cd6}
+.scard .w{color:#e0473a}
+.wcard .w{color:#0f8f86}
+.scard img{transition:transform .3s}.scard:hover img{transform:scale(1.08) rotate(-3deg)}
+.wcard .e{display:inline-block;animation:bob 2.4s ease-in-out infinite}
+.row>.wcard:nth-child(2) .e{animation-delay:-1.2s}
+@keyframes bob{50%{transform:translateY(-8px) rotate(4deg)}}
+/* S4 stamp */
+#s4 .wrap>div:first-child{position:relative}
+.stamp{position:absolute;right:24px;top:24px;transform:rotate(-12deg);border:7px solid #34c37a;color:#34c37a;background:#ffffffe6;border-radius:18px;padding:6px 20px;font-size:46px;font-weight:900;animation:stamp .4s cubic-bezier(.2,1.6,.4,1)}
+@keyframes stamp{from{transform:rotate(-12deg) scale(2.4);opacity:0}}
+/* S7 loop */
+#s7 .wrap{align-items:stretch}
+.addict{padding:20px 24px}
+.loop{position:relative;width:600px;height:600px;margin:22px auto 0;scale:.93;transform-origin:top center}
+.lring{position:absolute;inset:0}.lring circle{fill:none;stroke:#d9cff7;stroke-width:14;stroke-dasharray:30 18;animation:spin 14s linear infinite;transform-origin:center}
+.ln{position:absolute;left:50%;top:50%;width:150px;margin:-62px 0 0 -75px;z-index:2;text-align:center;background:#fff;border:5px solid #d9cff7;border-radius:24px;padding:8px 6px;font-size:22px;font-weight:900;transform:rotate(var(--a)) translate(225px) rotate(calc(-1 * var(--a)));transition:all .3s}
+.ln .e{font-size:50px;line-height:1.05}
+.ln.now{border-color:var(--plum);background:#f3eeff;box-shadow:0 0 0 6px #7c5cd633,0 10px 30px #7c5cd655;scale:1.12}
+.lc{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);text-align:center;width:290px;z-index:1}
+.lc .w{font-size:50px!important}
+/* S8 viewfinder */
+.flashwrap{position:relative;padding:18px}
+.flashwrap .flashbox{background:#10232a;box-shadow:inset 0 0 80px #000a}
+.flashwrap .flashbox .q{color:#2c4a52}
+.flashwrap .flashbox img{background:#fff;border-radius:30px;padding:16px}
+.flashwrap .flashbox .ans{color:#fff;text-shadow:0 4px 0 #0008}
+.cn{position:absolute;width:70px;height:70px;border:8px solid var(--coral)}
+.cn.tl{left:0;top:0;border-right:0;border-bottom:0;border-radius:20px 0 0 0}.cn.tr{right:0;top:0;border-left:0;border-bottom:0;border-radius:0 20px 0 0}
+.cn.bl{left:0;bottom:0;border-right:0;border-top:0;border-radius:0 0 0 20px}.cn.br{right:0;bottom:0;border-left:0;border-top:0;border-radius:0 0 20px 0}
+.rec{position:absolute;left:44px;top:40px;color:#ff6b5b;font-weight:900;font-size:24px;animation:blink2 1s infinite;z-index:4}
+.vs{position:relative}
+.vs .vsb{font-size:34px;padding:26px 10px}
+.vs:has(.vsb):after{content:"VS";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:var(--sun);color:#5a3b00;font-weight:900;font-size:26px;width:60px;height:60px;border-radius:50%;display:grid;place-items:center;box-shadow:0 4px 0 #d09400}
+/* S9 */
+.gqr{display:flex;gap:18px;align-items:center;justify-content:center;margin-top:18px}
+.qrbox.sm{width:200px;height:200px}
+.nostrip{display:flex;gap:12px;margin-top:10px}
+.nostrip div{position:relative;width:110px;height:110px;border-radius:22px;background:#fff;border:4px solid #ffd9d4;display:grid;place-items:center}
+.nostrip img{width:86%;height:86%;object-fit:contain}
+.nostrip div:after{content:"";position:absolute;inset:8px;border:7px solid #e0473a;border-radius:50%;background:linear-gradient(45deg,transparent 46%,#e0473a 46%,#e0473a 54%,transparent 54%);opacity:.85}
 /* dialog */
 #dlg{position:absolute;inset:0;background:rgba(10,30,35,.55);display:none;place-items:center;z-index:90}
 #dlg.on{display:grid}
@@ -497,13 +551,14 @@ body.teacher .qlink{display:block}body.teacher .qedit{display:flex}
   <section class="screen" id="s7">
     <div class="wrap">
       <div class="card addict">
-        <div class="say" style="font-size:34px;font-weight:900" data-say="They keep wanting more. They can't stop.">They keep wanting more. They can't stop.</div>
-        <div class="w say" data-say="That is addictive. Addictive!" data-r="1">addictive</div>
-        <div class="zh">會上癮<div class="py">huì shàngyǐn</div></div>
-        <div class="acts" data-r="2">
-          <div class="act"><div class="e">👅</div>taste</div>
-          <div class="act"><div class="e">🤲</div>reach</div>
-          <div class="act"><div class="e">🔄</div>faster!</div>
+        <div class="say" style="font-size:32px;font-weight:900" data-say="They keep wanting more. They can't stop.">They keep wanting more. They can't stop.</div>
+        <div class="loop" id="loop">
+          <div class="lc"><div class="w say" data-say="That is addictive. Addictive!" data-r="1">addictive</div><div class="zh">會上癮<div class="py">huì shàngyǐn</div></div></div>
+          <svg class="lring" viewBox="0 0 600 600"><circle cx="300" cy="300" r="225"/></svg>
+          <div class="ln" style="--a:-90deg"><div class="e">👅</div>Try it.</div>
+          <div class="ln" style="--a:0deg"><div class="e">😋</div>I like it.</div>
+          <div class="ln" style="--a:90deg"><div class="e">🤤</div>I want more!</div>
+          <div class="ln" style="--a:180deg"><div class="e">😵</div>I can't stop!</div>
         </div>
       </div>
       <div class="card chant" data-r="3">
@@ -515,15 +570,16 @@ body.teacher .qlink{display:block}body.teacher .qedit{display:flex}
           <button class="btn coral" id="bChant">▶ Chant</button>
           <div class="hand" id="hand">✋</div>
         </div>
+        <div class="nostrip" id="noStrip"></div>
       </div>
     </div>
-    <div class="note">24–25 min · Act: taste → reach → roll your hands faster. Chant 2 times; last line with the stop hand ✋.</div>
+    <div class="note">24–25 min · Follow the loop: Try it → I like it → I want more → I can't stop (act each one, roll your hands faster). Chant 2 times; last line with the stop hand ✋.</div>
   </section>
 
   <!-- 8 Flash -->
   <section class="screen" id="s8">
     <div class="wrap">
-      <div class="flashbox" id="flashBox"><div class="q">?</div></div>
+      <div class="flashwrap"><div class="flashbox" id="flashBox"><div class="q">?</div></div><i class="cn tl"></i><i class="cn tr"></i><i class="cn bl"></i><i class="cn br"></i><div class="rec">● READY</div></div>
       <div>
         <h1 class="q">⚡ Flash!</h1>
         <button class="btn plum" id="bPick2" style="width:100%">🎲 Pick 2 students</button>
@@ -556,7 +612,7 @@ body.teacher .qlink{display:block}body.teacher .qedit{display:flex}
           <button class="btn ghost" id="bTmrR">↺</button>
           <button class="btn sun" id="bOpenGame">🎮 Open the game</button>
         </div>
-        <div style="font-size:22px;font-weight:800;color:#5b7a80;margin-top:16px">On iPads: open this page and tap <b>🎮 Open the game</b><br>(or add <b>#game</b> to the end of the link).</div>
+        <div class="gqr"><div class="qrbox sm" id="qrGame"></div><div style="text-align:left"><div class="qt">📱 Scan to play!</div><div class="qs">Open the camera on your iPad.</div></div></div>
       </div>
     </div>
     <div class="note">27–35 min · Walk around; students say each sentence aloud. Fast finishers: Bonus "Try to stop it!" at the end of the game. At 0:00: "3, 2, 1, iPads down!"</div>
@@ -2247,6 +2303,27 @@ ENTER[10]=()=>{renderPodium();setTimeout(()=>{if(ranked().length){sfx('fan');con
 document.addEventListener('pointerdown',e=>{const c=e.target.closest('.wcard,.scard');if(c){c.classList.remove('tap');void c.offsetWidth;c.classList.add('tap')}});
 setInterval(()=>{const b=$('bpm');if(b)b.textContent=118+(Math.random()*20|0)},900);
 (()=>{const fl=$('floaters');if(!fl)return;const pos=[[6,12],[80,8],[4,62],[84,58],[16,82],[72,84]];SUBORDER.concat(['cig']).slice(0,6).forEach((k,i)=>{const im=document.createElement('img');im.src=IMG[SUBS[k].img];im.style.left=pos[i][0]+'%';im.style.top=pos[i][1]+'%';im.style.animationDelay=(i*-1.1)+'s';fl.appendChild(im)})})();
+/* ---------- appeal layer ---------- */
+const KS=/(e-cigarettes?|cigarettes?|betel nut|drugs|alcohol)/gi,KF=/\b(happy|sad|tired|sick|healthy|unhealthy)\b/gi,KN=/\b(addictive)\b/gi;
+function hlEl(el){if(el.querySelector('.kw-s,.kw-f,.kw-n'))return;const w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT);const ns=[];while(w.nextNode()){const n=w.currentNode;if(n.parentElement.closest('.zh,button,.kw-s,.kw-f,.kw-n,.blank'))continue;ns.push(n)}
+ ns.forEach(n=>{const s=n.nodeValue;if(!KS.test(s)&&!KF.test(s)&&!KN.test(s))return;KS.lastIndex=KF.lastIndex=KN.lastIndex=0;
+  const h=s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c])).replace(KS,'<span class="kw-s">$1</span>').replace(KF,'<span class="kw-f">$1</span>').replace(KN,'<span class="kw-n">$1</span>');
+  const sp=document.createElement('span');sp.innerHTML=h;n.replaceWith(...sp.childNodes)})}
+function hlAll(){document.querySelectorAll('.screen .say:not(.w):not(.wcard):not(.scard), .sent, .result, .asent, .exans, #gCap, .ln').forEach(el=>{if(!el.closest('.wcard,.scard'))hlEl(el)})}
+let hlT;new MutationObserver(()=>{clearTimeout(hlT);hlT=setTimeout(hlAll,30)}).observe(stage,{childList:true,subtree:true,characterData:true});
+/* S4 stamp on correct */
+$('whoOpts').addEventListener('click',e=>{const b=e.target.closest('.opt');if(!b||b.dataset.k!==FR[wi].sub)return;const h=$('whoImg').parentElement;h.querySelectorAll('.stamp').forEach(s=>s.remove());const s=document.createElement('div');s.className='stamp';s.textContent='✔ '+SUBS[FR[wi].sub].en;h.appendChild(s)});
+{const _r=renderWho;renderWho=function(){_r();document.querySelectorAll('#s4 .stamp').forEach(s=>s.remove())}}
+/* S7 loop animation */
+$('noStrip').innerHTML=SUBORDER.map(k=>`<div><img src="${IMG[SUBS[k].img]}" alt="no ${SUBS[k].en}"></div>`).join('');
+let loopIv=null;
+{const _e7=ENTER[6];ENTER[6]=()=>{_e7&&_e7();clearInterval(loopIv);const ns=[...document.querySelectorAll('#loop .ln')];let k=0;const step=()=>{ns.forEach(n=>n.classList.remove('now'));ns[k%4].classList.add('now');if(cur===6)sfx('beep');k++};step();loopIv=setInterval(()=>{if(cur!==6){clearInterval(loopIv);return}step()},1100)}}
+document.getElementById('loop').addEventListener('click',e=>{const n=e.target.closest('.ln');if(n)speak(n.textContent.trim())});
+/* S8 flash countdown */
+{const fb=$('bFlash').onclick;$('bFlash').onclick=()=>{const box=$('flashBox');let n=3;box.innerHTML='<div class="q" style="color:#ffc23d">3</div>';sfx('beep');
+ const iv=setInterval(()=>{n--;if(n>0){box.innerHTML=`<div class="q" style="color:#ffc23d">${n}</div>`;sfx('beep')}else{clearInterval(iv);box.innerHTML='';fb()}},600)}}
+/* S9 game QR */
+{const _e9=ENTER[8];ENTER[8]=()=>{_e9&&_e9();try{$('qrGame').innerHTML=qrSvg(pageUrl()+'#game')}catch(e){}}}
 /* ---------- full screen start ---------- */
 function goFull(){try{const d=document.documentElement;(d.requestFullscreen||d.webkitRequestFullscreen||function(){}).call(d)}catch(e){}}
 $('bGo').onclick=()=>{goFull();$('splash').remove();setTimeout(fit,200)};
