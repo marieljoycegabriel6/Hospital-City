@@ -1,0 +1,14 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Voice test</title>
+<style>body{font-family:system-ui,sans-serif;max-width:640px;margin:40px auto;padding:0 20px;font-size:22px;background:#eef8f6}button{font-size:30px;padding:18px 30px;border-radius:18px;border:0;background:#0f8f86;color:#fff;font-weight:800;margin:6px 0}#log{background:#fff;border-radius:14px;padding:14px;font-size:18px;white-space:pre-wrap;margin-top:16px;min-height:120px}</style></head>
+<body><h1>🔊 Voice test</h1><p>Tap the button. You should hear: <b>"Hello Teacher Joyce. Ben used cigarettes."</b></p>
+<button id="b">🔊 Test the voice</button><div id="log"></div>
+<script>
+const L=m=>{document.getElementById('log').textContent+=m+'\n'};
+L('Browser: '+navigator.userAgent.replace(/.*(Firefox\/[\d.]+|Version\/[\d.]+ Safari|Chrome\/[\d.]+).*/,'$1'));
+L('Voice support: '+('speechSynthesis' in window?'YES':'NO'));
+function voices(){try{const v=speechSynthesis.getVoices();L('Voices found: '+v.length+' (English: '+v.filter(x=>/^en/i.test(x.lang)).length+')')}catch(e){L('Voices error: '+e)}}
+voices();try{speechSynthesis.onvoiceschanged=voices}catch(e){}
+document.getElementById('b').onclick=()=>{try{const u=new SpeechSynthesisUtterance('Hello Teacher Joyce. Ben used cigarettes.');u.lang='en-US';const en=speechSynthesis.getVoices().find(v=>/^en[-_]US/i.test(v.lang));if(en)u.voice=en;
+ u.onstart=()=>L('▶ Started speaking ('+(u.voice?u.voice.name:'default voice')+')');u.onend=()=>L('✔ Finished');u.onerror=e=>L('✖ Error: '+e.error);window._u=u;speechSynthesis.cancel();speechSynthesis.speak(u);L('Sent to the voice…');
+ setTimeout(()=>{if(!speechSynthesis.speaking)L('(not speaking after 2 seconds)')},2000)}catch(e){L('✖ '+e)}};
+</script></body></html>
