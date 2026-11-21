@@ -2683,7 +2683,8 @@ function l2Round(){const f=l2Order[l2i];XP.qStart();const parts=[`${f.n} used`,`
  speak(`Look at ${f.n}. Build the sentence.`)}
 /* ---------- per-activity links (Scan2Play) ---------- */
 if(!st.links)st.links={};
-const linkFor=k=>st.links[k]||(pageUrl()+'#'+k);
+const S2P_LINKS={draw:'https://scan2play.onrender.com/play/4WC838',stop:'https://scan2play.onrender.com/play/9TR3P5',game:'https://scan2play.onrender.com/play/UWV4LS',exit:'https://scan2play.onrender.com/play/GTA3CH'};
+const linkFor=k=>st.links[k]||S2P_LINKS[k]||(pageUrl()+'#'+k);
 const QRS=[['qrStop','stop'],['qrDraw','draw'],['qrGame','game'],['qrExit','exit']];
 QRS.forEach(([id,k])=>{const el=$(id);if(!el)return;const d=document.createElement('div');d.className='qlinkedit';d.innerHTML=`<input data-k="${k}" placeholder="Paste the Scan2Play link"><button>Save</button>`;el.after(d);
  d.querySelector('button').onclick=()=>{const v=d.querySelector('input').value.trim();if(v&&/^https?:\/\//.test(v))st.links[k]=v;else delete st.links[k];save();renderQRs()}});
