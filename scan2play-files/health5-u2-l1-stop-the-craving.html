@@ -556,6 +556,7 @@ body.solo-only #zhHelp{display:block}
 #avPick{position:absolute;inset:0;z-index:110;display:none;place-items:center;background:radial-gradient(circle at 50% 30%,#3b1f78,#1d0f42);color:#fff;text-align:center}
 #avPick.on{display:grid}
 #avPick h2{font-size:60px;margin:0 0 6px}
+.tapgo{font-size:48px;font-weight:900;padding:24px 60px;border-radius:30px;background:var(--sun);color:#5a3b00;box-shadow:0 8px 0 #d09400;animation:glow 1.4s infinite}
 #avPick p{font-size:28px;font-weight:800;opacity:.85;margin:0 0 26px}
 .avg{display:grid;grid-template-columns:repeat(4,170px);gap:18px;justify-content:center}
 .avg button{height:190px;border-radius:28px;background:#ffffff14;border:4px solid #ffffff33;color:#fff;font-size:90px;transition:transform .15s}
@@ -2313,7 +2314,7 @@ document.addEventListener('click',e=>{const el=e.target.closest('[data-say]');if
 
 /* ---------- fx ---------- */
 function fx(sym,x,y,host){const d=document.createElement('div');d.className='fx';d.textContent=sym;d.style.left=(x??760)+'px';d.style.top=(y??380)+'px';(host||stage).appendChild(d);setTimeout(()=>d.remove(),1200)}
-function ding(ok){try{const A=window._ac||(window._ac=new (window.AudioContext||window.webkitAudioContext)());const o=A.createOscillator(),g=A.createGain();o.connect(g);g.connect(A.destination);o.type='sine';const t=A.currentTime;
+function ding(ok){try{const A=window._ac||(window._ac=new (window.AudioContext||window.webkitAudioContext)());if(A.state==='suspended')A.resume();const o=A.createOscillator(),g=A.createGain();o.connect(g);g.connect(A.destination);o.type='sine';const t=A.currentTime;
  if(ok){o.frequency.setValueAtTime(660,t);o.frequency.setValueAtTime(990,t+.12)}else{o.frequency.setValueAtTime(220,t);o.frequency.setValueAtTime(180,t+.15)}
  g.gain.setValueAtTime(.18,t);g.gain.exponentialRampToValueAtTime(.001,t+.4);o.start(t);o.stop(t+.42)}catch(e){}}
 
@@ -2483,7 +2484,7 @@ ENTER[10]=()=>renderPodium();
 /* ---------- iPad game ---------- */
 let gOrder=[],gi=0,gStars=0,gState='drop';
 let gScore=0;
-function openGame(){$('game').classList.add('on');XP.reset();gOrder=shuffle(FR).map(f=>Object.assign({},f));gScore=0;gi=0;gStars=0;$('gend').classList.remove('on');$('gbonus').classList.remove('on');XP.pick(()=>gRound())}
+function openGame(){$('game').classList.add('on');XP.reset();XP.title='🛠️ Before → After Machine';gOrder=shuffle(FR).map(f=>Object.assign({},f));gScore=0;gi=0;gStars=0;$('gend').classList.remove('on');$('gbonus').classList.remove('on');XP.pick(()=>gRound())}
 $('gClose').onclick=()=>{$('game').classList.remove('on');speechSynthesis&&speechSynthesis.cancel()};
 $('gAgain').onclick=()=>{$('gl2').classList.remove('on');openGame()};
 $('gL2').onclick=openL2;
@@ -2537,7 +2538,7 @@ function openSolo(){$('solo').classList.add('on');$('soloTries').innerHTML='';$(
   if(soloBest===null||+s<soloBest)soloBest=+s;$('soloBest').textContent='🏆 Best: '+soloBest.toFixed(1)+' s';
   $('soloMsg').style.display='block';speak("Easy to stop? No! They can't stop.");S2P.a({question:'Stop the Craving! time (try '+$('soloTries').children.length+')',answer:s+' s'});if(!soloFin){soloFin=1;S2P.f({})}})}
 /* ---------- cool layer ---------- */
-function sfx(k){try{const A=window._ac||(window._ac=new (window.AudioContext||window.webkitAudioContext)());const n=A.currentTime;
+function sfx(k){try{const A=window._ac||(window._ac=new (window.AudioContext||window.webkitAudioContext)());if(A.state==='suspended')A.resume();const n=A.currentTime;
  const tn=(f,d,ty,v,at=0,f2)=>{const o=A.createOscillator(),g=A.createGain();o.type=ty;o.frequency.setValueAtTime(f,n+at);if(f2)o.frequency.exponentialRampToValueAtTime(f2,n+at+d);o.connect(g);g.connect(A.destination);g.gain.setValueAtTime(v,n+at);g.gain.exponentialRampToValueAtTime(.001,n+at+d);o.start(n+at);o.stop(n+at+d+.02)};
  if(k==='tick')tn(1200,.03,'square',.03);
  if(k==='pick'){tn(523,.12,'triangle',.1);tn(784,.18,'triangle',.1,.1)}
@@ -2649,7 +2650,7 @@ $('ggrid').onclick=e=>{const im=e.target.closest('img');if(im){spI=+im.dataset.i
 $('spPrev').onclick=()=>{spI=(spI+GAL.length-1)%GAL.length;spShow()};$('spNext').onclick=()=>{spI=(spI+1)%GAL.length;spShow()};
 $('spClose').onclick=()=>$('spot').classList.remove('on');$('spStar').onclick=()=>star();
 /* ---------- Doctor's Chart exit (student iPad) ---------- */
-function openExit(){const X=$('exitq');X.classList.add('on');XP.reset();let name='',qs=[],qi=0,res=[];
+function openExit(){const X=$('exitq');X.classList.add('on');XP.reset();XP.title="📋 Doctor's Chart";let name='',qs=[],qi=0,res=[];
  const prog=()=>{$('xProg').innerHTML=[0,1,2].map(i=>`<i class="${i<qi?(res[i]?'ok':'no'):i===qi?'on':''}"></i>`).join('')};
  function nameStep(){$('xProg').innerHTML='';$('xBody').innerHTML=`<div class="xname"><div class="xq">Hello, Doctor! What is your name?</div><input id="xNm" maxlength="20" placeholder="My name"><div style="margin-top:22px"><button class="btn sun" id="xGo" style="font-size:40px">Start ▶</button></div></div>`;
   $('xGo').onclick=()=>{name=$('xNm').value.trim();if(!name){$('xNm').focus();return}build();ask()}}
@@ -2711,7 +2712,13 @@ const XP={av:'🩺',avn:'',xp:0,lv:1,combo:0,best:0,t0:0,tIv:null,hud:[],
  fly(host,txt){const d=document.createElement('div');d.className='xpfly';d.textContent=txt;d.style.left=(host.offsetWidth/2-120)+'px';d.style.top='120px';host.appendChild(d);setTimeout(()=>d.remove(),1150)},
  levelUp(host){const d=document.createElement('div');d.className='lvup';d.innerHTML=`<div>LEVEL ${this.lv}!</div>`;host.appendChild(d);sfx('fan');const r=host.getBoundingClientRect(),c=toStage(r.left+r.width/2,r.top+r.height/3);confetti(c.x,c.y,60,1.3);setTimeout(()=>d.remove(),1700)},
  rank(){const x=this.xp;return x>=1800?'🌟 Legendary Doctor':x>=1300?'🏅 Chief Doctor':x>=700?'🩺 City Doctor':'🌱 Junior Doctor'},
- pick(cb){if(!this.avn){S2P.name().then(n=>{if(n){this.avn=n;this.draw()}})}MUS.start();cb()}};
+ pick(cb){if(!this.avn){S2P.name().then(n=>{if(n){this.avn=n;this.draw()}})}if(AUDIO_OK){MUS.start();cb();return}
+  const P=$('avPick');P.innerHTML=`<div><div style="font-size:110px">🩺</div><h2>${this.title||'Hospital City Doctors'}</h2><p>🔊 Sound on!</p><button class="tapgo" id="tapGo">▶ TAP TO START</button></div>`;P.classList.add('on');
+  $('tapGo').onclick=()=>{unlockAudio();P.classList.remove('on');MUS.start();sfx('pick');cb()}}};
+let AUDIO_OK=false;
+function unlockAudio(){if(AUDIO_OK)return;AUDIO_OK=true;try{const A=window._ac||(window._ac=new (window.AudioContext||window.webkitAudioContext)());if(A.state!=='running')A.resume();const o=A.createOscillator(),g=A.createGain();g.gain.value=0;o.connect(g);g.connect(A.destination);o.start();o.stop(A.currentTime+.05)}catch(e){}
+ try{const u=new SpeechSynthesisUtterance(' ');u.volume=0;speechSynthesis.speak(u);pickVoice()}catch(e){}}
+['pointerdown','touchend','keydown'].forEach(ev=>document.addEventListener(ev,unlockAudio,{capture:true,once:false}));
 const MUS={on:false,ctx:null,iv:null,step:0,
  start(){if(this.on)return;try{this.ctx=window._ac||(window._ac=new (window.AudioContext||window.webkitAudioContext)());this.on=true;const N=[262,330,392,523,392,330,294,349,440,587,440,349];
   this.iv=setInterval(()=>{if(!this.on)return;const A=this.ctx,n=A.currentTime,o=A.createOscillator(),g=A.createGain();o.type='triangle';o.frequency.value=N[this.step%N.length]*(this.step%24<12?1:1.122);o.connect(g);g.connect(A.destination);g.gain.setValueAtTime(.035,n);g.gain.exponentialRampToValueAtTime(.001,n+.22);o.start(n);o.stop(n+.24);
