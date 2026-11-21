@@ -521,6 +521,7 @@ body.teacher .qlink{display:block}body.teacher .qedit{display:flex}
 .t2{font-size:32px;font-weight:900;padding:16px 22px;border-radius:18px;background:var(--sun);color:#5a3b00;box-shadow:0 5px 0 #d09400}
 .t2.gone{visibility:hidden}.t2.bad{background:var(--coral);color:#fff}
 #l2next.on{display:block}
+body.solo-only #gClose,body.solo-only #top,body.solo-only #bot{display:none!important}
 /* dialog */
 #dlg{position:absolute;inset:0;background:rgba(10,30,35,.55);display:none;place-items:center;z-index:90}
 #dlg.on{display:grid}
@@ -921,6 +922,8 @@ body.teacher .qlink{display:block}body.teacher .qedit{display:flex}
 </div>
 
 <script>
+const S2P={a(o){try{window.Scan2Play&&Scan2Play.answer&&Scan2Play.answer(o)}catch(e){}},f(o){try{window.Scan2Play&&Scan2Play.finish&&Scan2Play.finish(o)}catch(e){}},
+ name(){try{if(window.Scan2Play&&Scan2Play.getStudent)return Promise.resolve(Scan2Play.getStudent()).then(s=>(s&&s.name)||'').catch(()=>'')}catch(e){}return Promise.resolve('')}};
 var QRLIB=(function(){var M={"./QRErrorCorrectLevel":function(module,exports,require){module.exports = {
 	L : 1,
 	M : 0,
@@ -2387,7 +2390,8 @@ ENTER[10]=()=>renderPodium();
 
 /* ---------- iPad game ---------- */
 let gOrder=[],gi=0,gStars=0,gState='drop';
-function openGame(){$('game').classList.add('on');gOrder=shuffle(FR);gi=0;gStars=0;$('gend').classList.remove('on');$('gbonus').classList.remove('on');gRound()}
+let gScore=0;
+function openGame(){$('game').classList.add('on');gOrder=shuffle(FR).map(f=>Object.assign({},f));gScore=0;gi=0;gStars=0;$('gend').classList.remove('on');$('gbonus').classList.remove('on');gRound()}
 $('gClose').onclick=()=>{$('game').classList.remove('on');speechSynthesis&&speechSynthesis.cancel()};
 $('gAgain').onclick=()=>{$('gl2').classList.remove('on');openGame()};
 $('gL2').onclick=openL2;
@@ -2415,17 +2419,17 @@ document.addEventListener('pointermove',e=>{if(!drag)return;const p=toStage(e.cl
 document.addEventListener('pointerup',e=>{if(!drag)return;const d=drag;drag=null;const p=toStage(e.clientX,e.clientY);$('funnel').classList.remove('over');
  const into=!d.moved||overFunnel(p.x,p.y);d.g.remove();d.t.style.opacity='';if(into)drop(d.t)});
 document.addEventListener('pointercancel',()=>{if(drag){drag.g.remove();drag.t.style.opacity='';drag=null}});
-function drop(t){const f=gOrder[gi],k=t.dataset.k;
+function drop(t){const f=gOrder[gi],k=t.dataset.k;if(!f._a1){f._a1=1;const ok=k===f.sub;S2P.a({question:`What did ${f.n} use?`,answer:SUBS[k].en,correct:ok,points:ok?1:0});if(ok)gScore++}
  if(k!==f.sub){t.classList.add('shake');ding(false);setTimeout(()=>t.classList.remove('shake'),500);const m=`Look at ${f.n}. What is in ${f.he==='he'?'his':'her'} hand?`;hint('🔍 '+m);speak(m);return}
  gState='run';t.classList.add('used');$('gBlank').textContent=SUBS[k].pl;ding(true);const mb=$('mbody');mb.classList.add('run');speak(`${f.n} used ${SUBS[k].pl}.`);
  setTimeout(()=>{mb.classList.remove('run');$('gAfterWrap').innerHTML=`<img class="pic out" src="${IMG[f.after]}" alt="After">`;
   $('gSent').textContent=`${f.n} used ${SUBS[k].pl}. Now ${f.he} is…?`;$('gSent').dataset.say=`${f.n} used ${SUBS[k].pl}. Now ${f.he} is...`;speak($('gSent').dataset.say);
   $('howqT').innerHTML=`How is ${f.n} now?`;$('howq').classList.add('on');gState='how'},1500)}
-$('howq').addEventListener('click',e=>{const b=e.target.closest('.hb');if(!b||gState!=='how')return;const f=gOrder[gi];
+$('howq').addEventListener('click',e=>{const b=e.target.closest('.hb');if(!b||gState!=='how')return;const f=gOrder[gi];if(!f._a2){f._a2=1;const ok=f.w.includes(b.dataset.w);S2P.a({question:`${f.n} used ${SUBS[f.sub].pl}. Now ${f.he} is...?`,answer:b.dataset.w,correct:ok,points:ok?1:0});if(ok)gScore++}
  if(f.w.includes(b.dataset.w)){b.classList.add('good');gState='done';gStars++;$('gstars').textContent='⭐ '+gStars;ding(true);fx('⭐',1300,300,$('game'));
   $('gSent').textContent='✔ '+f.sent;$('gSent').dataset.say=f.sent;speak(f.sent);$('gNext').classList.add('on')}
  else{b.classList.add('bad','shake');ding(false);setTimeout(()=>b.classList.remove('bad','shake'),600);const m=`Look at ${f.n}'s face. Try again!`;hint('🔍 '+m);speak(m)}});
-$('gNext').onclick=()=>{gi++;if(gi>=gOrder.length){$('rdots').innerHTML=gOrder.map(()=>'<i class="ok">✔</i>').join('');$('gend').classList.add('on');$('gScore').textContent=`⭐ ${gStars} / 5`;speak('You are a Hospital City Doctor! This is your Body Buddy. Keep it healthy!')}else gRound()};
+$('gNext').onclick=()=>{gi++;if(gi>=gOrder.length){$('rdots').innerHTML=gOrder.map(()=>'<i class="ok">✔</i>').join('');$('gend').classList.add('on');$('gScore').textContent=`⭐ ${gStars} / 5`;S2P.f({score:gScore,maxScore:10});speak('You are a Hospital City Doctor! This is your Body Buddy. Keep it healthy!')}else gRound()};
 
 /* ---------- QR + solo stop ---------- */
 const DEFAULT_URL='https://marieljoycegabriel6.github.io/Hospital-City/health5-u2-lesson1.html';
@@ -2435,11 +2439,11 @@ function qrSvg(text){const q=new QRLIB.QRCode(-1,QRLIB.L.M);q.addData(text);q.ma
  return `<svg viewBox="0 0 ${n+m*2} ${n+m*2}" shape-rendering="crispEdges"><rect width="100%" height="100%" fill="#fff"/><path d="${d}" fill="#17323a"/></svg>`}
 function renderQR(){const u=pageUrl()+'#stop';try{$('qrStop').innerHTML=qrSvg(u)}catch(e){$('qrStop').textContent='QR error'}$('qrLink').textContent=u;$('qrIn').value=pageUrl()}
 $('qrSave').onclick=()=>{const v=$('qrIn').value.trim();st.url=v&&/^https?:\/\//.test(v)?v.split('#')[0]:'';save();renderQR()};
-let soloBest=null;
+let soloBest=null,soloFin=0;
 function openSolo(){$('solo').classList.add('on');$('soloTries').innerHTML='';$('soloMsg').style.display='none';soloBest=null;$('soloBest').textContent='';
  stopGame($('arena3'),s=>{const li=document.createElement('li');li.textContent=s+' s';$('soloTries').appendChild(li);
   if(soloBest===null||+s<soloBest)soloBest=+s;$('soloBest').textContent='🏆 Best: '+soloBest.toFixed(1)+' s';
-  $('soloMsg').style.display='block';speak("Easy to stop? No! They can't stop.")})}
+  $('soloMsg').style.display='block';speak("Easy to stop? No! They can't stop.");const stars=s<5?3:s<9?2:1;S2P.a({question:'Stop the Craving! time (try '+$('soloTries').children.length+')',answer:s+' s',correct:true,points:stars});if(!soloFin){soloFin=1;S2P.f({score:stars,maxScore:3})}})}
 /* ---------- cool layer ---------- */
 function sfx(k){try{const A=window._ac||(window._ac=new (window.AudioContext||window.webkitAudioContext)());const n=A.currentTime;
  const tn=(f,d,ty,v,at=0,f2)=>{const o=A.createOscillator(),g=A.createGain();o.type=ty;o.frequency.setValueAtTime(f,n+at);if(f2)o.frequency.exponentialRampToValueAtTime(f2,n+at+d);o.connect(g);g.connect(A.destination);g.gain.setValueAtTime(v,n+at);g.gain.exponentialRampToValueAtTime(.001,n+at+d);o.start(n+at);o.stop(n+at+d+.02)};
@@ -2522,7 +2526,7 @@ const GAL=[];
    const ax=620,aw=930,ah=700;o.fillStyle='#fff';o.fillRect(ax,120,aw,ah);const s2=Math.min(aw/cv.width,ah/cv.height);o.drawImage(cv,ax+(aw-cv.width*s2)/2,120+(ah-cv.height*s2)/2,cv.width*s2,cv.height*s2);
    o.strokeStyle='#7c5cd6';o.lineWidth=6;o.strokeRect(ax,120,aw,ah);o.fillStyle='#7c5cd6';o.font='900 34px Nunito, sans-serif';o.textAlign='left';o.fillText('After',ax+14,160);
    o.fillStyle='#17323a';o.font='900 50px Nunito, sans-serif';o.textAlign='center';o.fillText(sentence(),800,910);
-   outURL=O.toDataURL('image/png');O.toBlob(b=>outBlob=b,'image/png');$('dOut').src=outURL;$('dShare').classList.add('on');sfx('fan');speak(sentence())};bi.src=IMG['b_'+df.n]};
+   {const ok=[...chosen].every(w=>df.w.includes(w));S2P.a({question:`Draw ${df.n} AFTER: Now ${df.he} is...?`,answer:sentence(),correct:ok,points:ok?1:0});S2P.f({score:ok?1:0,maxScore:1})}outURL=O.toDataURL('image/png');O.toBlob(b=>outBlob=b,'image/png');$('dOut').src=outURL;$('dShare').classList.add('on');sfx('fan');speak(sentence())};bi.src=IMG['b_'+df.n]};
  $('dBack').onclick=()=>$('dShare').classList.remove('on');
  $('dSave').onclick=async()=>{const nm=(($('dName').value||'').trim()||'student').replace(/[^\w\- ]/g,'');const fn=`${df.n}-after-${nm}.png`;
   try{if(outBlob&&navigator.canShare){const f=new File([outBlob],fn,{type:'image/png'});if(navigator.canShare({files:[f]})){await navigator.share({files:[f],title:fn});return}}}catch(e){if(e&&e.name==='AbortError')return}
@@ -2531,7 +2535,7 @@ const GAL=[];
  $('dShowX').onclick=()=>$('dShowFull').classList.remove('on');
  addEventListener('resize',()=>{if($('dMain').classList.contains('on'))setTimeout(sizeCv,150)});
 })();
-function openDraw(){$('draw').classList.add('on')}
+function openDraw(){$('draw').classList.add('on');S2P.name().then(n=>{if(n&&!$('dName').value)$('dName').value=n})}
 /* ---------- class gallery (TV) ---------- */
 let spI=0;
 function renderGal(){$('ggrid').innerHTML=GAL.map((g,i)=>`<img src="${g}" data-i="${i}" alt="drawing ${i+1}">`).join('');$('gempty').style.display=GAL.length?'none':'grid';$('galN').textContent=GAL.length?'('+GAL.length+')':''}
@@ -2554,23 +2558,23 @@ function openExit(){const X=$('exitq');X.classList.add('on');let name='',qs=[],q
    {q:`${f2.n} used ${SUBS[f2.sub].pl}. Now ${f2.he} is…?`,say:`${f2.n} used ${SUBS[f2.sub].pl}. Now ${f2.he} is...`,img:IMG[f2.after],opts:shuffle(Object.keys(WORDS)).map(k=>({k,html:`${WORDS[k].e} ${k}`})),ok:k=>f2.w.includes(k),label:'After word'},
    {q:'They want more and more. They can’t stop. That is…',say:"They want more and more. They can't stop. That is...",img:IMG.p21,opts:shuffle(['addictive','healthy','happy']).map(k=>({k,html:k})),ok:k=>k==='addictive',label:'addictive'}]}
  function ask(){const q=qs[qi];prog();$('xBody').innerHTML=`<div><div class="xq">${q.q}</div><img class="xpic" src="${q.img}" alt=""><div class="xopts">${q.opts.map(o=>`<button class="xo" data-k="${o.k}">${o.html}</button>`).join('')}</div></div>`;speak(q.say);
-  $('xBody').querySelector('.xopts').onclick=e=>{const b=e.target.closest('.xo');if(!b||b.disabled)return;const ok=q.ok(b.dataset.k);res[qi]=ok;
+  $('xBody').querySelector('.xopts').onclick=e=>{const b=e.target.closest('.xo');if(!b||b.disabled)return;const ok=q.ok(b.dataset.k);res[qi]=ok;S2P.a({question:q.say,answer:b.textContent.trim(),correct:ok,points:ok?1:0});
    $('xBody').querySelectorAll('.xo').forEach(x=>{x.disabled=true;if(q.ok(x.dataset.k))x.classList.add('good')});if(!ok)b.classList.add('bad');ding(ok);
    setTimeout(()=>{qi++;if(qi<3)ask();else chart()},1300)}}
- function chart(){prog();const sc=res.filter(Boolean).length;sfx('fan');const s=document.querySelector('#exitq');const r=s.getBoundingClientRect(),c=toStage(r.left+r.width/2,r.top+r.height/3);if(sc===3)confetti(c.x,c.y,70,1.2);
+ function chart(){prog();const sc=res.filter(Boolean).length;S2P.f({score:sc,maxScore:3});sfx('fan');const s=document.querySelector('#exitq');const r=s.getBoundingClientRect(),c=toStage(r.left+r.width/2,r.top+r.height/3);if(sc===3)confetti(c.x,c.y,70,1.2);
   $('xBody').innerHTML=`<div class="chart"><div style="font-size:28px;font-weight:900;color:#5b7a80">📋 DOCTOR'S CHART</div><div class="nm">${name.replace(/[<>&]/g,'')}</div><div class="sc">${sc}/3</div><div style="font-size:60px">${'⭐'.repeat(sc)||'💪'}</div>
    <div class="rows">${qs.map((q,i)=>`${res[i]?'✅':'❌'} ${q.label}`).join('<br>')}</div><div style="font-size:30px;font-weight:900;margin-top:14px;color:var(--plum)">🙋 Show Teacher Joyce!</div></div>`;speak(sc===3?'Great job, doctor!':'Good try, doctor!')}
- nameStep()}
+ S2P.name().then(n=>{if(n){name=n;build();ask()}else nameStep()})}
 /* ---------- iPad game Level 2: build the sentence ---------- */
-let l2i=0,l2Order=[];
+let l2i=0,l2Order=[],l2miss=false;
 function openL2(){l2Order=shuffle(FR);l2i=0;$('gend').classList.remove('on');$('gl2').classList.add('on');l2Round()}
 function l2Round(){const f=l2Order[l2i];const parts=[`${f.n} used`,`${SUBS[f.sub].pl}.`,`Now ${f.he} is`,`${f.w.join(' and ')}.`];
- const wrong=rnd(SUBORDER.filter(k=>k!==f.sub));const tiles=shuffle([...parts.map((p,i)=>({p,i})),{p:SUBS[wrong].pl+'.',i:-1}]);let need=0;
+ const wrong=rnd(SUBORDER.filter(k=>k!==f.sub));l2miss=false;const tiles=shuffle([...parts.map((p,i)=>({p,i})),{p:SUBS[wrong].pl+'.',i:-1}]);let need=0;
  $('l2dots').innerHTML=l2Order.map((_,i)=>`<i class="${i<l2i?'ok':i===l2i?'on':''}">${i<l2i?'✔':''}</i>`).join('');
  $('l2img').src=IMG[f.after];$('l2line').innerHTML=parts.map(()=>`<span class="slot2"></span>`).join('');$('l2tiles').innerHTML=tiles.map(t=>`<button class="t2" data-i="${t.i}">${t.p}</button>`).join('');$('l2next').classList.remove('on');
  $('l2tiles').onclick=e=>{const b=e.target.closest('.t2');if(!b||b.disabled)return;if(+b.dataset.i===need){const sl=$('l2line').children[need];sl.textContent=b.textContent;sl.classList.add('fill');b.disabled=true;b.classList.add('gone');ding(true);need++;
-   if(need===4){gStars++;$('gstars').textContent='⭐ '+gStars;speak(f.sent);fx('⭐',800,300,$('game'));$('l2next').classList.add('on')}}
-  else{b.classList.add('bad','shake');ding(false);setTimeout(()=>b.classList.remove('bad','shake'),500)}};
+   if(need===4){S2P.a({question:`Level 2: build the sentence (${f.n})`,answer:f.sent,correct:!l2miss,points:l2miss?0:1});gStars++;$('gstars').textContent='⭐ '+gStars;speak(f.sent);fx('⭐',800,300,$('game'));$('l2next').classList.add('on')}}
+  else{l2miss=true;b.classList.add('bad','shake');ding(false);setTimeout(()=>b.classList.remove('bad','shake'),500)}};
  speak(`Look at ${f.n}. Build the sentence.`)}
 /* ---------- full screen start ---------- */
 function goFull(){try{const d=document.documentElement;(d.requestFullscreen||d.webkitRequestFullscreen||function(){}).call(d)}catch(e){}}
@@ -2578,7 +2582,8 @@ $('bGo').onclick=()=>{goFull();$('splash').remove();setTimeout(fit,200)};
 $('bFs').onclick=()=>{try{if(document.fullscreenElement||document.webkitFullscreenElement)(document.exitFullscreen||document.webkitExitFullscreen).call(document);else goFull()}catch(e){}};
 /* ---------- start ---------- */
 renderTop3();renderDone();go(0);
-if(['#game','#stop','#draw','#exit'].includes(location.hash)){const sp=$('splash');if(sp)sp.remove();const h=location.hash;if(h==='#game')openGame();else if(h==='#draw')openDraw();else if(h==='#exit')openExit();else openSolo()}
+const MODEH=window.STANDALONE?'#'+window.STANDALONE:location.hash;if(window.STANDALONE){document.body.classList.add('solo-only');}
+if(['#game','#stop','#draw','#exit'].includes(MODEH)){const sp=$('splash');if(sp)sp.remove();const h=MODEH;if(h==='#game')openGame();else if(h==='#draw')openDraw();else if(h==='#exit')openExit();else openSolo()}
 </script>
 </body>
 </html>
