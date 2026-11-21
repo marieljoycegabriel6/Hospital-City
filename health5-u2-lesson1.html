@@ -601,6 +601,11 @@ body.portrait #solo .side .card{flex:1}
 body.portrait .gend .buddy{width:240px;height:240px}
 body.portrait .gend h3{font-size:44px}
 body.portrait .dfr{flex-wrap:wrap;justify-content:center}
+.drec{margin-top:14px;padding:12px;border-radius:18px;background:#fff1ee;border:3px dashed #ffb3a7;text-align:center}
+.drt{font-size:24px;font-weight:900;margin-bottom:8px}
+#dRec{width:100%;font-size:28px}
+#dPlay{display:none;width:100%;margin-top:10px}
+.drs{font-size:18px;font-weight:800;color:#0f8f86;margin-top:6px;min-height:22px}
 /* dialog */
 #dlg{position:absolute;inset:0;background:rgba(10,30,35,.55);display:none;place-items:center;z-index:90}
 #dlg.on{display:grid}
@@ -976,6 +981,7 @@ body.portrait .dfr{flex-wrap:wrap;justify-content:center}
       <div class="dright card">
         <div class="dsent" id="dSent"></div>
         <div class="dw" id="dWords"></div>
+        <div class="drec"><div class="drt">🎤 Say your sentence!</div><button class="btn coral" id="dRec">🎤 Record</button><audio id="dPlay" controls></audio><div class="drs" id="dRecS"></div></div>
         <button class="btn sun" id="dDone" style="width:100%;font-size:30px;margin-top:12px">✅ Done!</button>
       </div>
     </div>
@@ -983,7 +989,6 @@ body.portrait .dfr{flex-wrap:wrap;justify-content:center}
       <img id="dOut" alt="My drawing">
       <div class="dsbar">
         <button class="btn" id="dSave">📤 Save / AirDrop</button>
-        <button class="btn coral" id="dRec">🎤 Say my sentence</button>
         <button class="btn plum" id="dShow">🙋 Show my class</button>
         <button class="btn ghost" id="dBack">✏️ Keep drawing</button>
       </div>
@@ -2593,7 +2598,7 @@ const GAL=[];
  const up=()=>{drawing=false};cv.addEventListener('pointerup',up);cv.addEventListener('pointercancel',up);
  function sentence(){const f=df;const w=[...chosen];return `${f.n} used ${SUBS[f.sub].pl}. Now ${f.he} is ${w.length?w.join(' and '):'___'}.`}
  function renderSent(){const f=df,w=[...chosen];$('dSent').innerHTML=`${f.n} used <span class="kw-s">${SUBS[f.sub].pl}</span>.<br>Now ${f.he} is <span class="gap">${w.length?w.join(' and '):'?'}</span>.`}
- function pickFriend(i){df=FR[i];window.curDraw=df;chosen.clear();$('dPick').classList.add('off');$('dMain').classList.add('on');$('dBefore').src=IMG['b_'+df.n];
+ function pickFriend(i){df=FR[i];window.curDraw=df;try{$('dPlay').removeAttribute('src');$('dPlay').style.display='none';$('dRecS').textContent=''}catch(e){}chosen.clear();$('dPick').classList.add('off');$('dMain').classList.add('on');$('dBefore').src=IMG['b_'+df.n];
   $('dWords').innerHTML=Object.keys(WORDS).map(k=>`<button data-k="${k}">${WORDS[k].e} ${k}</button>`).join('');renderSent();hist=[];
   setTimeout(()=>{sizeCv();cx.fillStyle='#fff';cx.fillRect(0,0,cv.width,cv.height);$('wm').style.display='';$('wm').textContent=df.n+' AFTER'},50);speak(`Draw ${df.n}. How is ${df.he} now?`)}
  $('dFr').innerHTML=FR.map((f,i)=>`<button data-i="${i}"><img src="${IMG['b_'+f.n]}" alt="">${f.n}</button>`).join('');
@@ -2614,10 +2619,14 @@ const GAL=[];
    o.fillStyle='#17323a';o.font='900 50px Nunito, sans-serif';o.textAlign='center';o.fillText(sentence(),800,910);
    {const ok=[...chosen].every(w=>df.w.includes(w));S2P.a({question:`Draw ${df.n} AFTER (drawing)`,answer:O.toDataURL('image/jpeg',.7)});S2P.a({question:`Draw ${df.n} AFTER: my sentence`,answer:sentence()});S2P.f({});if(IN_S2P){$('dSave').style.display='none';$('dSent2').style.display='block'}}outURL=O.toDataURL('image/png');O.toBlob(b=>outBlob=b,'image/png');$('dOut').src=outURL;$('dShare').classList.add('on');sfx('fan');speak(sentence())};bi.src=IMG['b_'+df.n]};
  $('dBack').onclick=()=>$('dShare').classList.remove('on');
- let recOn=false;$('dRec').style.display=(IN_S2P&&window.Scan2Play&&Scan2Play.startRecording)?'':'none';
- $('dRec').onclick=async()=>{try{if(!recOn){speechSynthesis&&speechSynthesis.cancel();await Scan2Play.startRecording({maxSeconds:30});recOn=true;$('dRec').textContent='⏹ Stop';$('dRec').classList.add('recording')}
-  else{const r=await Scan2Play.stopRecording();recOn=false;$('dRec').classList.remove('recording');S2P.a({question:`Say the sentence: ${df.n} (recording)`,answer:r.dataUrl});$('dRec').textContent='✅ Sent! 🎤 Again';sfx('pick')}}
-  catch(e){recOn=false;$('dRec').classList.remove('recording');$('dRec').textContent=e&&e.name==='NotAllowedError'?'🎤 Allow the microphone':'🎤 Try again'}};
+ let recOn=false,lrec=null,lchunks=[],lstream=null;const S2PREC=IN_S2P&&window.Scan2Play&&Scan2Play.startRecording;
+ const recUI=(on,msg)=>{$('dRec').textContent=on?'⏹ Stop':'🎤 Record';$('dRec').classList.toggle('recording',on);if(msg!=null)$('dRecS').textContent=msg};
+ async function recStart(){speechSynthesis&&speechSynthesis.cancel();if(S2PREC){await Scan2Play.startRecording({maxSeconds:30})}else{lstream=await navigator.mediaDevices.getUserMedia({audio:true});lchunks=[];lrec=new MediaRecorder(lstream);lrec.ondataavailable=e=>{if(e.data&&e.data.size)lchunks.push(e.data)};lrec.start()}}
+ function recStop(){return new Promise(async(res,rej)=>{try{if(S2PREC){const r=await Scan2Play.stopRecording();res(r.dataUrl)}else{lrec.onstop=()=>{lstream.getTracks().forEach(t=>t.stop());res(URL.createObjectURL(new Blob(lchunks,{type:lrec.mimeType||'audio/mp4'})))};lrec.stop()}}catch(e){rej(e)}})}
+ $('dRec').onclick=async()=>{const f=window.curDraw;try{if(!recOn){await recStart();recOn=true;recUI(true,'🔴 Speak now…')}
+  else{const url=await recStop();recOn=false;$('dPlay').src=url;$('dPlay').style.display='block';
+   if(S2PREC){S2P.a({question:`Say the sentence: ${f?f.n:''} (recording)`,answer:url});recUI(false,'✅ Sent to Teacher Joyce! Tap ▶ to listen.')}else recUI(false,'✅ Recorded! Tap ▶ to listen.');sfx('pick')}}
+  catch(e){recOn=false;recUI(false,e&&e.name==='NotAllowedError'?'Please allow the microphone, then try again.':'Recording did not work. Try again.')}};
  $('dSave').onclick=async()=>{const nm=(($('dName').value||'').trim()||'student').replace(/[^\w\- ]/g,'');const fn=`${df.n}-after-${nm}.png`;
   try{if(outBlob&&navigator.canShare){const f=new File([outBlob],fn,{type:'image/png'});if(navigator.canShare({files:[f]})){await navigator.share({files:[f],title:fn});return}}}catch(e){if(e&&e.name==='AbortError')return}
   const a=document.createElement('a');a.href=outURL;a.download=fn;document.body.appendChild(a);a.click();a.remove()};
