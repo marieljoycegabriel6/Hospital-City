@@ -433,15 +433,7 @@ body.teacher .qlink{display:block}body.teacher .qedit{display:flex}
   <section class="screen" id="s3">
     <h1 class="q"><span class="say" data-say="What did they use? These 5 things hurt our health.">What did they use? These 5 things hurt our health.</span></h1>
     <div class="subs" id="subCards"></div>
-    <div class="voices">
-      <b style="font-size:26px">Say it:</b>
-      <button class="vbtn on" data-v="normal">🙂 Normal</button>
-      <button class="vbtn" data-v="loud">📢 Loud</button>
-      <button class="vbtn" data-v="whisper">🤫 Whisper</button>
-      <button class="vbtn" data-v="robot">🤖 Robot</button>
-      <button class="btn coral" id="bPoint" style="margin-left:auto">👉 Point to it!</button>
-    </div>
-    <div class="note">10–14 min · Tap a card, class repeats 3 ways. Gestures: fingers to lips (cigarette), small puff (e-cigarette), chewing (betel nut), pills (drugs), drinking (alcohol). "Point to it!" says a word; the card lights up after 3 seconds.</div>
+    <div class="note">10–14 min · Tap a card, class repeats (loud, whisper, robot voice). Gestures: fingers to lips (cigarette), small puff (e-cigarette), chewing (betel nut), pills (drugs), drinking (alcohol).</div>
   </section>
 
   <!-- 4 Who used what -->
@@ -2072,9 +2064,6 @@ ENTER[1]=()=>{$('charade').textContent='';document.querySelectorAll('#feelGroups
 
 /* ---------- S3 substances ---------- */
 $('subCards').innerHTML=SUBORDER.map(k=>{const s=SUBS[k];return `<div class="scard" data-k="${k}" data-say="${s.en}"><img src="${IMG[s.img]}" alt="${s.en}"><div class="w">${s.en}</div><div class="g">${s.g}</div>${zhpy(s.zh,s.py)}</div>`}).join('');
-document.querySelectorAll('.vbtn').forEach(b=>b.onclick=()=>{vmode=b.dataset.v;document.querySelectorAll('.vbtn').forEach(x=>x.classList.toggle('on',x===b))});
-let ptT;$('bPoint').onclick=()=>{clearTimeout(ptT);const cs=[...document.querySelectorAll('#subCards .scard')];cs.forEach(c=>c.classList.remove('hl'));const c=rnd(cs);
- speak('Point to it! '+SUBS[c.dataset.k].en,'normal');ptT=setTimeout(()=>{c.classList.add('hl');ding(true)},3200)};
 
 /* ---------- S4 who used what ---------- */
 let wi=0;
