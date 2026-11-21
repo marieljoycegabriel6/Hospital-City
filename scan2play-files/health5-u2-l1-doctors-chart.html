@@ -2306,7 +2306,7 @@ function pickVoice(){try{const v=speechSynthesis.getVoices().filter(v=>/^en[-_]U
 try{pickVoice();speechSynthesis.onvoiceschanged=pickVoice}catch(e){}
 let _spkT=null;
 function speak(t,mode,onend){
- try{if(window.STANDALONE&&window.Scan2Play&&typeof Scan2Play.speak==='function'){Scan2Play.speak({text:t,lang:'en-US',rate:.85});if(onend)setTimeout(onend,Math.min(6000,600+t.length*70));return}}catch(e){}
+ try{if(window.STANDALONE&&IN_S2P){window.parent.postMessage({__classplay:true,type:'speak',data:{text:t,lang:'en-US',rate:.85}},'*');if(onend)setTimeout(onend,Math.min(6000,600+t.length*70));return}}catch(e){}
  try{const s=window.speechSynthesis;if(!s){if(onend)setTimeout(onend,800);return}if(!VO)pickVoice();
   const go=()=>{const u=new SpeechSynthesisUtterance(t);u.lang='en-US';if(VO)u.voice=VO;u.rate=.85;u.volume=1;
    if(mode==='loud'){u.rate=.9;u.pitch=1.2}
