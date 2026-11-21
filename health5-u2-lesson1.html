@@ -286,6 +286,37 @@ body.teacher .qlink{display:block}body.teacher .qedit{display:flex}
 #solo .side{display:flex;flex-direction:column;gap:16px}
 #solo .side .card{padding:18px}
 #solo .tries li{font-size:28px;font-weight:800;margin:4px 0}
+.arena.sg{background:radial-gradient(circle at 50% 120%,#7c5cd6 0,#3b1f78 45%,#1d0f42 100%);touch-action:none;color:#fff}
+.sg.shk{animation:shake .3s}
+.sg-stars{position:absolute;inset:0;background-image:radial-gradient(2px 2px at 20% 30%,#fff8,transparent),radial-gradient(2px 2px at 70% 20%,#fff6,transparent),radial-gradient(3px 3px at 40% 70%,#fff5,transparent),radial-gradient(2px 2px at 85% 60%,#fff7,transparent),radial-gradient(2px 2px at 10% 85%,#fff6,transparent),radial-gradient(2px 2px at 55% 45%,#fff4,transparent);pointer-events:none}
+.sg-top{position:absolute;left:16px;right:16px;top:12px;display:flex;align-items:center;gap:16px;font-size:30px;font-weight:900;z-index:3;pointer-events:none}
+.sg-meter{flex:1;height:34px;border-radius:17px;background:#ffffff22;border:3px solid #ffffff55;position:relative;overflow:hidden}
+.sg-meter i{position:absolute;left:0;top:0;bottom:0;width:0;background:linear-gradient(90deg,#34c37a,#a8f0cf);transition:width .3s}
+.sg-meter span{position:absolute;inset:0;display:grid;place-items:center;font-size:18px}
+.sg-t{color:var(--sun);min-width:100px;text-align:right}
+.sg-tgt{position:absolute;left:0;top:0;width:180px;height:180px;border-radius:50%;background:#fff;box-shadow:0 0 0 8px var(--coral),0 0 40px 10px #ff6b5baa;display:grid;place-items:center;cursor:pointer;z-index:2;will-change:transform}
+.sg-tgt img{width:78%;height:78%;object-fit:contain;border-radius:50%;pointer-events:none}
+.sg-tgt b{position:absolute;bottom:-18px;left:50%;transform:translateX(-50%);background:var(--coral);color:#fff;font-size:22px;padding:4px 14px;border-radius:12px;box-shadow:0 4px 0 #c64a3d;pointer-events:none;white-space:nowrap}
+.sg-ring{position:absolute;inset:-14px;border-radius:50%;border:4px dashed #ffc23d;pointer-events:none}
+.sg-tgt.live .sg-ring{animation:spin 2.4s linear infinite}
+.sg-tgt.live img{animation:wob .5s infinite}
+.sg-tgt.boom{animation:boom .7s forwards}
+@keyframes boom{40%{filter:brightness(2)}100%{opacity:0;filter:brightness(3) blur(4px);scale:1.8}}
+.sg-bub{position:absolute;bottom:100%;left:50%;transform:translate(-50%,-14px) scale(.6);background:#fff;color:#17323a;font-size:24px;font-weight:900;padding:8px 14px;border-radius:16px;white-space:nowrap;opacity:0;transition:all .2s;pointer-events:none}
+.sg-bub:after{content:"";position:absolute;left:50%;top:100%;border:10px solid transparent;border-top-color:#fff;transform:translateX(-50%)}
+.sg-bub.on{opacity:1;transform:translate(-50%,-14px) scale(1)}
+.sg-p{position:absolute;font-size:34px;pointer-events:none;z-index:4;animation:sgp .7s ease-out forwards}
+@keyframes sgp{to{transform:translate(var(--dx),var(--dy)) scale(.3);opacity:0}}
+.sg-pop{position:absolute;transform:translate(-50%,-50%);font-size:40px;font-weight:900;pointer-events:none;z-index:5;animation:floatup .9s forwards;white-space:nowrap}
+.sg-pop.hit{color:var(--sun);text-shadow:0 3px 0 #0006}.sg-pop.miss{color:#ffb3a7;font-size:30px}
+.sg-cd{position:absolute;inset:0;display:grid;place-items:center;font-size:200px;font-weight:900;color:var(--sun);text-shadow:0 8px 0 #0005;z-index:6;pointer-events:none}
+.sg-cd.go{animation:pop .6s}
+.sg-cover{position:absolute;inset:0;display:none;place-items:center;text-align:center;background:#1d0f42cc;z-index:7}
+.sg-cover.on{display:grid}
+.sg-big{font-size:60px;font-weight:900}
+.sg-sub{font-size:30px;font-weight:800;margin:10px 0 22px;line-height:1.35}
+.sg-rate{font-size:64px}
+.sg-go{font-size:40px}
 /* dialog */
 #dlg{position:absolute;inset:0;background:rgba(10,30,35,.55);display:none;place-items:center;z-index:90}
 #dlg.on{display:grid}
@@ -2022,15 +2053,53 @@ function showAfter(){const f=FR[bi];revealed=true;
 ENTER[4]=()=>{bi=0;renderBA()};
 
 /* ---------- stop game ---------- */
-function stopGame(host,onDone){host.innerHTML=`<div class="ahud">STOP: <span class="h">0</span>/3</div><div class="atime">0.0 s</div><button class="stopb">STOP</button><div class="astart"><button class="btn coral" style="font-size:40px">▶ Start</button></div>`;
- const b=host.querySelector('.stopb'),h=host.querySelector('.h'),tm=host.querySelector('.atime'),stt=host.querySelector('.astart');
- let hits=0,t0=0,iv=null,mv=null,spd=900;const W=()=>host.clientWidth-150,H=()=>host.clientHeight-150;
- const place=()=>{b.style.left=(Math.random()*W())+'px';b.style.top=(60+Math.random()*(H()-60))+'px'};
- b.style.left=(W()/2)+'px';b.style.top=(H()/2)+'px';
- const end=()=>{clearInterval(iv);clearTimeout(mv);const s=((performance.now()-t0)/1000).toFixed(1);stt.style.display='grid';stt.innerHTML=`<div style="text-align:center"><div class="big">${s} s · Hard to stop! 😵</div><button class="btn coral" style="margin-top:16px">↺ Again</button></div>`;stt.querySelector('button').onclick=()=>stopGame(host,onDone);if(onDone)onDone(s)};
- const loop=()=>{place();mv=setTimeout(loop,spd)};
- stt.querySelector('button').onclick=()=>{stt.style.display='none';t0=performance.now();iv=setInterval(()=>tm.textContent=((performance.now()-t0)/1000).toFixed(1)+' s',100);loop()};
- b.onpointerdown=e=>{e.preventDefault();if(stt.style.display!=='none'&&t0===0)return;if(!iv)return;hits++;h.textContent=hits;ding(true);spd=Math.max(380,spd-220);b.style.transition=`left ${spd/2600}s,top ${spd/2600}s`;clearTimeout(mv);if(hits>=3)end();else loop()}}
+function stopGame(host,onDone){
+ if(host._raf)cancelAnimationFrame(host._raf);clearInterval(host._tb);
+ const sub=rnd(SUBORDER);
+ host.classList.add('sg');
+ host.innerHTML=`<div class="sg-stars"></div>
+ <div class="sg-top"><div class="sg-meter"><i></i><span>🧍 Body Buddy</span></div><span class="sg-h">🛑 0 / 3</span><span class="sg-t">0.0 s</span></div>
+ <div class="sg-tgt"><div class="sg-ring"></div><img src="${IMG[SUBS[sub].img]}" alt=""><b>STOP!</b><div class="sg-bub"></div></div>
+ <div class="sg-cover"><div class="sg-c-in"><div class="sg-big">✋ Stop the Craving!</div>
+ <div class="sg-sub">Tap the <b>${SUBS[sub].en}</b> 3 times.<br>It runs away… and gets <b>faster</b>! 💨</div>
+ <button class="btn coral sg-go">▶ Start</button></div></div>`;
+ const T=host.querySelector('.sg-tgt'),bub=host.querySelector('.sg-bub'),cov=host.querySelector('.sg-cover'),hEl=host.querySelector('.sg-h'),tEl=host.querySelector('.sg-t'),meter=host.querySelector('.sg-meter i');
+ const TAUNT=['One more! 😋','Can\'t stop me!','I want more!','Come back! 😈','Ha ha ha!','Try me! 😜','Too slow!'];
+ let W=0,H=0,x=0,y=0,vx=0,vy=0,sp=420,sz=180,hits=0,t0=0,last=0,run=false,nextJink=0,nextTaunt=0;
+ const dims=()=>{W=host.clientWidth;H=host.clientHeight};
+ const dir=()=>{const a=Math.random()*Math.PI*2;vx=Math.cos(a)*sp;vy=Math.sin(a)*sp};
+ const place=()=>{T.style.width=T.style.height=sz+'px';T.style.transform=`translate(${x}px,${y}px)`};
+ const say=(s,ms=1100)=>{bub.textContent=s;bub.classList.add('on');clearTimeout(bub._t);bub._t=setTimeout(()=>bub.classList.remove('on'),ms)};
+ const tone=(f,d=.12,type='square',v=.08)=>{try{const A=window._ac||(window._ac=new (window.AudioContext||window.webkitAudioContext)());const o=A.createOscillator(),g=A.createGain();o.type=type;o.frequency.value=f;o.connect(g);g.connect(A.destination);const n=A.currentTime;g.gain.setValueAtTime(v,n);g.gain.exponentialRampToValueAtTime(.001,n+d);o.start(n);o.stop(n+d+.02)}catch(e){}};
+ const burst=(cx,cy,n=14)=>{for(let i=0;i<n;i++){const p=document.createElement('span');p.className='sg-p';p.textContent=rnd(['✨','💥','⭐','💫']);const a=Math.random()*Math.PI*2,r=80+Math.random()*120;
+  p.style.left=cx+'px';p.style.top=cy+'px';p.style.setProperty('--dx',Math.cos(a)*r+'px');p.style.setProperty('--dy',Math.sin(a)*r+'px');host.appendChild(p);setTimeout(()=>p.remove(),700)}};
+ const pop=(cx,cy,txt,cls)=>{const p=document.createElement('div');p.className='sg-pop '+(cls||'');p.textContent=txt;p.style.left=cx+'px';p.style.top=cy+'px';host.appendChild(p);setTimeout(()=>p.remove(),900)};
+ dims();x=W/2-sz/2;y=H/2-sz/2+30;place();
+ function frame(ts){if(!run)return;if(!host.isConnected||host.offsetParent===null){run=false;return}
+  const dt=Math.min(.05,(ts-(last||ts))/1000);last=ts;dims();
+  if(ts>nextJink){dir();nextJink=ts+500+Math.random()*700}
+  if(ts>nextTaunt){say(rnd(TAUNT));tone(880,.06,'triangle',.04);nextTaunt=ts+1400+Math.random()*900}
+  x+=vx*dt;y+=vy*dt;const top=70;
+  if(x<0){x=0;vx=Math.abs(vx)}if(x>W-sz){x=W-sz;vx=-Math.abs(vx)}if(y<top){y=top;vy=Math.abs(vy)}if(y>H-sz){y=H-sz;vy=-Math.abs(vy)}
+  place();tEl.textContent=((performance.now()-t0)/1000).toFixed(1)+' s';host._raf=requestAnimationFrame(frame)}
+ function start(){cov.classList.remove('on');let n=3;const cd=document.createElement('div');cd.className='sg-cd';host.appendChild(cd);
+  const step=()=>{if(n>0){cd.textContent=n;cd.classList.remove('go');void cd.offsetWidth;cd.classList.add('go');tone(520,.12,'sine',.12);n--;setTimeout(step,650)}
+   else{cd.textContent='GO!';cd.classList.remove('go');void cd.offsetWidth;cd.classList.add('go');tone(1040,.2,'sine',.14);setTimeout(()=>cd.remove(),500);
+    hits=0;sp=420;sz=180;meter.style.width='0%';hEl.textContent='🛑 0 / 3';T.classList.add('live');t0=performance.now();last=0;run=true;dir();nextJink=0;nextTaunt=performance.now()+600;host._raf=requestAnimationFrame(frame)}};step()}
+ T.addEventListener('pointerdown',e=>{e.preventDefault();e.stopPropagation();if(!run)return;hits++;
+  const cx=x+sz/2,cy=y+sz/2;burst(cx,cy);pop(cx,cy-sz/2,['Got it! 💪','Again! 🔥','STOP! ✋'][hits-1]||'!','hit');
+  tone(500+hits*220,.15,'square',.1);host.classList.remove('shk');void host.offsetWidth;host.classList.add('shk');
+  meter.style.width=(hits/3*100)+'%';hEl.textContent=`🛑 ${hits} / 3`;
+  if(hits>=3){run=false;cancelAnimationFrame(host._raf);T.classList.remove('live');T.classList.add('boom');const s=((performance.now()-t0)/1000).toFixed(1);
+   [0,120,240].forEach((d,i)=>setTimeout(()=>tone(660+i*220,.2,'sine',.12),d));
+   setTimeout(()=>{T.classList.remove('boom');const st=s<5?'⭐⭐⭐':s<9?'⭐⭐':'⭐';
+    cov.innerHTML=`<div class="sg-c-in"><div class="sg-big">${s} s</div><div class="sg-rate">${st}</div><div class="sg-sub">Phew! It was <b>hard to stop</b>! 😵<br>It always wants <b>more</b>.</div><button class="btn coral sg-go">↺ Try again</button></div>`;
+    cov.classList.add('on');cov.querySelector('.sg-go').onclick=()=>stopGame(host,onDone);if(onDone)onDone(s)},700);return}
+  sp*=1.45;sz=Math.max(110,sz-30);dir();say(['Hey! 😠 One more!','I\'m faster now! 💨'][hits-1]||'',900)});
+ host.addEventListener('pointerdown',e=>{if(!run||e.target.closest('.sg-tgt'))return;const p=toStage(e.clientX,e.clientY),r=toStage(host.getBoundingClientRect().left,host.getBoundingClientRect().top);
+  pop(p.x-r.x,p.y-r.y,'Miss!','miss');tone(150,.12,'sawtooth',.05);say('Ha ha! 😝',800)});
+ cov.classList.add('on');cov.querySelector('.sg-go').onclick=start;
+}
 ENTER[5]=()=>{renderQR();stopGame($('arena1'))};
 
 /* ---------- S7 chant ---------- */
