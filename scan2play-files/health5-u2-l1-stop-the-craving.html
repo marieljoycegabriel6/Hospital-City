@@ -2304,11 +2304,16 @@ document.querySelectorAll('[data-img]').forEach(i=>i.src=IMG[i.dataset.img]);
 let VO=null;
 function pickVoice(){try{const v=speechSynthesis.getVoices().filter(v=>/^en[-_]US/i.test(v.lang));VO=v.find(v=>/Samantha|Google US|Aria|Jenny|Zira/i.test(v.name))||v[0]||null}catch(e){}}
 try{pickVoice();speechSynthesis.onvoiceschanged=pickVoice}catch(e){}
-function speak(t,mode,onend){try{const s=speechSynthesis;s.cancel();const u=new SpeechSynthesisUtterance(t);u.lang='en-US';if(VO)u.voice=VO;u.rate=.85;
- if(mode==='loud'){u.rate=.9;u.pitch=1.2;u.volume=1}
- if(mode==='whisper'){u.rate=.7;u.pitch=.9;u.volume=.3}
- if(mode==='robot'){u.rate=.6;u.pitch=.1}
- if(onend)u.onend=onend;s.speak(u)}catch(e){if(onend)setTimeout(onend,800)}}
+let _spkT=null;
+function speak(t,mode,onend){
+ try{if(window.STANDALONE&&window.Scan2Play&&typeof Scan2Play.speak==='function'){Scan2Play.speak({text:t,lang:'en-US',rate:.85});if(onend)setTimeout(onend,Math.min(6000,600+t.length*70));return}}catch(e){}
+ try{const s=window.speechSynthesis;if(!s){if(onend)setTimeout(onend,800);return}if(!VO)pickVoice();
+  const go=()=>{const u=new SpeechSynthesisUtterance(t);u.lang='en-US';if(VO)u.voice=VO;u.rate=.85;u.volume=1;
+   if(mode==='loud'){u.rate=.9;u.pitch=1.2}
+   if(mode==='whisper'){u.rate=.7;u.pitch=.9;u.volume=.3}
+   if(mode==='robot'){u.rate=.6;u.pitch=.1}
+   if(onend){u.onend=onend;u.onerror=onend}window._lastU=u;try{s.resume()}catch(e){}s.speak(u)};
+  clearTimeout(_spkT);if(s.speaking||s.pending){s.cancel();_spkT=setTimeout(go,150)}else go()}catch(e){if(onend)setTimeout(onend,800)}}
 let vmode='normal';
 document.addEventListener('click',e=>{const el=e.target.closest('[data-say]');if(!el)return;speak(el.dataset.say,el.closest('#s3')?vmode:'normal');el.classList.add('showzh')});
 
@@ -2717,7 +2722,7 @@ const XP={av:'🩺',avn:'',xp:0,lv:1,combo:0,best:0,t0:0,tIv:null,hud:[],
   $('tapGo').onclick=()=>{unlockAudio();P.classList.remove('on');MUS.start();sfx('pick');cb()}}};
 let AUDIO_OK=false;
 function unlockAudio(){if(AUDIO_OK)return;AUDIO_OK=true;try{const A=window._ac||(window._ac=new (window.AudioContext||window.webkitAudioContext)());if(A.state!=='running')A.resume();const o=A.createOscillator(),g=A.createGain();g.gain.value=0;o.connect(g);g.connect(A.destination);o.start();o.stop(A.currentTime+.05)}catch(e){}
- try{const u=new SpeechSynthesisUtterance(' ');u.volume=0;speechSynthesis.speak(u);pickVoice()}catch(e){}}
+ try{pickVoice();const u=new SpeechSynthesisUtterance('Ready!');u.lang='en-US';if(VO)u.voice=VO;u.volume=1;u.rate=1;window._lastU=u;speechSynthesis.speak(u)}catch(e){}}
 ['pointerdown','touchend','keydown'].forEach(ev=>document.addEventListener(ev,unlockAudio,{capture:true,once:false}));
 const MUS={on:false,ctx:null,iv:null,step:0,
  start(){if(this.on)return;try{this.ctx=window._ac||(window._ac=new (window.AudioContext||window.webkitAudioContext)());this.on=true;const N=[262,330,392,523,392,330,294,349,440,587,440,349];
