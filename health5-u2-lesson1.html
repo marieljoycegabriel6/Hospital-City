@@ -646,6 +646,15 @@ body.portrait .dfr{flex-wrap:wrap;justify-content:center}
 .mcanvas path{fill:none;stroke:#e0473a;stroke-width:8;stroke-linecap:round;stroke-dasharray:900;stroke-dashoffset:900;animation:drawl 2.2s ease forwards}
 @keyframes drawl{to{stroke-dashoffset:0}}
 @keyframes zoomr{0%{left:30px;top:200px}33%{left:380px;top:60px}66%{left:120px;top:40px}100%{left:420px;top:260px}}
+#gtitle{position:absolute;left:0;right:0;top:92px;bottom:86px;z-index:45;display:none;place-items:center;text-align:center;background:radial-gradient(circle at 50% 35%,#7c5cd6,#3b1f78 60%,#1d0f42);color:#fff;overflow:hidden;cursor:pointer}
+#gtitle.on{display:grid}
+#gtitle:before{content:"";position:absolute;inset:-50%;background:conic-gradient(from 0deg,#ffffff10 0 10deg,transparent 10deg 30deg);background-size:100% 100%;animation:spin 30s linear infinite}
+.gt-in{position:relative}
+.gt-badge{display:inline-block;font-size:56px;font-weight:900;padding:12px 40px;border-radius:30px;background:var(--sun);color:#5a3b00;box-shadow:0 8px 0 #d09400;animation:gtpop .6s cubic-bezier(.2,1.6,.4,1) backwards}
+.gt-name{font-size:110px;font-weight:900;margin:24px 0 10px;text-shadow:0 8px 0 #1d0f42;animation:gtpop .6s .15s cubic-bezier(.2,1.6,.4,1) backwards}
+.gt-sub{font-size:40px;font-weight:800;opacity:.9;animation:gtpop .6s .3s backwards}
+.gt-next{margin-top:40px;font-size:24px;font-weight:800;opacity:.6;animation:blink2 1.4s infinite}
+@keyframes gtpop{from{opacity:0;transform:scale(.3) translateY(40px)}}
 /* dialog */
 #dlg{position:absolute;inset:0;background:rgba(10,30,35,.55);display:none;place-items:center;z-index:90}
 #dlg.on{display:grid}
@@ -1044,6 +1053,7 @@ body.portrait .dfr{flex-wrap:wrap;justify-content:center}
   <button id="zhHelp">中文</button>
   <div id="zhPanel"><div class="zq" id="zhQ"></div><div class="zw" id="zhW"></div><button class="btn ghost" id="zhX" style="font-size:20px;margin-top:10px">OK</button></div>
   <div id="avPick"><div><h2>🩺 Choose your doctor!</h2><p>Who will check on the five friends?</p><div class="avg" id="avg"></div></div></div>
+  <div id="gtitle"><div class="gt-in"><div class="gt-badge" id="gtBadge">🎮 GAME 1</div><div class="gt-name" id="gtName"></div><div class="gt-sub" id="gtSub"></div><div class="gt-next">Press ▶ to see how to play</div></div></div>
   <div id="demo"><div class="dm-head"><span class="dm-tag">👀 HOW TO PLAY</span><span class="dm-title" id="dmTitle"></span><button class="btn ghost dm-skip" id="dmSkip">Skip ▶▶</button></div>
     <div class="dm-body"><div class="ipadf"><div class="ipads" id="dmScene"></div><div class="dm-hand" id="dmHand">👆</div></div>
     <ol class="dm-steps" id="dmSteps"></ol></div>
@@ -2777,33 +2787,36 @@ XP.mount($('gHud'));XP.mount($('xHud'));XP.draw();
 const IM=k=>IMG[k]||'';
 const QRS_SC=()=>`<div class="sc"><div class="mqr"></div><div class="big" style="margin-top:22px">📱 Scan!</div></div>`;
 const DEMOS={
- 4:{title:'✏️ Draw the AFTER',steps:[
+ 4:{n:1,sub:'Draw and say how the friend looks AFTER.',title:'✏️ Draw the AFTER',steps:[
   {t:'Scan the QR code.',zh:'掃描 QR code。',py:'Sǎomiáo QR code.',sc:QRS_SC,h:[300,330]},
   {t:'Choose a friend.',zh:'選一個朋友。',py:'Xuǎn yí ge péngyou.',sc:()=>`<div class="sc"><div class="mtiles">${['Ben','Mia','Leo','Amy','Sam'].map(n=>`<div><img src="${IM('b_'+n)}" style="object-fit:cover;object-position:top"></div>`).join('')}</div><div class="big" style="margin-top:14px">Who? 🤔</div></div>`,h:[150,250]},
   {t:'Draw the AFTER.',zh:'畫出之後的樣子。',py:'Huà chū zhīhòu de yàngzi.',sc:()=>`<div class="sc"><div class="mcanvas"><svg viewBox="0 0 380 250"><path d="M120 190c10-60 40-120 80-120s70 60 70 120M150 110a8 8 0 1 0 1 0M230 110a8 8 0 1 0 1 0M160 160q30-18 60 0"/></svg></div><div class="big" style="margin-top:10px">✏️ 🤒 😢</div></div>`,h:[430,300]},
   {t:'Tap the word: sick, sad…',zh:'點選字：sick、sad……',py:'Diǎnxuǎn zì.',sc:()=>`<div class="sc"><div class="big" style="font-size:34px">Now he is ___.</div><div style="margin-top:14px"><span class="mword">😊 happy</span><span class="mword">😢 sad</span><br><span class="mword">😴 tired</span><span class="mword on">🤒 sick</span></div></div>`,h:[390,300]},
   {t:'🎤 Record your sentence.',zh:'錄下你的句子。',py:'Lù xià nǐ de jùzi.',sc:()=>`<div class="sc"><div class="big" style="font-size:30px">"Ben used cigarettes.<br>Now he is sick."</div><div class="mbtn" style="margin-top:20px;background:#ff6b5b;color:#fff;box-shadow:0 6px 0 #c64a3d">🎤 Record</div></div>`,h:[330,340]},
   {t:'Tap ✅ Done!',zh:'按「完成」！',py:'Àn "wánchéng"!',sc:()=>`<div class="sc"><div class="mbtn">✅ Done!</div><div class="big" style="margin-top:20px">Sent to Teacher Joyce! 🎉</div></div>`,h:[330,250]}]},
- 5:{title:'✋ Stop the Craving!',steps:[
+ 5:{n:2,sub:'Can you stop it? Tap it 3 times!',title:'✋ Stop the Craving!',steps:[
   {t:'Scan the QR code.',zh:'掃描 QR code。',py:'Sǎomiáo QR code.',sc:QRS_SC,h:[300,330]},
   {t:'Tap ▶ Start.',zh:'按「開始」。',py:'Àn "kāishǐ".',sc:()=>`<div class="sc"><div class="big">✋ Stop the Craving!</div><div class="mbtn" style="margin-top:20px;background:#ff6b5b;color:#fff;box-shadow:0 6px 0 #c64a3d">▶ Start</div></div>`,h:[320,260]},
   {t:'Tap it 3 times! 👆👆👆',zh:'點它三下！',py:'Diǎn tā sān xià!',sc:()=>`<div class="sc" style="width:100%;height:100%;background:radial-gradient(circle at 50% 120%,#7c5cd6,#1d0f42);display:grid;place-items:center"><img src="${IM('s_cig')}" style="width:150px;height:150px;border-radius:50%;background:#fff;box-shadow:0 0 0 8px #ff6b5b;animation:wob .5s infinite"></div>`,h:[330,230]},
   {t:'It runs away… faster! 💨',zh:'它會跑走，越來越快！',py:'Tā huì pǎo zǒu, yuè lái yuè kuài!',sc:()=>`<div class="sc" style="width:100%;height:100%;background:radial-gradient(circle at 50% 120%,#7c5cd6,#1d0f42);position:relative"><img src="${IM('s_cig')}" style="position:absolute;width:110px;height:110px;border-radius:50%;background:#fff;box-shadow:0 0 0 6px #ff6b5b;animation:zoomr 1.2s ease-in-out infinite alternate"><div style="position:absolute;right:30px;top:20px;color:#fff;font-size:28px;font-weight:900">Can't stop me! 😜</div></div>`,h:[200,330]},
   {t:'Beat your time! ⭐⭐⭐',zh:'打破你的紀錄！',py:'Dǎpò nǐ de jìlù!',sc:()=>`<div class="sc"><div class="big" style="font-size:70px">4.2 s</div><div style="font-size:60px">⭐⭐⭐</div><div class="big" style="font-size:28px">Hard to stop! 😵</div></div>`,h:[420,330]}]},
- 8:{title:'🛠️ Before → After Machine',steps:[
+ 8:{n:3,sub:'Put it in the machine. What happens AFTER?',title:'🛠️ Before → After Machine',steps:[
   {t:'Scan the QR code.',zh:'掃描 QR code。',py:'Sǎomiáo QR code.',sc:QRS_SC,h:[300,330]},
   {t:'Tap ▶ TAP TO START.',zh:'按「開始」。',py:'Àn "kāishǐ".',sc:()=>`<div class="sc" style="width:100%;height:100%;background:radial-gradient(circle,#3b1f78,#1d0f42);display:grid;place-items:center;color:#fff"><div><div class="big">🛠️ Machine</div><div class="mbtn" style="margin-top:20px">▶ TAP TO START</div></div></div>`,h:[330,280]},
   {t:'Drag the thing into the machine.',zh:'把東西拖進機器裡。',py:'Bǎ dōngxi tuō jìn jīqì lǐ.',sc:()=>`<div class="sc"><div style="width:200px;height:80px;margin:0 auto;background:linear-gradient(#ffd56b,#ffb703);clip-path:polygon(0 0,100% 0,70% 100%,30% 100%)"></div><div style="width:240px;height:110px;margin:0 auto 16px;border-radius:24px;background:#7c5cd6;color:#fff;font-weight:900;font-size:24px;display:grid;place-items:center">Machine ⚙️</div><div class="mtiles">${['cig','ecig','betel','drugs','alcohol'].map(k=>`<div><img src="${IM('s_'+k)}"></div>`).join('')}</div></div>`,h:[150,340],h2:[300,90]},
   {t:'Look at the AFTER. Say the sentence.',zh:'看「之後」，說出句子。',py:'Kàn "zhīhòu", shuō chū jùzi.',sc:()=>`<div class="sc"><img src="${IM('p14')}" style="width:360px;height:240px;object-fit:cover"><div class="big" style="font-size:28px;margin-top:10px">"Ben used cigarettes."</div></div>`,h:[460,300]},
   {t:'Tap: How is he now?',zh:'點選：他現在怎麼樣？',py:'Diǎnxuǎn: tā xiànzài zěnmeyàng?',sc:()=>`<div class="sc"><span class="mword">😊 happy</span><span class="mword">😢 sad</span><br><span class="mword">😴 tired</span><span class="mword on">🤒 sick</span><div class="big" style="color:#7c5cd6;margin-top:16px">+150 XP 🔥x2</div></div>`,h:[380,210]},
   {t:'Level 2: build the sentence.',zh:'第二關：排出句子。',py:'Dì èr guān: pái chū jùzi.',sc:()=>`<div class="sc"><div><span class="mword on">Leo used</span><span class="mword on">betel nut.</span></div><div style="margin-top:10px"><span class="mword" style="background:#ffc23d;border-color:#d09400">Now he is</span><span class="mword" style="background:#ffc23d;border-color:#d09400">sick.</span></div></div>`,h:[260,300]}]},
- 9:{title:"📋 Doctor's Chart",steps:[
+ 9:{n:4,sub:'Exit check: answer 3 questions.',title:"📋 Doctor's Chart",steps:[
   {t:'Scan the QR code.',zh:'掃描 QR code。',py:'Sǎomiáo QR code.',sc:QRS_SC,h:[300,330]},
   {t:'Tap ▶ TAP TO START.',zh:'按「開始」。',py:'Àn "kāishǐ".',sc:()=>`<div class="sc" style="width:100%;height:100%;background:radial-gradient(circle,#3b1f78,#1d0f42);display:grid;place-items:center;color:#fff"><div><div class="big">📋 Doctor's Chart</div><div class="mbtn" style="margin-top:20px">▶ TAP TO START</div></div></div>`,h:[330,280]},
   {t:'Answer 3 questions.',zh:'回答三個問題。',py:'Huídá sān ge wèntí.',sc:()=>`<div class="sc"><div class="big" style="font-size:32px">What did Mia use?</div><div class="mtiles" style="margin-top:14px">${['ecig','alcohol','betel'].map((k,i)=>`<div style="${i?'':'outline:5px solid #34c37a'}"><img src="${IM('s_'+k)}"></div>`).join('')}</div></div>`,h:[230,320]},
   {t:'Show your chart to Teacher Joyce! 🙋',zh:'把你的表給老師看！',py:'Bǎ nǐ de biǎo gěi lǎoshī kàn!',sc:()=>`<div class="sc" style="background:#fff;border-radius:24px;padding:20px 40px;box-shadow:0 8px 0 #cfe6e1"><div style="font-size:20px;font-weight:900;color:#5b7a80">📋 DOCTOR'S CHART</div><div class="big">Kai</div><div style="font-size:80px;font-weight:900;color:#0f8f86">3/3</div><div style="font-size:44px">⭐⭐⭐</div></div>`,h:[470,360]}]}
 };
 let DM=null,dmI=0;
+let GT=false;
+function openTitle(i){const D=DEMOS[i];GT=i;$('gtBadge').textContent='🎮 GAME '+D.n;$('gtName').textContent=D.title;$('gtSub').textContent=D.sub;const g=$('gtitle');g.classList.remove('on');void g.offsetWidth;g.classList.add('on');sfx('fan');speak('Game '+D.n+'! '+D.title.replace(/[^\w\s'!→-]/g,'').replace('→','to').trim())}
+function closeTitle(){GT=false;$('gtitle').classList.remove('on')}
 function openDemo(i){const D=DEMOS[i];if(!D)return;DM=D;dmI=0;$('dmTitle').textContent=D.title;
  $('dmSteps').innerHTML=D.steps.map(s=>`<li><div>${s.t}${zhpy(s.zh,s.py)}</div></li>`).join('');$('demo').classList.add('on');dmShow()}
 function dmShow(){const s=DM.steps[dmI];$('dmScene').innerHTML=s.sc();document.querySelectorAll('#dmSteps li').forEach((li,k)=>{li.classList.toggle('now',k===dmI);li.classList.toggle('done',k<dmI)});
@@ -2812,10 +2825,10 @@ function dmShow(){const s=DM.steps[dmI];$('dmScene').innerHTML=s.sc();document.q
  if(s.h2){setTimeout(()=>{h.classList.remove('tap');h.style.left=(s.h2[0]-20)+'px';h.style.top=(s.h2[1]-10)+'px'},1400)}
  speak(s.t.replace(/[^\w\s.,!?'…:-]/g,'').trim())}
 function closeDemo(){$('demo').classList.remove('on');DM=null}
-$('dmSkip').onclick=closeDemo;
+$('dmSkip').onclick=closeDemo;$('gtitle').onclick=()=>next();
 $('demo').addEventListener('click',e=>{if(e.target.closest('#dmSkip'))return;const li=e.target.closest('#dmSteps li');if(li){dmI=[...li.parentNode.children].indexOf(li);dmShow()}});
-{const _go=go;go=function(i){closeDemo();_go(i);if(DEMOS[i])openDemo(i)}}
-{const _next=next;next=function(){if(DM){if(dmI<DM.steps.length-1){dmI++;dmShow();sfx('beep')}else{closeDemo();sfx('whoosh')}return}_next()}}
+{const _go=go;go=function(i){closeDemo();closeTitle();_go(i);if(DEMOS[i]){openDemo(i);openTitle(i)}}}
+{const _next=next;next=function(){if(GT!==false){closeTitle();dmShow();sfx('whoosh');return}if(DM){if(dmI<DM.steps.length-1){dmI++;dmShow();sfx('beep')}else{closeDemo();sfx('whoosh')}return}_next()}}
 $('bNext').onclick=()=>next();
 /* ---------- full screen start ---------- */
 function goFull(){try{const d=document.documentElement;(d.requestFullscreen||d.webkitRequestFullscreen||function(){}).call(d)}catch(e){}}
