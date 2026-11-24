@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Happy Thanksgiving! Morning English</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400..700&family=Nunito:wght@400;700;800&display=swap">
+<style>
+html,body{margin:0;height:100%;background:#1E120A;overflow:hidden}
+*{box-sizing:border-box}
+#wrap{position:fixed;inset:0;display:flex;align-items:center;justify-content:center}
+#stage{position:relative;width:1920px;height:1080px;flex:none;overflow:hidden;background:#000}
+#stage>section{position:absolute;left:0;top:0;width:1920px;height:1080px;display:none}
+#stage>section.cur{display:flex}
+#stage aside{display:none}
+section { padding: 128px; background: linear-gradient(160deg, #FFF6E6, #FCE3C2); color: #3B2416; font-family: 'Nunito', Arial, sans-serif; display: flex; flex-direction: column; gap: 48px; }
+section.warm { background: linear-gradient(160deg, #FCE6C8, #F7CF9F); }
+section.dark { background: linear-gradient(160deg, #4A2E1C, #24150C); color: #FFF6E6; }
+section.berry { background: linear-gradient(160deg, #A8323F, #7E2230); color: #FFF6E6; }
+section.has-bunting { padding-top: 176px; }
+h1, h2, h3 { font-family: 'Fredoka', 'Trebuchet MS', sans-serif; font-weight: 600; margin: 0; line-height: 1.1; }
+p { margin: 0; }
+
+.eyebrow { align-self: flex-start; font-size: 28px; font-weight: 800; letter-spacing: 3px; text-transform: uppercase; background: #3B2416; color: #FFF6E6; padding: 10px 28px; border-radius: 40px; }
+.dark .eyebrow { background: #F4B740; color: #2B1A10; }
+.berry .eyebrow { background: #F4B740; color: #2B1A10; }
+
+.title-xl { font-size: 144px; text-shadow: 0 6px 0 rgba(232, 119, 46, 0.35); }
+.title-l { font-size: 96px; text-shadow: 0 6px 0 rgba(232, 119, 46, 0.35); }
+.title-m { font-size: 64px; }
+.dark .title-xl { text-shadow: 0 8px 0 rgba(0, 0, 0, 0.4); }
+.berry .title-l { text-shadow: 0 6px 0 rgba(0, 0, 0, 0.3); }
+.gold { color: #F4B740; }
+.hl { color: #F4B740; }
+.lead { font-size: 40px; line-height: 1.4; color: #5C4033; }
+.dark .lead { color: #F3E3CC; }
+.pill { align-self: flex-start; font-size: 40px; font-weight: 800; line-height: 1.3; color: #3B2416; background: #FFFDF8; border: 4px solid #3B2416; padding: 14px 40px; border-radius: 48px; }
+.center .pill { align-self: center; }
+
+.emoji { line-height: 1; animation: pop 0.6s ease-out both; }
+.rise { animation: rise 0.6s ease-out both; }
+.d1 { animation-delay: 0.15s; }
+.d2 { animation-delay: 0.3s; }
+.d3 { animation-delay: 0.45s; }
+@keyframes pop { from { opacity: 0; transform: scale(0.6); } }
+@keyframes rise { from { opacity: 0; transform: translateY(40px); } }
+.fragment { opacity: 0; transform: translateY(40px) scale(0.9); transition: opacity 0.5s ease-out, transform 0.5s ease-out; }
+.fragment.visible { opacity: 1; transform: none; }
+
+.bunting { position: absolute; left: 0; top: 0; }
+.leaf { position: absolute; font-size: 96px; line-height: 1; animation: leaf-in 1.2s ease-out both; }
+.lf-a { top: 40px; right: 64px; transform: rotate(20deg); }
+.lf-b { bottom: 40px; left: 56px; transform: rotate(-25deg); animation-delay: 0.2s; }
+.lf-c { bottom: 56px; right: 72px; transform: rotate(12deg); animation-delay: 0.4s; }
+@keyframes leaf-in { from { opacity: 0; transform: translateY(-120px) rotate(-60deg); } }
+.sticker { position: absolute; right: 140px; top: 100px; font-size: 200px; line-height: 1; transform: rotate(12deg); animation: sticker 0.7s ease-out both; }
+@keyframes sticker { from { opacity: 0; transform: rotate(-20deg) scale(0.4); } }
+
+.card { background: #FFFDF8; color: #3B2416; border: 5px solid #3B2416; border-radius: 36px; box-shadow: 0 12px 0 #3B2416; padding: 40px; display: flex; flex-direction: column; gap: 20px; align-items: center; justify-content: center; text-align: center; }
+.bubble { width: 500px; height: 500px; border-radius: 250px; border: 6px solid #3B2416; box-shadow: 0 14px 0 #3B2416; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.bubble-m { width: 440px; height: 440px; border-radius: 220px; }
+.bubble-s { width: 260px; height: 260px; border-radius: 130px; }
+.dark .bubble { border-color: #FFF6E6; box-shadow: 0 14px 0 rgba(0, 0, 0, 0.45); }
+.f-pumpkin { background: #FFD9B8; }
+.f-gold { background: #FFE9A8; }
+.f-sage { background: #DDEBC8; }
+.f-berry { background: #F6C9CF; }
+.f-sky { background: #CDE6F5; }
+.f-lilac { background: #E6D9F5; }
+
+.cover-row { flex: 1; display: flex; align-items: center; justify-content: space-between; }
+.cover-emoji { font-size: 280px; }
+.statement { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 40px; }
+.center { align-items: center; text-align: center; }
+.statement-emoji { font-size: 160px; }
+
+.card-emoji { font-size: 120px; line-height: 1; }
+.big-emoji { font-size: 180px; line-height: 1; }
+.card-title { font-size: 48px; }
+.card-sub { font-size: 40px; line-height: 1.3; color: #5C4033; }
+.cards3 { flex: 1; display: grid; grid-template-columns: repeat(3, 1fr); gap: 48px; }
+.cards2 { flex: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 56px; }
+.bridge-row { flex: 1; display: flex; align-items: center; justify-content: center; gap: 64px; }
+.bridge-card { width: 560px; }
+
+.topbar { display: flex; justify-content: space-between; align-items: center; }
+.dots { display: flex; gap: 16px; }
+.dot { width: 28px; height: 28px; border-radius: 14px; background: #EED7B4; border: 3px solid #3B2416; }
+.dot.on { background: #3B2416; }
+.word-row { flex: 1; display: flex; align-items: center; justify-content: center; gap: 96px; }
+.word-col { display: flex; flex-direction: column; gap: 32px; }
+.word-emoji { font-size: 290px; }
+.word-text { font-size: 220px; text-shadow: 0 8px 0 rgba(59, 36, 22, 0.15); }
+.ink-family { color: #C2571A; }
+.ink-friends { color: #9C6B04; }
+.ink-teacher { color: #5E7D42; }
+.ink-home { color: #B23A48; }
+.ink-school { color: #2F6A9E; }
+.ink-food { color: #6E4FA0; }
+
+.grid6 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; }
+.card.mini { flex-direction: row; justify-content: flex-start; padding: 28px 40px; gap: 28px; box-shadow: 0 10px 0 #3B2416; }
+.mini-emoji { font-size: 100px; line-height: 1; }
+.mini-word { font-size: 52px; }
+
+.pill a{color:#2F6A9E}
+#nav{position:fixed;right:16px;bottom:14px;display:flex;gap:8px;align-items:center;font:700 16px Nunito,Arial,sans-serif;color:#FFF6E6;opacity:.35;transition:opacity .2s}
+#nav:hover{opacity:1}
+#nav button{width:40px;height:40px;border-radius:50%;border:2px solid #FFF6E6;background:#3B2416;color:#FFF6E6;font:700 18px Arial,sans-serif;cursor:pointer}
+#notes{position:fixed;left:16px;right:16px;bottom:64px;max-width:900px;margin:auto;background:#FFFDF8;color:#3B2416;border:3px solid #3B2416;border-radius:16px;padding:14px 20px;font:17px/1.5 Nunito,Arial,sans-serif;display:none}
+#notes.show{display:block}
+</style></head><body>
+<div id="wrap"><div id="stage">
+<section id="cover" class="dark has-bunting">
+<svg class="bunting" aria-label="Autumn bunting" width="1920" height="160" viewBox="0 0 1920 160" xmlns="http://www.w3.org/2000/svg"><path d="M0 20 Q960 140 1920 20" fill="none" stroke="#F3E3CC" stroke-width="4"/><polygon points="20,25 140,25 80,125" fill="#E8772E"/><polygon points="180,33 300,33 240,133" fill="#F4B740"/><polygon points="340,40 460,40 400,140" fill="#B23A48"/><polygon points="500,45 620,45 560,145" fill="#7A9A5B"/><polygon points="660,48 780,48 720,148" fill="#E8772E"/><polygon points="820,50 940,50 880,150" fill="#F4B740"/><polygon points="980,50 1100,50 1040,150" fill="#B23A48"/><polygon points="1140,48 1260,48 1200,148" fill="#7A9A5B"/><polygon points="1300,45 1420,45 1360,145" fill="#E8772E"/><polygon points="1460,40 1580,40 1520,140" fill="#F4B740"/><polygon points="1620,33 1740,33 1680,133" fill="#B23A48"/><polygon points="1780,25 1900,25 1840,125" fill="#7A9A5B"/></svg>
+<p class="leaf lf-b">🍂</p>
+<p class="leaf lf-c">🍁</p>
+<p class="eyebrow">Morning English · November</p>
+<div class="cover-row">
+<h1 class="title-xl rise">Happy<br><span class="hl">Thanksgiving!</span></h1>
+<div class="bubble bubble-m f-gold"><p class="emoji cover-emoji d1">🦃</p></div>
+</div>
+<aside>SAY: “Good morning, everyone! How are you?” Students: “I’m happy / great / sleepy!” Point to the turkey: “Look! A turkey! Today is a special lesson.” ➜ NEXT: “But first… let’s remember! What day is today?” Chinese: 感恩節 (gǎn ēn jié) = Thanksgiving; 火雞 (huǒ jī) = turkey.</aside>
+</section>
+<section id="review" class="warm">
+<p class="leaf lf-a">🍁</p>
+<p class="leaf lf-b">🍂</p>
+<h2 class="title-l">Let’s review!</h2>
+<div class="cards3">
+<div class="card f-pumpkin fragment" data-fragment-index="1"><p class="card-emoji">📅</p><h3 class="card-title">What day is today?</h3></div>
+<div class="card f-gold fragment" data-fragment-index="2"><p class="card-emoji">🗓️</p><h3 class="card-title">What month is it?</h3></div>
+<div class="card f-sky fragment" data-fragment-index="3"><p class="card-emoji">⛅</p><h3 class="card-title">How’s the weather?</h3></div>
+</div>
+<p class="pill fragment" data-fragment-index="3">It’s November! What do we celebrate in November? 🤔</p>
+<aside>CLICK 1: “What day is today?” Students: “Today is ___.” Clap twice. CLICK 2: “What month is it?” Students: “It’s November!” Clap twice. CLICK 3: “How’s the weather?” Students: “It’s sunny.” Clap twice. Stop on the month: “Yes, it’s NOVEMBER!” ➜ NEXT: “Last month was October. What did we celebrate in October?” (Halloween!) Chinese: 十一月 (shí yī yuè) = November.</aside>
+</section>
+<section id="bridge">
+<p class="leaf lf-a">🍂</p>
+<p class="leaf lf-b">🍁</p>
+<h2 class="title-l">From October to November</h2>
+<div class="bridge-row">
+<div class="card bridge-card f-pumpkin fragment" data-fragment-index="1"><p class="big-emoji">🎃</p><h3 class="title-m">October</h3><p class="card-sub">Halloween</p></div>
+<div class="fragment" data-fragment-index="2"><svg width="200" height="120" viewBox="0 0 200 120" aria-label="arrow"><polygon points="0,36 120,36 120,0 200,60 120,120 120,84 0,84" fill="#E8772E" stroke="#3B2416" stroke-width="5" stroke-linejoin="round"/></svg></div>
+<div class="card bridge-card f-berry fragment" data-fragment-index="2"><p class="big-emoji">🦃</p><h3 class="title-m">November</h3><p class="card-sub">Thanksgiving</p></div>
+</div>
+<aside>CLICK 1: “October… Halloween! 🎃 Boo!” (students say “Boo!”) CLICK 2: “Now it’s November… Thanksgiving! 🦃” Students repeat “Thanksgiving!” 3 times: soft, normal, loud. ➜ NEXT: “What is Thanksgiving? Listen…” Chinese: 萬聖節 (wàn shèng jié) = Halloween; 感恩節 (gǎn ēn jié) = Thanksgiving.</aside>
+</section>
+<section id="meaning" class="berry">
+<p class="sticker">🙏</p>
+<p class="leaf lf-b">🍂</p>
+<p class="leaf lf-c">🍁</p>
+<p class="eyebrow">What is Thanksgiving?</p>
+<div class="statement">
+<h1 class="title-l rise">Thanksgiving is a day<br>to say <span class="hl">thank you</span>.</h1>
+<p class="pill rise d2">Who do we say thank you to? 🤔</p>
+</div>
+<aside>SAY: “Thanksgiving is a day to say THANK YOU.” Everyone says “Thank you!” together. Ask: “Who do we say thank you to?” Let them guess (Mom! Dad!). ➜ NEXT: “How do people in America celebrate? Let’s fly to America and see!” Chinese: 謝謝 (xiè xie) = thank you; 感謝 (gǎn xiè) = thankful.</aside>
+</section>
+<section id="fly" class="warm">
+<p class="sticker">✈️</p>
+<p class="leaf lf-b">🍂</p>
+<p class="leaf lf-c">🍁</p>
+<p class="eyebrow">How do Americans celebrate?</p>
+<div class="statement center">
+<p class="emoji statement-emoji">🇹🇼 ➜ 🇺🇸</p>
+<h1 class="title-l rise d1">Let’s fly to America!</h1>
+<p class="pill rise d2"><a href="fly-to-america.html" target="_blank" rel="noopener">Click here to fly! ✈️</a></p>
+</div>
+<aside>SAY: “How do people in America celebrate Thanksgiving? Let’s fly there and see!” Students hold their arms out like wings. Click the button to open the story, press F for full screen and click through it. Turn your speakers on for the sounds. After the story, come back to the slides. ➜ NEXT: “The family said thank you. Who do YOU say thank you to? Let’s learn the words!” Chinese: 美國人怎麼過感恩節？ (měi guó rén zěn me guò gǎn ēn jié?) = How do Americans celebrate Thanksgiving?</aside>
+</section>
+<section id="loud-soft" class="dark">
+<p class="leaf lf-a">🍁</p>
+<p class="leaf lf-b">🍂</p>
+<p class="eyebrow">Let’s learn the words!</p>
+<h2 class="title-l">Loud and Soft!</h2>
+<div class="cards2">
+<div class="card f-sky rise"><p class="big-emoji">🤫</p><h3 class="card-title">Teacher whispers…</h3><p class="card-sub">You say it softly.</p></div>
+<div class="card f-pumpkin rise d2"><p class="big-emoji">📣</p><h3 class="card-title">Teacher shouts…</h3><p class="card-sub">You say it LOUD!</p></div>
+</div>
+<aside>SAY: “Listen! When I whisper, you whisper.” (whisper “hello”) “When I shout, you shout!” (shout “HELLO!”) Try it once. ➜ NEXT: “Who do we say thank you to? Number one…” Chinese: 小聲 (xiǎo shēng) = soft; 大聲 (dà shēng) = loud.</aside>
+</section>
+<section id="w-family">
+<p class="leaf lf-b">🍂</p>
+<p class="leaf lf-c">🍁</p>
+<div class="topbar"><p class="eyebrow">Thankful words · 1 of 6</p><div class="dots"><div class="dot on"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>
+<div class="word-row">
+<div class="bubble f-pumpkin"><p class="emoji word-emoji">👨‍👩‍👧‍👦</p></div>
+<div class="word-col"><h1 class="word-text ink-family rise d1">family</h1><p class="pill rise d2">Thank you, my family! ❤️</p></div>
+</div>
+<aside>SAY “family” twice; students repeat. Loud and Soft: whisper “family”, shout “FAMILY!” Read together: “Thank you, my family!” ➜ NEXT: “Family at home… and at school, we have…?” Chinese: 家人 (jiā rén).</aside>
+</section>
+<section id="w-friends">
+<p class="leaf lf-b">🍂</p>
+<p class="leaf lf-c">🍁</p>
+<div class="topbar"><p class="eyebrow">Thankful words · 2 of 6</p><div class="dots"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>
+<div class="word-row">
+<div class="bubble f-gold"><p class="emoji word-emoji">🧑‍🤝‍🧑</p></div>
+<div class="word-col"><h1 class="word-text ink-friends rise d1">friends</h1><p class="pill rise d2">Thank you, my friends! ❤️</p></div>
+</div>
+<aside>SAY “friends” twice; students repeat. Loud and Soft. Wave to a friend and read together: “Thank you, my friends!” ➜ NEXT: “At school, we have friends… and we have a…?” Chinese: 朋友 (péng yǒu).</aside>
+</section>
+<section id="w-teacher">
+<p class="leaf lf-b">🍂</p>
+<p class="leaf lf-c">🍁</p>
+<div class="topbar"><p class="eyebrow">Thankful words · 3 of 6</p><div class="dots"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>
+<div class="word-row">
+<div class="bubble f-sage"><p class="emoji word-emoji">👩‍🏫</p></div>
+<div class="word-col"><h1 class="word-text ink-teacher rise d1">teacher</h1><p class="pill rise d2">Thank you, my teacher! ❤️</p></div>
+</div>
+<aside>SAY “teacher” twice; students repeat. Loud and Soft. Point to yourself and read together: “Thank you, my teacher!” ➜ NEXT: “After school, we go… where? We go…” Chinese: 老師 (lǎo shī).</aside>
+</section>
+<section id="w-home">
+<p class="leaf lf-b">🍂</p>
+<p class="leaf lf-c">🍁</p>
+<div class="topbar"><p class="eyebrow">Thankful words · 4 of 6</p><div class="dots"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div><div class="dot"></div><div class="dot"></div></div></div>
+<div class="word-row">
+<div class="bubble f-berry"><p class="emoji word-emoji">🏠</p></div>
+<div class="word-col"><h1 class="word-text ink-home rise d1">home</h1><p class="pill rise d2">Thank you for my home! ❤️</p></div>
+</div>
+<aside>SAY “home” twice; students repeat. Loud and Soft. Make a roof shape with your hands. Read together: “Thank you for my home!” ➜ NEXT: “In the morning, we leave home and go to…?” Chinese: 家 (jiā).</aside>
+</section>
+<section id="w-school">
+<p class="leaf lf-b">🍂</p>
+<p class="leaf lf-c">🍁</p>
+<div class="topbar"><p class="eyebrow">Thankful words · 5 of 6</p><div class="dots"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div></div>
+<div class="word-row">
+<div class="bubble f-sky"><p class="emoji word-emoji">🏫</p></div>
+<div class="word-col"><h1 class="word-text ink-school rise d1">school</h1><p class="pill rise d2">Thank you for my school! ❤️</p></div>
+</div>
+<aside>SAY “school” twice; students repeat. Loud and Soft. Point around: “This is our school!” Read together: “Thank you for my school!” ➜ NEXT: “At school we have lunch. Mmm… we eat…?” Chinese: 學校 (xué xiào).</aside>
+</section>
+<section id="w-food">
+<p class="leaf lf-b">🍂</p>
+<p class="leaf lf-c">🍁</p>
+<div class="topbar"><p class="eyebrow">Thankful words · 6 of 6</p><div class="dots"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div></div></div>
+<div class="word-row">
+<div class="bubble f-lilac"><p class="emoji word-emoji">🍗</p></div>
+<div class="word-col"><h1 class="word-text ink-food rise d1">food</h1><p class="pill rise d2">Thank you for my food! Yum! 😋</p></div>
+</div>
+<aside>SAY “food” twice; students repeat. Loud and Soft. Pretend to eat: “Yum, yum!” Read together: “Thank you for my food!” ➜ NEXT: “On Thanksgiving, families eat a BIG dinner. Turkey! Lots of food! After dinner, they say…” Chinese: 食物 (shí wù).</aside>
+</section>
+<section id="x-stuffed" class="warm">
+<p class="sticker">😋</p>
+<p class="leaf lf-b">🍂</p>
+<p class="eyebrow">After Thanksgiving dinner…</p>
+<h1 class="title-l rise">I’m stuffed!</h1>
+<div class="cards2">
+<div class="card f-gold rise d1"><p class="card-emoji">🍗🥧🌽</p><h3 class="card-title">It means…</h3><p class="card-sub">I’m very, very full. I ate a lot!</p></div>
+<div class="card f-sage rise d2"><p class="card-emoji">🤲</p><h3 class="card-title">Do it!</h3><p class="card-sub">Rub your tummy and puff your cheeks!</p></div>
+</div>
+<aside>SAY: “After a big turkey dinner, we say… I’m stuffed!” Rub your tummy; students copy. Practice: Teacher: “More turkey?” Students: “No, thank you. I’m stuffed!” ➜ NEXT: “We are full and happy. We are thankful! Let’s say a thankful sentence.” Chinese: 我吃得好飽 (wǒ chī de hǎo bǎo).</aside>
+</section>
+<section id="sentence" class="warm">
+<p class="sticker">❤️</p>
+<p class="eyebrow">Let’s make a sentence! · Grades 1–2</p>
+<h2 class="title-m rise">Say the word: “Family!”</h2>
+<div class="grid6">
+<div class="card mini f-pumpkin"><p class="mini-emoji">👨‍👩‍👧‍👦</p><h3 class="mini-word">family</h3></div>
+<div class="card mini f-gold"><p class="mini-emoji">🧑‍🤝‍🧑</p><h3 class="mini-word">friends</h3></div>
+<div class="card mini f-sage"><p class="mini-emoji">👩‍🏫</p><h3 class="mini-word">teacher</h3></div>
+<div class="card mini f-berry"><p class="mini-emoji">🏠</p><h3 class="mini-word">home</h3></div>
+<div class="card mini f-sky"><p class="mini-emoji">🏫</p><h3 class="mini-word">school</h3></div>
+<div class="card mini f-lilac"><p class="mini-emoji">🍗</p><h3 class="mini-word">food</h3></div>
+</div>
+<aside>SAY: “Little friends, grades 1 and 2! Hand on your heart. What are you thankful for?” Point to a picture; grades 1–2 say the word: “Family!” Go through all six words. ➜ NEXT: “Good job! Now, big friends, grades 3 to 6, say the whole sentence!” Chinese: 一二年級 (yī èr nián jí) = grades 1–2.</aside>
+</section>
+<section id="sentence-big" class="warm">
+<p class="sticker">❤️</p>
+<p class="eyebrow">Let’s make a sentence! · Grades 3–6</p>
+<h2 class="title-m rise">I’m thankful for my ____.</h2>
+<div class="grid6">
+<div class="card mini f-pumpkin"><p class="mini-emoji">👨‍👩‍👧‍👦</p><h3 class="mini-word">family</h3></div>
+<div class="card mini f-gold"><p class="mini-emoji">🧑‍🤝‍🧑</p><h3 class="mini-word">friends</h3></div>
+<div class="card mini f-sage"><p class="mini-emoji">👩‍🏫</p><h3 class="mini-word">teacher</h3></div>
+<div class="card mini f-berry"><p class="mini-emoji">🏠</p><h3 class="mini-word">home</h3></div>
+<div class="card mini f-sky"><p class="mini-emoji">🏫</p><h3 class="mini-word">school</h3></div>
+<div class="card mini f-lilac"><p class="mini-emoji">🍗</p><h3 class="mini-word">food</h3></div>
+</div>
+<aside>SAY with hand on heart: “I’m thankful for my family.” Grades 3–6 repeat. Point to another picture: “I’m thankful for my friends.” Go through all six words. Grades 1–2 can join in with just the word. ➜ NEXT: “Great! Now let’s play a game. Stand up!” Chinese: 我很感謝我的家人 (wǒ hěn gǎn xiè wǒ de jiā rén); 三到六年級 (sān dào liù nián jí) = grades 3–6.</aside>
+</section>
+<section id="game">
+<p class="leaf lf-b">🍂</p>
+<p class="leaf lf-c">🍁</p>
+<p class="eyebrow">Game: Stand up!</p>
+<h2 class="title-m">Stand up if you’re thankful for your…</h2>
+<div class="grid6">
+<div class="card mini f-pumpkin"><p class="mini-emoji">👨‍👩‍👧‍👦</p><h3 class="mini-word">family</h3></div>
+<div class="card mini f-gold"><p class="mini-emoji">🧑‍🤝‍🧑</p><h3 class="mini-word">friends</h3></div>
+<div class="card mini f-sage"><p class="mini-emoji">👩‍🏫</p><h3 class="mini-word">teacher</h3></div>
+<div class="card mini f-berry"><p class="mini-emoji">🏠</p><h3 class="mini-word">home</h3></div>
+<div class="card mini f-sky"><p class="mini-emoji">🏫</p><h3 class="mini-word">school</h3></div>
+<div class="card mini f-lilac"><p class="mini-emoji">🍗</p><h3 class="mini-word">food</h3></div>
+</div>
+<aside>SAY: “Stand up if you’re thankful for your friends!” Students stand, say “I’m thankful for my friends!” and sit down. Go faster each round (3–4 rounds). End with “teacher” so everyone stands. ➜ NEXT: “Wow, you are so thankful! Who can say it alone? Your turn!” Chinese: 站起來 (zhàn qǐ lái) = stand up; 坐下 (zuò xià) = sit down.</aside>
+</section>
+<section id="your-turn" class="dark">
+<p class="leaf lf-a">🍁</p>
+<p class="leaf lf-b">🍂</p>
+<div class="statement center">
+<div class="bubble bubble-s f-gold"><p class="emoji statement-emoji">🎤</p></div>
+<h1 class="title-xl rise d1">Your turn!</h1>
+<p class="title-m gold rise d2">I’m thankful for my ____.</p>
+</div>
+<aside>Invite 2–3 older students to the mic to say their own sentence. After each one, everyone says “Thank you!” and claps. ➜ NEXT: “When you are VERY, VERY thankful, say a BIG thank you…” Chinese: 換你了 (huàn nǐ le) = your turn.</aside>
+</section>
+<section id="x-million" class="warm">
+<p class="sticker">🤗</p>
+<p class="leaf lf-b">🍂</p>
+<p class="eyebrow">A BIG thank you!</p>
+<h1 class="title-l rise">Thanks a million!</h1>
+<div class="cards2">
+<div class="card f-pumpkin rise d1"><p class="card-emoji">💯</p><h3 class="card-title">It means…</h3><p class="card-sub">Thank you very, very much!</p></div>
+<div class="card f-sky rise d2"><p class="card-emoji">🙌</p><h3 class="card-title">Do it!</h3><p class="card-sub">Open your arms wide and say it big!</p></div>
+</div>
+<aside>SAY “Thanks a million!” with arms open wide; students copy. A million is a very big number, so it’s a very big thank you. Practice: Teacher: “Here’s a gift!” Students: “Thanks a million!” ➜ NEXT: “Now say it to a friend!” Chinese: 非常感謝 (fēi cháng gǎn xiè); 一百萬 (yì bǎi wàn) = a million.</aside>
+</section>
+<section id="thank-you" class="warm">
+<p class="leaf lf-a">🍁</p>
+<p class="leaf lf-b">🍂</p>
+<p class="eyebrow">Turn to a friend</p>
+<div class="statement center">
+<div class="bubble bubble-s f-berry"><p class="emoji statement-emoji">🙇</p></div>
+<h1 class="title-xl rise d1">Thank you, friend!</h1>
+<p class="pill rise d2">Big kids: “Thanks a million, friend!”</p>
+</div>
+<aside>Pair younger students with older ones. Everyone turns, bows a little and says “Thank you, friend!” Older students say “Thanks a million, friend!” ➜ NEXT: “And now, all together…” Chinese: 謝謝你，朋友 (xiè xie nǐ, péng yǒu).</aside>
+</section>
+<section id="goodbye" class="dark has-bunting">
+<svg class="bunting" aria-label="Autumn bunting" width="1920" height="160" viewBox="0 0 1920 160" xmlns="http://www.w3.org/2000/svg"><path d="M0 20 Q960 140 1920 20" fill="none" stroke="#F3E3CC" stroke-width="4"/><polygon points="20,25 140,25 80,125" fill="#E8772E"/><polygon points="180,33 300,33 240,133" fill="#F4B740"/><polygon points="340,40 460,40 400,140" fill="#B23A48"/><polygon points="500,45 620,45 560,145" fill="#7A9A5B"/><polygon points="660,48 780,48 720,148" fill="#E8772E"/><polygon points="820,50 940,50 880,150" fill="#F4B740"/><polygon points="980,50 1100,50 1040,150" fill="#B23A48"/><polygon points="1140,48 1260,48 1200,148" fill="#7A9A5B"/><polygon points="1300,45 1420,45 1360,145" fill="#E8772E"/><polygon points="1460,40 1580,40 1520,140" fill="#F4B740"/><polygon points="1620,33 1740,33 1680,133" fill="#B23A48"/><polygon points="1780,25 1900,25 1840,125" fill="#7A9A5B"/></svg>
+<p class="leaf lf-b">🍂</p>
+<p class="leaf lf-c">🍁</p>
+<div class="statement center">
+<div class="bubble bubble-s f-gold"><p class="emoji statement-emoji">🦃</p></div>
+<h1 class="title-xl rise d1">Happy<br><span class="hl">Thanksgiving!</span></h1>
+<p class="lead rise d2">See you next time!</p>
+</div>
+<aside>Everyone says together: “Happy Thanksgiving!” Quick recap question: “What do we say on Thanksgiving?” (“Thank you!”) Wave goodbye: “See you next time!” Chinese: 感恩節快樂 (gǎn ēn jié kuài lè).</aside>
+</section>
+</div></div>
+<div id="notes"></div>
+<div id="nav"><button id="p" aria-label="Previous">‹</button><span id="num"></span><button id="n" aria-label="Next">›</button><button id="nt" aria-label="Teacher notes" title="Teacher notes (N)">✎</button><button id="fs" aria-label="Full screen" title="Full screen (F)">⤢</button></div>
+<script>
+{
+const stage=document.getElementById('stage'),S=[...stage.querySelectorAll(':scope>section')];
+const fit=()=>{const k=Math.min(innerWidth/1920,innerHeight/1080);stage.style.transform='scale('+k+')'};
+addEventListener('resize',fit);fit();
+let i=0,f=0,groups=[];
+function build(sec){const fr=[...sec.querySelectorAll('.fragment')];const keyed=fr.filter(e=>e.dataset.fragmentIndex),rest=fr.filter(e=>!e.dataset.fragmentIndex);const m=new Map();keyed.sort((a,b)=>a.dataset.fragmentIndex-b.dataset.fragmentIndex).forEach(e=>{const k=e.dataset.fragmentIndex;if(!m.has(k))m.set(k,[]);m.get(k).push(e)});return[...m.values(),...rest.map(e=>[e])]}
+function show(n,end){S.forEach(s=>s.classList.remove('cur'));i=Math.max(0,Math.min(S.length-1,n));const s=S[i];groups=build(s);f=end?groups.length:0;s.querySelectorAll('.fragment').forEach(e=>e.classList.remove('visible'));if(end)groups.forEach(g=>g.forEach(e=>e.classList.add('visible')));void s.offsetWidth;s.classList.add('cur');document.getElementById('num').textContent=(i+1)+' / '+S.length;const a=s.querySelector('aside');document.getElementById('notes').textContent=a?a.textContent:'';try{history.replaceState(null,'','#'+(i+1))}catch(e){}}
+function next(){if(f<groups.length){groups[f++].forEach(e=>e.classList.add('visible'))}else if(i<S.length-1)show(i+1)}
+function prev(){if(f>0){groups[--f].forEach(e=>e.classList.remove('visible'))}else if(i>0)show(i-1,true)}
+function full(){const d=document.documentElement;try{const r=(d.requestFullscreen||d.webkitRequestFullscreen).call(d);if(r&&r.catch)r.catch(()=>{})}catch(e){}}
+document.getElementById('n').onclick=next;document.getElementById('p').onclick=prev;
+document.getElementById('nt').onclick=()=>document.getElementById('notes').classList.toggle('show');
+document.getElementById('fs').onclick=full;
+stage.addEventListener('click',e=>{if(e.target.closest('a'))return;next()});
+addEventListener('keydown',e=>{if(['ArrowRight',' ','PageDown','Enter'].includes(e.key)){e.preventDefault();next()}else if(['ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();prev()}else if(e.key==='n'||e.key==='N')document.getElementById('nt').click();else if(e.key==='f'||e.key==='F')full();else if(e.key==='Home')show(0);else if(e.key==='End')show(S.length-1)});
+show((parseInt(location.hash.slice(1))||1)-1);
+addEventListener('hashchange',()=>{const h=parseInt(location.hash.slice(1));if(h&&h-1!==i)show(h-1)});
+}
+</script></body></html>
