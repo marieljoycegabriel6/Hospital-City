@@ -100,53 +100,53 @@ const step = (where, t, z, pics, list, th) => `<section class="slide"><div class
 
 const slides = [
 `<section class="slide title"><h1>International Exchange Program<span class="zh" lang="zh-Hant">國際交流計畫</span></h1>
-  <div class="tag">🌸 Sakura Town Adventure · <span lang="zh-Hant">櫻花小鎮大冒險</span></div>${img('yuki')}</section>`,
-`<section class="slide"><h2>Your mission<span class="zh" lang="zh-Hant">你的任務</span></h2>
-  <div class="goals"><div class="goal"><span>🧑‍🤝‍🧑</span>Meet 2 Japanese friends<small lang="zh-Hant">認識2位日本朋友</small></div>
+  <div class="tag">🌸 Let's play Sakura Town! · <span lang="zh-Hant">一起玩櫻花小鎮！</span></div>${img('yuki')}</section>`,
+`<section class="slide"><h2>Your jobs<span class="zh" lang="zh-Hant">你的任務</span></h2>
+  <div class="goals"><div class="goal"><span>🧑‍🤝‍🧑</span>Meet 2 friends<small lang="zh-Hant">認識2位朋友</small></div>
   <div class="goal"><span>❓</span>Answer 2 questions<small lang="zh-Hant">回答2個問題</small></div>
   <div class="goal"><span>🎤</span>Record your voice<small lang="zh-Hant">錄下你的聲音</small></div>
-  <div class="goal"><span>🎁</span>Learn 10 Japanese words<small lang="zh-Hant">學10個日文單字</small></div></div>
+  <div class="goal"><span>🎁</span>Learn 10 words<small lang="zh-Hant">學10個單字</small></div></div>
   <div class="route"><div class="stop" style="--c:#4a90e2"><div class="ic">🏫</div><b>School Gate</b><small lang="zh-Hant">學校大門</small><em>Start 開始</em></div>
   <div class="stop" style="--c:#e2557f"><div class="ic">🌸</div><b>Cherry Blossom Path</b><small lang="zh-Hant">櫻花小路</small><em>Yuki</em></div>
   <div class="stop" style="--c:#e8743b"><div class="ic">🍢</div><b>Food Street</b><small lang="zh-Hant">美食街</small><em>Haruto</em></div>
   <div class="stop" style="--c:#6a4fc2"><div class="ic">🎆</div><b>Festival Night</b><small lang="zh-Hant">夜晚祭典</small><em>Omikuji 抽籤</em></div></div></section>`,
-step('🏫 School Gate · 學校大門', 'Make your character', '做你的角色', ['dress'], [
-  ['Choose 👧 Girl or 👦 Boy.', '選女生或男生。'], ['Change your hair, eyes, clothes and shoes.', '換髮型、眼睛、衣服和鞋子。'], ['Tap Let’s go!', '按 Let’s go!']],
-  think('How will your character look?', '你的角色會是什麼樣子？')),
-step('🚶 Walking · 走路', 'Walk and find capsules', '走路並找扭蛋', ['walk', 'word'], [
-  ['Hold ▶ to walk.', '按住 ▶ 走路。'], ['Walk into a 🎁 capsule. Learn a Japanese word!', '走到 🎁 扭蛋上，學一個日文單字！'], ['Tap 🔊 to listen. Say it!', '按 🔊 聽，跟著說！']]),
-step('🌸 Cherry Blossom Path · 櫻花小路', 'Meet Yuki', '認識 Yuki', ['yuki'], [
-  ['Tap 💬 Talk.', '按 💬 Talk。'], ['Read and tap Next ▶.', '看完按 Next ▶。'], ['Say your lines out loud!', '把你的句子大聲說出來！']],
-  think('How do you say hello in Japanese?', '日文的「你好」怎麼說？')),
-step('✏️ Answer · 回答', 'Draw, write and record', '畫畫、打字、錄音', ['draw', 'write'], [
-  ['Draw your answer.', '畫出你的答案。'], ['Type your words in the blanks.', '在空格裡打字。'], ['Tap 🎤, read your answer, tap ⏹ Stop.', '按 🎤，唸出答案，再按 ⏹ 停止。']]),
-step('🍢 Food Street · 美食街', 'Meet Haruto', '認識 Haruto', ['haruto'], [
-  ['Walk to Food Street.', '走到美食街。'], ['Tap 💬 Talk. Haruto asks Question 2.', '按 💬 Talk，Haruto 會問第二題。'], ['Draw, write and record again.', '再畫、再打字、再錄音。']]),
-step('🎆 Festival Night · 夜晚祭典', 'Omikuji Word Challenge', '神社單字挑戰', ['quiz', 'fortune'], [
-  ['Listen to the Japanese word.', '聽日文單字。'], ['Choose the meaning.', '選出意思。'], ['Open your fortune: 大吉 Great luck!', '打開你的籤：大吉！']]),
-step('🖼️ The end · 完成', 'Your cards', '你的卡片', ['card'], [
-  ['You get 2 cards: your drawing and your sentences.', '你會得到2張卡片：有你的畫和你的句子。'], ['Your teacher puts them in our slides.', '老師會把它們放進我們的簡報。'], ['Practice saying your answers 3 times.', '把答案練習說3次。']]),
+step('🏫 Step 1 · 第1步', 'Make your player', '做你的角色', ['dress'], [
+  ['Pick 👧 girl or 👦 boy.', '選女生或男生。'], ['Pick hair and clothes.', '選髮型和衣服。'], ['Tap Let\u2019s go!', '按 Let\u2019s go!']],
+  think('What color is your hair?', '你的頭髮是什麼顏色？')),
+step('🚶 Step 2 · 第2步', 'Walk and find 🎁', '走路，找 🎁', ['walk', 'word'], [
+  ['Hold ▶ to walk.', '按住 ▶ 走路。'], ['Find the 🎁.', '找到 🎁。'], ['Tap 🔊. Say the word.', '按 🔊，說出單字。']]),
+step('🌸 Step 3 · 第3步', 'Meet Yuki', '認識 Yuki', ['yuki'], [
+  ['Tap 💬 Talk.', '按 💬 Talk。'], ['Read. Tap Next ▶.', '看，然後按 Next ▶。'], ['Say it out loud!', '大聲說出來！']],
+  think('Say hello in Japanese: こんにちは!', '用日文說你好：こんにちは！')),
+step('✏️ Step 4 · 第4步', 'Draw, type, talk', '畫、打字、說', ['draw', 'write'], [
+  ['Draw.', '畫畫。'], ['Type.', '打字。'], ['Tap 🎤. Read. Tap ⏹.', '按 🎤，唸出來，按 ⏹。']]),
+step('🍢 Step 5 · 第5步', 'Meet Haruto', '認識 Haruto', ['haruto'], [
+  ['Go to Food Street.', '去美食街。'], ['Tap 💬 Talk.', '按 💬 Talk。'], ['Draw, type, talk again.', '再畫、打字、說一次。']]),
+step('🎆 Step 6 · 第6步', 'Word game', '單字遊戲', ['quiz', 'fortune'], [
+  ['Listen.', '聽。'], ['Pick the answer.', '選答案。'], ['Open your lucky paper!', '打開你的幸運籤！']]),
+step('🖼️ Step 7 · 第7步', 'Your 2 cards', '你的2張卡片', ['card'], [
+  ['See your 2 cards.', '看你的2張卡片。'], ['Read your answers 3 times.', '把答案唸3次。']]),
 `<section class="slide"><h2>Buttons<span class="zh" lang="zh-Hant">按鈕</span></h2><table><tbody>
-  ${[['◀ ▶','Hold to walk','按住走路'],['💬 Talk','Talk to a friend','和朋友聊天'],['Next ▶','Read the next line','看下一句'],['📖 Words','See your words','看你的單字'],['🔊','Listen','聽'],['🎤 / ⏹','Record / Stop','錄音 / 停止'],['⚡ Fast','Use it if the game is slow','遊戲太慢時使用']]
+  ${[['◀ ▶','Walk','走路'],['💬 Talk','Talk','說話'],['Next ▶','Next','下一個'],['📖 Words','My words','我的單字'],['🔊','Listen','聽'],['🎤 / ⏹','Record / Stop','錄音 / 停止'],['⚡ Fast','Game is slow? Tap this.','遊戲太慢？按這個。']]
     .map(([k, e, z]) => `<tr><td><span class="k">${esc(k)}</span></td><td><b>${esc(e)}</b><small lang="zh-Hant">${esc(z)}</small></td></tr>`).join('')}</tbody></table></section>`,
 `<section class="slide"><div class="frame" style="--c:#e2557f"><h2 style="color:#e2557f">🌸 Yuki asks<span class="zh" lang="zh-Hant">Yuki 問</span></h2>
   <p style="font-weight:800;font-size:clamp(22px,2.2vw,32px);margin:10px 0 0">What's the most precious thing you've ever received or bought?<span class="zh" lang="zh-Hant" style="font-size:.75em">你收到過或買過最珍貴的東西是什麼？</span></p>
   <ol><li>My most precious thing is my <span class="blank"></span>.<span>你最珍貴的東西是什麼？</span></li>
   <li>🎁 I got it from my <span class="blank"></span>. / 💰 I bought it at the <span class="blank"></span>.<span>是誰送的？還是在哪裡買的？</span></li>
   <li>It is special because <span class="blank"></span>.<span>為什麼它很特別？</span></li></ol></div>
-  ${think('Tell your partner: What is your precious thing?', '告訴你的同學：你最珍貴的東西是什麼？')}</section>`,
+  ${think('Tell a friend: What is your precious thing?', '告訴同學：你最珍貴的東西是什麼？')}</section>`,
 `<section class="slide"><div class="frame" style="--c:#e8743b"><h2 style="color:#e8743b">🍙 Haruto asks<span class="zh" lang="zh-Hant">Haruto 問</span></h2>
   <p style="font-weight:800;font-size:clamp(22px,2.2vw,32px);margin:10px 0 0">What's the strangest or most unusual food you've ever tried?<span class="zh" lang="zh-Hant" style="font-size:.75em">你吃過最奇怪或最特別的食物是什麼？</span></p>
   <ol><li>The strangest food I have ever tried is <span class="blank"></span>.<span>你吃過最奇怪的食物是什麼？</span></li>
   <li>I ate it at <span class="blank"></span>.<span>你在哪裡吃的？</span></li>
   <li>It tasted <span class="blank"></span>.<span>吃起來怎麼樣？</span></li>
   <li>I would / would not eat it again!<span>你還會再吃嗎？</span></li></ol></div>
-  ${think('Tell your partner: What strange food did you try?', '告訴你的同學：你吃過什麼奇怪的食物？')}</section>`,
+  ${think('Tell a friend: What strange food did you eat?', '告訴同學：你吃過什麼奇怪的食物？')}</section>`,
 `<section class="slide"><h2>10 Japanese words<span class="zh" lang="zh-Hant">10個日文單字</span></h2><div class="words">
   ${[['☀️','こんにちは','Konnichiwa','Hello','你好'],['🤝','はじめまして','Hajimemashite','Nice to meet you','初次見面'],['🙏','ありがとう','Arigatou','Thank you','謝謝'],['🌸','さくら','Sakura','Cherry blossom','櫻花'],['🥰','かわいい','Kawaii','Cute','可愛'],['🧑‍🤝‍🧑','ともだち','Tomodachi','Friend','朋友'],['🍚','いただきます','Itadakimasu',"Let's eat!",'我要開動了'],['😋','おいしい','Oishii','Delicious','好吃'],['🤩','すごい','Sugoi','Amazing','好厲害'],['👋','またね','Mata ne','See you','再見']]
     .map(([e, jp, ro, en, z]) => `<div class="w"><div class="e">${e}</div><div class="jp" lang="ja">${jp}</div><div class="ro">${esc(ro)}</div><div class="en">${esc(en)}</div><div class="z" lang="zh-Hant">${z}</div></div>`).join('')}</div></section>`,
 `<section class="slide"><h2>Remember!<span class="zh" lang="zh-Hant">記住！</span></h2><div class="rules">
-  ${[['🎤','Record before you show your friend','先錄音再給朋友看'],['⌨️','Fill every blank','每個空格都要填'],['🗣️','Say it out loud','大聲說出來'],['🎁','Find all 10 capsules','找到10個扭蛋'],['⚡','Slow? Choose ⚡ Fast','太慢就選 ⚡ Fast'],['🙋','Need help? Raise your hand','需要幫忙就舉手']]
+  ${[['🎤','Record first','先錄音'],['⌨️','Fill every blank','每個空格都要填'],['🗣️','Speak loud','大聲說'],['🎁','Find 10 🎁','找到10個 🎁'],['⚡','Slow? Tap ⚡ Fast','太慢？按 ⚡ Fast'],['🙋','Help? Raise your hand','要幫忙？舉手']]
     .map(([e, en, z]) => `<div class="rule"><div class="e">${e}</div>${esc(en)}<span lang="zh-Hant">${esc(z)}</span></div>`).join('')}</div></section>`,
 `<section class="slide night title"><h1 style="color:#ff8fb3">Let's play!<span class="zh" lang="zh-Hant">開始玩吧！</span></h1>
   <div class="qr">${QR}<b style="display:block;margin-top:10px;font-size:22px">📱 Scan with your iPad</b><span lang="zh-Hant" style="color:#6b6588;font-weight:700">用平板掃描</span></div></section>`
