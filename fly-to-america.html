@@ -87,6 +87,7 @@ body{font-family:'Nunito',Arial,sans-serif;color:var(--ink)}
 #cap{left:50%;bottom:34px;transform:translateX(-50%);display:flex;align-items:center;gap:24px;white-space:nowrap;background:var(--paper);border:6px solid var(--ink);border-radius:60px;padding:14px 44px 14px 16px;box-shadow:0 10px 0 var(--ink)}
 #capSay{font:800 28px 'Nunito',sans-serif;color:var(--cream);background:var(--berry);border-radius:40px;padding:10px 22px;letter-spacing:1px}
 #capText{font-size:58px}
+#cap{cursor:pointer}
 .bump{animation:bump .5s cubic-bezier(.3,1.6,.5,1)}
 @keyframes bump{from{transform:translateX(-50%) scale(.7)}}
 #ctrl{right:24px;bottom:150px;display:flex;flex-direction:column;gap:12px}
@@ -263,6 +264,7 @@ body{font-family:'Nunito',Arial,sans-serif;color:var(--ink)}
  <button id="bNext" title="Next (right arrow)" aria-label="Next">›</button>
  <button id="bRe" title="Start again (R)" aria-label="Start again">↺</button>
  <button id="bFull" title="Full screen (F)" aria-label="Full screen">⤢</button>
+ <button id="bVoice" title="Read aloud on/off (V)" aria-label="Read aloud on or off">A</button>
  <button id="bSnd" title="Sound on/off (S)" aria-label="Sound on or off">♪</button>
  <button id="bNotes" title="Teacher notes (N)" aria-label="Teacher notes">✎</button>
 </div>
@@ -279,7 +281,7 @@ const fit=()=>{const k=Math.min(innerWidth/1600,innerHeight/900)*.98;stage.style
 addEventListener('resize',fit);fit();
 
 const STEPS=[
- {cap:'Let’s fly to America! ✈️',note:'Say: “We are in Taiwan. Let’s fly to America!” Students hold their arms out like wings. Then click the plane.<br>美國 (měi guó) = America · 飛機 (fēi jī) = airplane'},
+ {cap:'Let’s fly to America! ✈️',note:'The page reads every English line aloud. Click the caption bar to hear it again; A turns the voice off. Say: “We are in Taiwan. Let’s fly to America!” Students hold their arms out like wings. Then click the plane.<br>美國 (měi guó) = America · 飛機 (fēi jī) = airplane'},
  {cap:'Welcome to the USA! 🇺🇸',fly:'Whoosh! ✈️',note:'Students “fly” with their arms while the plane flies. When it lands, say: “Welcome to the USA!”<br>歡迎 (huān yíng) = welcome'},
  {cap:'Family time! ❤️',note:'Say: “On Thanksgiving, families come together.” Watch the sun go down: it’s afternoon, then evening. Count the family: one, two, three, four! Students hug themselves.<br>家人 (jiā rén) = family'},
  {cap:'Dinner time! 🦃',note:'Point at the sky: “Look! The sun goes down. It’s evening!” Lights turn on. Knock in the air: “Knock, knock!” Inside, point at the clock: “6 o’clock. Dinner time!” Then: “Turkey! Pie! Corn! Bread! Salad!”<br>晚上 (wǎn shàng) = evening · 晚餐 (wǎn cān) = dinner · 火雞 (huǒ jī) = turkey'},
@@ -290,7 +292,7 @@ $('#dots').innerHTML=STEPS.map(()=>'<div class="dot"></div>').join('');
 
 let step=0,busy=false,timers=[];
 const later=(fn,ms)=>timers.push(setTimeout(fn,reduce?Math.min(ms,50):ms));
-function setCap(t){const c=$('#cap'),x=$('#capText');x.textContent=t;c.classList.remove('bump');void c.offsetWidth;c.classList.add('bump')}
+function setCap(t){const c=$('#cap'),x=$('#capText');x.textContent=t;say(t);c.classList.remove('bump');void c.offsetWidth;c.classList.add('bump')}
 function setTime(t,night){const e=$('#time');e.textContent=t;e.classList.toggle('night',!!night)}
 function setUi(){$$('.dot').forEach((d,i)=>d.classList.toggle('on',i<=step));$('#notes').innerHTML='<b>Step '+(step+1)+' of 6</b>'+STEPS[step].note}
 function scene(id){$$('.scene').forEach(s=>s.classList.toggle('on',s.id===id))}
@@ -319,6 +321,20 @@ const SFX={
  fanfare:()=>{notes([523,659,784],.13,'triangle',.2);tone(1047,.9,'triangle',.22,.42)},
  twinkle:()=>tone(1800+Math.random()*1400,.25,'sine',.05)
 };
+
+/* read-aloud: the page says each English line with the browser's voice */
+let talk=true,quiet=true,voice=null;
+const synth=window.speechSynthesis;
+function pickVoice(){if(!synth)return;const v=synth.getVoices(),en=v.filter(x=>/^en[-_]US/i.test(x.lang));voice=['Samantha','Google US English','Microsoft Aria','Microsoft Jenny','Ava','Allison'].map(n=>en.find(x=>x.name.includes(n))).find(Boolean)||en[0]||v.find(x=>/^en/i.test(x.lang))||null}
+if(synth){pickVoice();synth.onvoiceschanged=pickVoice}
+function say(text){
+ if(!synth||!talk||quiet)return;
+ const t=text.replace(/[\p{Extended_Pictographic}\u{1F1E6}-\u{1F1FF}️‍]/gu,'').replace(/…/g,'.').replace(/\s+/g,' ').trim();
+ if(!t)return;
+ synth.cancel();
+ const u=new SpeechSynthesisUtterance(t);u.lang='en-US';if(voice)u.voice=voice;u.rate=.82;u.pitch=1.1;
+ setTimeout(()=>synth.speak(u),120);
+}
 
 /* chibi family: dad, mom, girl, boy */
 const SK='#F8D0A8',INK='#3B2416';
@@ -457,12 +473,13 @@ function enter(n,instant){
  }
 }
 
-function go(n){resetAll();for(let i=0;i<=n;i++)enter(i,true);cam={...camT};step=n;setUi()}
-function next(){if(busy)return;timers.forEach(clearTimeout);timers=[];if(step>=5){go(0);return}step++;setUi();enter(step,false)}
+function go(n,first){quiet=true;resetAll();for(let i=0;i<=n;i++)enter(i,true);cam={...camT};step=n;setUi();quiet=false;if(!first)say($('#capText').textContent)}
+function next(){quiet=false;if(busy)return;timers.forEach(clearTimeout);timers=[];if(step>=5){go(0);return}step++;setUi();enter(step,false)}
 function prev(){if(step>0)go(step-1)}
 
-stage.addEventListener('click',e=>{if(e.target.closest('button,#notes'))return;next()});
+stage.addEventListener('click',e=>{if(e.target.closest('button,#notes'))return;if(e.target.closest('#cap')){quiet=false;say($('#capText').textContent);return}next()});
 $('#bNext').onclick=next;$('#bPrev').onclick=prev;$('#bRe').onclick=()=>go(0);
+$('#bVoice').onclick=()=>{talk=!talk;$('#bVoice').classList.toggle('off',!talk);if(!talk&&synth)synth.cancel()};
 $('#bSnd').onclick=()=>{muted=!muted;$('#bSnd').classList.toggle('off',muted)};
 $('#bNotes').onclick=()=>$('#notes').classList.toggle('show');
 function full(){const d=document.documentElement;try{const r=(d.requestFullscreen||d.webkitRequestFullscreen).call(d);if(r&&r.catch)r.catch(()=>{})}catch(e){}}
@@ -474,9 +491,10 @@ addEventListener('keydown',e=>{
  else if(e.key==='n'||e.key==='N')$('#notes').classList.toggle('show');
  else if(e.key==='f'||e.key==='F')full();
  else if(e.key==='s'||e.key==='S')$('#bSnd').click();
+ else if(e.key==='v'||e.key==='V')$('#bVoice').click();
 });
 
-go(0);requestAnimationFrame(frame);
+go(0,true);requestAnimationFrame(frame);
 }
 </script>
 </body>
