@@ -95,6 +95,7 @@ html,body{height:100%;margin:0;background:#0b1730;overflow:hidden;font-family:"B
 .sz{font-family:"Noto Sans TC";font-size:30px;font-weight:700;color:var(--red);line-height:1.25}
 .sz i{font-style:normal;font-weight:500;font-size:18px;color:#6b7896;margin-left:10px}
 .bigidea{position:absolute;left:90px;right:90px;bottom:70px;text-align:center;font-size:30px;font-weight:700;color:#14326b;background:#ffe9a8;border-radius:20px;padding:8px 20px}
+.art{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
 .tnimg{position:absolute;left:170px;top:30px;width:1260px;border-radius:26px;box-shadow:0 20px 40px #0005}
 .links{position:absolute;left:170px;right:170px;bottom:36px;display:flex;justify-content:space-between}
 .links a{font-size:34px;font-weight:800;color:var(--ink);background:#fff;border-radius:18px;padding:6px 26px;text-decoration:none;box-shadow:0 6px 0 #b9d4f5}
@@ -111,12 +112,7 @@ html,body{height:100%;margin:0;background:#0b1730;overflow:hidden;font-family:"B
   <div class="cloud drift" style="right:-40px;top:420px;width:460px;height:150px;animation-delay:-8s"></div>
   <div class="hill"></div>
   <div class="big outline" style="top:110px;font-size:200px;white-space:nowrap;transform:rotate(-3deg)">Body Changes</div>
-  <div style="position:absolute;left:0;right:0;bottom:110px;display:flex;justify-content:center;align-items:flex-end;gap:60px">
-    <span class="bob say" data-say="baby" style="font-size:90px">👶</span>
-    <span class="bob say" data-say="child" style="font-size:130px;animation-delay:-.6s">🧒</span>
-    <span class="bob say" data-say="teenager" style="font-size:170px;animation-delay:-1.2s">👧</span>
-    <span class="bob say" data-say="adult" style="font-size:210px;animation-delay:-1.8s">🧑</span>
-  </div>
+  <svg class="art" id="art14" viewBox="0 0 1600 900"></svg>
 </section>
 
 <!-- 15: differently -->
@@ -126,9 +122,7 @@ html,body{height:100%;margin:0;background:#0b1730;overflow:hidden;font-family:"B
   <div class="wall"></div>
   <div class="big outline" style="top:60px;font-size:150px">body changes<br>differently</div>
   <div class="zh say" data-say="不同地" data-lang="zh-TW" style="position:absolute;left:0;right:0;top:390px;text-align:center;font-size:58px">不同地</div>
-  <div style="position:absolute;left:0;right:0;bottom:110px;display:flex;justify-content:center;align-items:flex-end;gap:50px">
-    <span style="font-size:80px">👶</span><span style="font-size:120px">🧒</span><span style="font-size:150px">👦</span><span style="font-size:185px">🧑</span><span style="font-size:220px">👨</span>
-  </div>
+  <svg class="art" id="art15" viewBox="0 0 1600 900"></svg>
 </section>
 
 <!-- 16: tall / taller -->
@@ -146,7 +140,7 @@ html,body{height:100%;margin:0;background:#0b1730;overflow:hidden;font-family:"B
   <div class="zh say" data-say="大" data-lang="zh-TW" style="position:absolute;left:150px;width:500px;top:240px;text-align:center;font-size:58px">大</div>
   <div class="big say" data-say="bigger" style="left:820px;right:auto;width:700px;top:30px;font-size:210px">bigger</div>
   <div class="zh say" data-say="比較大" data-lang="zh-TW" style="position:absolute;left:820px;width:700px;top:240px;text-align:center;font-size:58px">比較大</div>
-  <div class="ball say" data-say="big" style="left:290px;top:560px;width:230px;height:230px"></div><div class="ball say" data-say="bigger" style="left:975px;top:420px;width:390px;height:390px"></div>
+  <svg class="art" id="art17" viewBox="0 0 1600 900"></svg>
 </section>
 
 <!-- 18: strong / stronger -->
@@ -254,41 +248,133 @@ document.querySelectorAll(".er-slide").forEach(function(s){
     '<div class="ex"><span class="say" data-say="'+b+'">'+b+'</span> → <span class="say" data-say="'+e+'">'+b+(rest?'<span style="color:#ffd84d">'+rest+'</span>':'')+'<span class="snap" style="display:inline-block;color:#ffd84d">er</span></span> = <b class="say" data-say="'+s.dataset.zh1+'" data-lang="zh-TW">'+s.dataset.zh1+'</b> → <b class="say" data-say="'+s.dataset.zh2+'" data-lang="zh-TW"><span style="color:#ffd84d">比較</span>'+s.dataset.zh2.replace("比較","")+'</b></div>';
 });
 
-/* ---- kids (tall / taller) ---- */
-function girl(x, foot, scale, hair, shirt, pony, barbell){
-  const s=scale, hy=foot-300*s;
-  let g='<g transform="translate('+x+','+hy+') scale('+s+')">';
-  if(barbell){ const pr=barbell; g+='<rect x="-115" y="215" width="230" height="12" rx="6" fill="#9aa7b8"/>'+
-    '<rect x="'+(-115-pr*0.15)+'" y="'+(221-pr/2)+'" width="'+(pr*0.3)+'" height="'+pr+'" rx="8" fill="#2f6fe0"/><rect x="'+(115-pr*0.15)+'" y="'+(221-pr/2)+'" width="'+(pr*0.3)+'" height="'+pr+'" rx="8" fill="#2f6fe0"/>'; }
-  g+='<rect x="-30" y="190" width="24" height="95" rx="10" fill="#3d63a8"/><rect x="6" y="190" width="24" height="95" rx="10" fill="#3d63a8"/>'+
-     '<ellipse cx="-20" cy="290" rx="24" ry="11" fill="#ff8fab"/><ellipse cx="20" cy="290" rx="24" ry="11" fill="#ff8fab"/>'+
-     '<path d="M-44 110 Q0 92 44 110 L48 205 L-48 205Z" fill="'+shirt+'"/>'+
-     (barbell?'<path d="M-44 118 L-70 220 M44 118 L70 220" stroke="#f6c9a6" stroke-width="18" stroke-linecap="round"/>':'<path d="M-44 118 L-58 190 M44 118 L58 190" stroke="#f6c9a6" stroke-width="18" stroke-linecap="round"/>')+
-     '<circle cx="0" cy="62" r="50" fill="#f6c9a6"/>'+
-     '<path d="M-52 62 Q-56 6 0 4 Q56 6 52 62 Q40 30 0 28 Q-40 30 -52 62Z" fill="'+hair+'"/>'+
-     (pony?'<path d="M44 26 Q90 40 70 110 Q62 70 40 50Z" fill="'+hair+'"/>':'<path d="M-52 58 L-50 100 L-38 96 Z M52 58 L50 100 L38 96Z" fill="'+hair+'"/>')+
-     '<circle cx="-17" cy="66" r="6" fill="#3a2a20"/><circle cx="17" cy="66" r="6" fill="#3a2a20"/>'+
-     '<path d="M-12 84 Q0 96 12 84" stroke="#a0453a" stroke-width="4" fill="none" stroke-linecap="round"/>'+
-     '<circle cx="-30" cy="82" r="7" fill="#ff9aa8" opacity=".7"/><circle cx="30" cy="82" r="7" fill="#ff9aa8" opacity=".7"/></g>';
-  return g;
+// Chibi character generator. Returns an SVG <g>. Feet sit at (x, y). h = total height in px.
+function chibi(o){
+  const P = Object.assign({x:0,y:0,h:300,skin:"#ffe1c9",hair:"#6b3a1f",shirt:"#ff8fa3",pants:"#4a78c2",shoe:"#ff6f91",
+    style:"bob",age:"kid",pose:"stand",mouth:"smile",overalls:false,plate:0,flip:false,ball:0,id:"c"+Math.random().toString(36).slice(2,7)},o);
+  // proportions per age (local units, head center at 0, feet at bodyY+leg)
+  const A = {baby:{hr:60,body:46,leg:18,arm:30},toddler:{hr:58,body:56,leg:34,arm:38},kid:{hr:56,body:66,leg:56,arm:48},
+             teen:{hr:52,body:80,leg:86,arm:62},adult:{hr:50,body:92,leg:110,arm:70}}[P.age];
+  const hr=A.hr, neckY=hr*0.86, bodyB=neckY+A.body, footY=bodyB+A.leg;
+  const top=-hr-14, total=footY-top, s=P.h/total;
+  const ol='stroke="#4a2c25" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"';
+  const id=P.id; let g='';
+  g+='<defs><radialGradient id="'+id+'f" cx="45%" cy="40%" r="65%"><stop offset="0" stop-color="#fff3e8"/><stop offset="1" stop-color="'+P.skin+'"/></radialGradient>'+
+     '<linearGradient id="'+id+'h" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="'+shade(P.hair,30)+'"/><stop offset="1" stop-color="'+P.hair+'"/></linearGradient></defs>';
+  // shadow
+  g+='<ellipse cx="0" cy="'+(footY+4)+'" rx="'+(hr*0.9)+'" ry="9" fill="#0003"/>';
+  // back hair
+  if(P.style==="pony") g+='<path d="M'+(hr*0.55)+' '+(-hr*0.55)+' Q'+(hr*1.55)+' '+(-hr*0.2)+' '+(hr*1.05)+' '+(hr*0.95)+' Q'+(hr*1.0)+' '+(hr*0.2)+' '+(hr*0.6)+' '+(-hr*0.1)+'Z" fill="url(#'+id+'h)" '+ol+'/>';
+  if(P.style==="long") g+='<path d="M'+(-hr*1.02)+' 0 Q'+(-hr*1.1)+' '+(hr*1.5)+' '+(-hr*0.5)+' '+(hr*1.45)+' L'+(hr*0.5)+' '+(hr*1.45)+' Q'+(hr*1.1)+' '+(hr*1.5)+' '+(hr*1.02)+' 0Z" fill="url(#'+id+'h)" '+ol+'/>';
+  if(P.style==="twin"){ g+='<ellipse cx="'+(-hr*1.12)+'" cy="'+(hr*0.25)+'" rx="'+(hr*0.32)+'" ry="'+(hr*0.55)+'" fill="url(#'+id+'h)" '+ol+'/><ellipse cx="'+(hr*1.12)+'" cy="'+(hr*0.25)+'" rx="'+(hr*0.32)+'" ry="'+(hr*0.55)+'" fill="url(#'+id+'h)" '+ol+'/>'; }
+  // legs
+  const lw=A.age==="baby"?14:15;
+  if(P.age==="baby"){
+    g+='<ellipse cx="-20" cy="'+(footY-8)+'" rx="22" ry="13" fill="'+P.shirt+'" '+ol+'/><ellipse cx="20" cy="'+(footY-8)+'" rx="22" ry="13" fill="'+P.shirt+'" '+ol+'/>';
+  } else {
+    g+='<rect x="-24" y="'+(bodyB-6)+'" width="'+(lw+5)+'" height="'+(A.leg+4)+'" rx="9" fill="'+P.pants+'" '+ol+'/><rect x="'+(24-lw-5)+'" y="'+(bodyB-6)+'" width="'+(lw+5)+'" height="'+(A.leg+4)+'" rx="9" fill="'+P.pants+'" '+ol+'/>';
+    g+='<ellipse cx="-17" cy="'+(footY)+'" rx="19" ry="10" fill="'+P.shoe+'" '+ol+'/><ellipse cx="17" cy="'+(footY)+'" rx="19" ry="10" fill="'+P.shoe+'" '+ol+'/>';
+  }
+  // body
+  const bw = P.age==="baby"?40:(P.age==="adult"?40:36);
+  g+='<path d="M'+(-bw*0.75)+' '+neckY+' Q0 '+(neckY-8)+' '+(bw*0.75)+' '+neckY+' L'+(bw)+' '+(bodyB+2)+' Q0 '+(bodyB+10)+' '+(-bw)+' '+(bodyB+2)+'Z" fill="'+P.shirt+'" '+ol+'/>';
+  if(P.overalls) g+='<path d="M-24 '+(neckY+A.body*0.35)+' L24 '+(neckY+A.body*0.35)+' L'+(bw)+' '+(bodyB+2)+' Q0 '+(bodyB+10)+' '+(-bw)+' '+(bodyB+2)+'Z" fill="'+P.pants+'" '+ol+'/><line x1="-18" y1="'+(neckY+2)+'" x2="-20" y2="'+(neckY+A.body*0.35)+'" '+ol.replace('#4a2c25','#33528a')+' /><line x1="18" y1="'+(neckY+2)+'" x2="20" y2="'+(neckY+A.body*0.35)+'" '+ol.replace('#4a2c25','#33528a')+'/><circle cx="-20" cy="'+(neckY+A.body*0.35+6)+'" r="3.5" fill="#ffd54f"/><circle cx="20" cy="'+(neckY+A.body*0.35+6)+'" r="3.5" fill="#ffd54f"/>';
+  // arms
+  const sh=neckY+10, ar=A.arm;
+  function arm(side, ex, ey){ const sx=side*bw*0.8; return '<path d="M'+sx+' '+sh+' L'+ex+' '+ey+'" stroke="#4a2c25" stroke-width="21" stroke-linecap="round"/><path d="M'+sx+' '+sh+' L'+ex+' '+ey+'" stroke="'+P.skin+'" stroke-width="13" stroke-linecap="round"/><path d="M'+sx+' '+sh+' L'+(sx+(ex-sx)*0.45)+' '+(sh+(ey-sh)*0.45)+'" stroke="'+P.shirt+'" stroke-width="15" stroke-linecap="round"/>'; }
+  let front='';
+  if(P.pose==="wave"){ g+=arm(-1,-bw-12,sh+ar*0.9); front+=arm(1,bw+30,sh-ar*0.9); }
+  else if(P.pose==="flex"){ g+=arm(-1,-bw-12,sh+ar*0.9); front+=arm(1,bw+28,sh-ar*0.2)+'<path d="M'+(bw+28)+' '+(sh-ar*0.2)+' L'+(bw+30)+' '+(sh-ar*0.85)+'" stroke="#4a2c25" stroke-width="21" stroke-linecap="round"/><path d="M'+(bw+28)+' '+(sh-ar*0.2)+' L'+(bw+30)+' '+(sh-ar*0.85)+'" stroke="'+P.skin+'" stroke-width="13" stroke-linecap="round"/>'; }
+  else if(P.pose==="up"){ g+=arm(-1,-bw-26,sh-ar*0.9); front+=arm(1,bw+26,sh-ar*0.9); }
+  else if(P.pose==="lift"){ // holds barbell at hip height
+    const by=sh+ar*0.95, half=bw+105;
+    front+='<rect x="'+(-half)+'" y="'+(by-4)+'" width="'+(half*2)+'" height="9" rx="4" fill="#9aa7b8" '+ol+'/>';
+    const pw=12+P.plate*0.12, ph=P.plate;
+    for(const sd of [-1,1]){ for(let k=0;k<(P.plate>70?2:1);k++){ const px=sd*(half-16-k*(pw+3)); front+='<rect x="'+(px-pw/2)+'" y="'+(by-ph/2)+'" width="'+pw+'" height="'+ph+'" rx="6" fill="#2f6fe0" '+ol+'/>'; } }
+    front=arm(-1,-bw-8,by)+arm(1,bw+8,by)+front;
+  }
+  else if(P.pose==="hug"){ const r=P.ball;
+    if(r<60){ // small ball held in front at the hands
+      const by=sh+ar*0.75;
+      front+=ballSvg(0, by+r*0.35, r, id)+arm(-1,-r*0.85,by+r*0.3)+arm(1,r*0.85,by+r*0.3);
+    } else { // big ball on the ground beside, hand resting on top
+      const cx=bw+r+6, cy=footY-r;
+      g+=arm(-1,-bw-12,sh+ar*0.9);
+      front+=ballSvg(cx, cy, r, id)+arm(1,cx-r*0.55,cy-r*0.78);
+    } }
+  else { g+=arm(-1,-bw-12,sh+ar*0.9); front+=arm(1,bw+12,sh+ar*0.9); }
+  // head
+  g+='<circle cx="0" cy="0" r="'+hr+'" fill="url(#'+id+'f)" '+ol+'/>';
+  // ears
+  g+='<ellipse cx="'+(-hr*0.98)+'" cy="'+(hr*0.12)+'" rx="9" ry="12" fill="'+P.skin+'" '+ol+'/><ellipse cx="'+(hr*0.98)+'" cy="'+(hr*0.12)+'" rx="9" ry="12" fill="'+P.skin+'" '+ol+'/>';
+  // face
+  const ey=hr*0.2, ex=hr*0.4, erx=hr*0.22, ery=hr*0.29;
+  for(const sd of [-1,1]){
+    g+='<ellipse cx="'+(sd*ex)+'" cy="'+ey+'" rx="'+erx+'" ry="'+ery+'" fill="#3a2318"/>'+
+       '<ellipse cx="'+(sd*ex)+'" cy="'+(ey+ery*0.38)+'" rx="'+(erx*0.72)+'" ry="'+(ery*0.42)+'" fill="#b0703c" opacity=".85"/>'+
+       '<circle cx="'+(sd*ex-erx*0.32)+'" cy="'+(ey-ery*0.38)+'" r="'+(erx*0.42)+'" fill="#fff"/>'+
+       '<circle cx="'+(sd*ex+erx*0.38)+'" cy="'+(ey+ery*0.35)+'" r="'+(erx*0.18)+'" fill="#fff"/>'+
+       '<path d="M'+(sd*ex-erx*1.02)+' '+(ey-ery*0.15)+' A'+(erx*1.02)+' '+(ery*1.02)+' 0 0 1 '+(sd*ex+erx*1.02)+' '+(ey-ery*0.15)+'" fill="none" stroke="#2a1810" stroke-width="5" stroke-linecap="round"/>'+'<path d="M'+(sd*(ex+erx*0.98))+' '+(ey-ery*0.3)+' l'+(sd*8)+' -3" stroke="#2a1810" stroke-width="4" stroke-linecap="round"/>'+
+       '<ellipse cx="'+(sd*hr*0.62)+'" cy="'+(hr*0.52)+'" rx="'+(hr*0.16)+'" ry="'+(hr*0.09)+'" fill="#ff8fa8" opacity=".75"/>';
+  }
+  if(P.mouth==="open") g+='<path d="M'+(-hr*0.14)+' '+(hr*0.5)+' Q0 '+(hr*0.78)+' '+(hr*0.14)+' '+(hr*0.5)+'Z" fill="#c2405f" stroke="#4a2c25" stroke-width="3"/>';
+  else if(P.mouth==="grit") g+='<rect x="'+(-hr*0.14)+'" y="'+(hr*0.48)+'" width="'+(hr*0.28)+'" height="'+(hr*0.12)+'" rx="4" fill="#fff" stroke="#4a2c25" stroke-width="3"/>';
+  else g+='<path d="M'+(-hr*0.12)+' '+(hr*0.52)+' Q0 '+(hr*0.64)+' '+(hr*0.12)+' '+(hr*0.52)+'" fill="none" stroke="#4a2c25" stroke-width="3.5" stroke-linecap="round"/>';
+  // bangs / front hair
+  if(P.style==="baby") g+='<path d="M-8 '+(-hr+2)+' Q2 '+(-hr-20)+' 14 '+(-hr-6)+'" fill="none" stroke="'+P.hair+'" stroke-width="6" stroke-linecap="round"/>';
+  else if(P.style==="short"||P.style==="spiky") g+='<path d="M'+(-hr*1.04)+' '+(hr*0.05)+' Q'+(-hr*1.05)+' '+(-hr*1.15)+' 0 '+(-hr*1.12)+' Q'+(hr*1.05)+' '+(-hr*1.15)+' '+(hr*1.04)+' '+(hr*0.05)+' Q'+(hr*0.8)+' '+(-hr*0.35)+' '+(hr*0.45)+' '+(-hr*0.42)+' L'+(hr*0.3)+' '+(-hr*0.2)+' L'+(hr*0.05)+' '+(-hr*0.45)+' L'+(-hr*0.2)+' '+(-hr*0.18)+' L'+(-hr*0.4)+' '+(-hr*0.45)+' Q'+(-hr*0.85)+' '+(-hr*0.3)+' '+(-hr*1.04)+' '+(hr*0.05)+'Z" fill="url(#'+id+'h)" '+ol+'/>';
+  else g+='<path d="M'+(-hr*1.06)+' '+(hr*0.35)+' Q'+(-hr*1.15)+' '+(-hr*1.15)+' 0 '+(-hr*1.12)+' Q'+(hr*1.15)+' '+(-hr*1.15)+' '+(hr*1.06)+' '+(hr*0.35)+' Q'+(hr*0.9)+' '+(-hr*0.3)+' '+(hr*0.5)+' '+(-hr*0.4)+' Q'+(hr*0.25)+' '+(-hr*0.15)+' 0 '+(-hr*0.42)+' Q'+(-hr*0.25)+' '+(-hr*0.15)+' '+(-hr*0.5)+' '+(-hr*0.4)+' Q'+(-hr*0.9)+' '+(-hr*0.3)+' '+(-hr*1.06)+' '+(hr*0.35)+'Z" fill="url(#'+id+'h)" '+ol+'/>';
+  if(P.style==="pony"||P.style==="twin") g+='<circle cx="'+(hr*0.62)+'" cy="'+(-hr*0.62)+'" r="9" fill="#ffd54f" '+ol+'/>';
+  g+='<path d="M'+(-hr*0.55)+' '+(-hr*0.72)+' Q'+(-hr*0.3)+' '+(-hr*0.9)+' 0 '+(-hr*0.92)+'" fill="none" stroke="#ffffff88" stroke-width="5" stroke-linecap="round"/>';
+  g+=front;
+  const tx=P.x, ty=P.y-footY*s;
+  return '<g transform="translate('+tx+','+ty+') scale('+(P.flip?-s:s)+','+s+')">'+g+'</g>';
 }
-$("kids").innerHTML =
-  '<line x1="250" x2="460" y1="'+(860-300*1.45+4)+'" y2="'+(860-300*1.45+4)+'" stroke="#1d2a4a" stroke-width="4" stroke-dasharray="10 8"/>'+
-  '<line x1="1010" x2="1260" y1="'+(860-300*1.75+4)+'" y2="'+(860-300*1.75+4)+'" stroke="#1d2a4a" stroke-width="4" stroke-dasharray="10 8"/>'+
-  girl(400,860,1.45,"#8a4a22","#e8564f",false)+girl(1130,860,1.75,"#6b3a1c","#ffd23f",true);
-
-/* ---- beach balls ---- */
-function ball(cx,cy,r){
-  const cols=["#e53935","#fdd835","#43a047","#1e88e5","#8e24aa","#ff80ab"]; let p="";
-  for(let i=0;i<6;i++){ const a=i*60, w=30; p+='<path d="M'+cx+' '+(cy-r)+' Q'+(cx+r*Math.sin((a-w)*Math.PI/180)*1.15)+' '+cy+' '+cx+' '+(cy+r)+' Q'+(cx+r*Math.sin((a+w)*Math.PI/180)*1.15)+' '+cy+' '+cx+' '+(cy-r)+'Z" fill="'+cols[i]+'"/>'; }
-  return '<g class="say" data-say="'+(r>120?'bigger':'big')+'" style="cursor:pointer"><ellipse cx="'+cx+'" cy="'+(cy+r+18)+'" rx="'+(r*.8)+'" ry="'+(r*.12)+'" fill="#0002"/><clipPath id="c'+r+'"><circle cx="'+cx+'" cy="'+cy+'" r="'+r+'"/></clipPath><circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="#fff"/><g clip-path="url(#c'+r+')">'+p+'</g>'+
-    '<circle cx="'+cx+'" cy="'+(cy-r*.78)+'" r="'+(r*.13)+'" fill="#fff8e1"/><circle cx="'+(cx-r*.35)+'" cy="'+(cy-r*.4)+'" r="'+(r*.22)+'" fill="#fff" opacity=".35"/>'+
-    '<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="none" stroke="#0002" stroke-width="3"/></g>';
+function shade(hex,amt){ const n=parseInt(hex.slice(1),16); const r=Math.min(255,(n>>16)+amt),gg=Math.min(255,((n>>8)&255)+amt),b=Math.min(255,(n&255)+amt); return "#"+((1<<24)+(r<<16)+(gg<<8)+b).toString(16).slice(1); }
+function ballSvg(cx,cy,r,id){
+  const cols=["#ff5252","#ffd740","#40c4ff","#69f0ae","#ff80ab","#ffffff"]; let p='';
+  for(let i=0;i<6;i++){ const a0=(i*60-90)*Math.PI/180, a1=((i+1)*60-90)*Math.PI/180;
+    p+='<path d="M'+cx+' '+cy+' L'+(cx+r*Math.cos(a0))+' '+(cy+r*Math.sin(a0))+' A'+r+' '+r+' 0 0 1 '+(cx+r*Math.cos(a1))+' '+(cy+r*Math.sin(a1))+'Z" fill="'+cols[i]+'"/>'; }
+  return '<defs><radialGradient id="'+id+'b" cx="35%" cy="30%" r="75%"><stop offset="0" stop-color="#fff" stop-opacity=".55"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".22"/></radialGradient></defs>'+
+    '<g>'+p+'<circle cx="'+cx+'" cy="'+cy+'" r="'+(r*0.16)+'" fill="#fff" stroke="#4a2c25" stroke-width="3"/><circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="url(#'+id+'b)" stroke="#4a2c25" stroke-width="4"/></g>';
 }
 
-
-/* ---- lifters ---- */
-$("lifters").innerHTML = girl(1075,870,1.15,"#8a4a22","#e8564f",false,55)+girl(1385,870,1.15,"#6b3a1c","#ffd23f",true,125);
+/* ---- chibi scenes ---- */
+const G1={age:"kid",style:"bob",overalls:true,shirt:"#ff8a80",pants:"#4a78c2",hair:"#8d4f24"};
+const G2={age:"kid",style:"pony",shirt:"#ffd54f",pants:"#5b8bd6",hair:"#6b3a1f"};
+function C(o,base){ return chibi(Object.assign({},base||{},o)); }
+document.getElementById("art14").innerHTML=
+  C({x:420,y:805,h:150,age:"baby",style:"baby",shirt:"#fff176",hair:"#7a4a2a",mouth:"open"})+
+  C({x:620,y:815,h:250,age:"toddler",style:"short",shirt:"#ff7043",pants:"#5c6bc0",hair:"#4e342e",pose:"wave",mouth:"open"})+
+  C({x:860,y:825,h:350,pose:"wave",mouth:"open"},G2)+
+  C({x:1130,y:830,h:450,age:"teen",style:"spiky",shirt:"#43a047",pants:"#37474f",hair:"#3e2723",pose:"up",mouth:"open"});
+document.getElementById("art15").innerHTML=
+  C({x:220,y:850,h:150,age:"baby",style:"baby",shirt:"#ffd54f",hair:"#7a4a2a",mouth:"open"})+
+  C({x:470,y:860,h:250,age:"toddler",style:"short",shirt:"#7e57c2",pants:"#455a64",hair:"#4e342e"})+
+  C({x:760,y:860,h:350,shirt:"#ff7043",pants:"#546e7a",style:"short",hair:"#3e2723",age:"kid",pose:"wave",mouth:"open"})+
+  C({x:1060,y:860,h:450,age:"teen",style:"spiky",shirt:"#8d9e5a",pants:"#e2833a",hair:"#4e342e"})+
+  C({x:1380,y:860,h:540,age:"adult",style:"short",shirt:"#ef8a3c",pants:"#6b7a4a",hair:"#5d4037",shoe:"#6d4c41",pose:"wave"});
+(function(){
+  const fy=860, h1=380, h2=500;
+  document.getElementById("kids").innerHTML=
+   '<line x1="250" x2="560" y1="'+(fy-h1)+'" y2="'+(fy-h1)+'" stroke="#1d2a4a" stroke-width="5" stroke-dasharray="14 10"/>'+
+   '<line x1="980" x2="1320" y1="'+(fy-h2)+'" y2="'+(fy-h2)+'" stroke="#1d2a4a" stroke-width="5" stroke-dasharray="14 10"/>'+
+   C({x:400,y:fy,h:h1},G1)+C({x:1150,y:fy,h:h2,mouth:"open"},G2);
+})();
+document.getElementById("art17").innerHTML=
+  C({x:400,y:870,h:330,pose:"hug",ball:44},G1)+C({x:980,y:870,h:380,pose:"hug",ball:110,mouth:"open"},G2);
+document.getElementById("lifters").innerHTML=
+  C({x:1000,y:880,h:310,pose:"lift",plate:40},G1)+C({x:1385,y:880,h:310,pose:"lift",plate:110,mouth:"grit"},G2);
+/* chibis on the word + er slides */
+(function(){
+  const er=document.querySelectorAll(".er-slide");
+  const sets=[
+    [C({x:120,y:880,h:300,age:"toddler",style:"short",shirt:"#ff7043",pants:"#5c6bc0",hair:"#4e342e"}), C({x:1480,y:880,h:430,pose:"up",mouth:"open"},G2)],
+    [C({x:130,y:880,h:300,pose:"hug",ball:40},G1), C({x:1270,y:880,h:290,pose:"hug",ball:95,mouth:"open"},G2)],
+    [C({x:190,y:880,h:290,pose:"lift",plate:36},G1), C({x:1450,y:880,h:320,pose:"flex",mouth:"open"},G2)]
+  ];
+  er.forEach(function(s,i){ s.insertAdjacentHTML("beforeend",'<svg class="art" viewBox="0 0 1600 900">'+sets[i][0]+sets[i][1]+'</svg>'); });
+})();
 
 /* ---- navigation ---- */
 function show(i){
