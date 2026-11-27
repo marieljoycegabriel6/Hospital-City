@@ -662,6 +662,15 @@ body.portrait .dfr{flex-wrap:wrap;justify-content:center}
 .vd-wrap{position:absolute;left:40px;right:40px;top:90px;bottom:50px}
 #vdVid{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;border-radius:22px;background:#10232a}
 #vdemo .dm-hint{color:#9cc9c2}
+#bigqr{position:absolute;left:0;right:0;top:92px;bottom:86px;z-index:43;display:none;background:radial-gradient(circle at 30% 30%,#14b3a6,#0f8f86 55%,#0a6a63);color:#fff;padding:20px 60px}
+#bigqr.on{display:block;animation:enter .45s cubic-bezier(.2,1,.3,1)}
+.bq-in{display:grid;grid-template-columns:1fr 620px;gap:50px;align-items:center;height:calc(100% - 40px)}
+.bq-title{font-size:84px;font-weight:900;margin:20px 0 10px;text-shadow:0 6px 0 #0a6a63}
+.bq-steps{list-style:none;padding:0;margin:10px 0;display:flex;gap:14px;flex-wrap:wrap}
+.bq-steps li{font-size:34px;font-weight:900;background:#ffffff22;border:3px solid #ffffff55;padding:10px 20px;border-radius:20px}
+.bq-link{font-size:22px;font-weight:800;opacity:.75;margin-top:16px}
+.bq-qr{width:600px;height:600px;background:#fff;border-radius:36px;padding:26px;box-shadow:0 14px 0 #0a6a63,0 0 0 10px var(--sun);animation:pop .5s}
+.bq-qr svg{width:100%;height:100%;display:block}
 /* dialog */
 #dlg{position:absolute;inset:0;background:rgba(10,30,35,.55);display:none;place-items:center;z-index:90}
 #dlg.on{display:grid}
@@ -1061,6 +1070,9 @@ body.portrait .dfr{flex-wrap:wrap;justify-content:center}
   <div id="zhPanel"><div class="zq" id="zhQ"></div><div class="zw" id="zhW"></div><button class="btn ghost" id="zhX" style="font-size:20px;margin-top:10px">OK</button></div>
   <div id="avPick"><div><h2>🩺 Choose your doctor!</h2><p>Who will check on the five friends?</p><div class="avg" id="avg"></div></div></div>
   <div id="gtitle"><div class="gt-in"><div class="gt-badge" id="gtBadge">🎮 GAME 1</div><div class="gt-name" id="gtName"></div><div class="gt-sub" id="gtSub"></div><div class="gt-next">Press ▶ to see how to play</div></div></div>
+  <div id="bigqr"><div class="bq-in"><div class="bq-left"><div class="gt-badge" style="font-size:40px">🎮 GAME 1</div><div class="bq-title">✏️ Draw the AFTER</div>
+    <ol class="bq-steps"><li>📱 Scan</li><li>✏️ Draw</li><li>🎤 Say it</li><li>✅ Done!</li></ol><div class="bq-link" id="bqLink"></div></div>
+    <div class="bq-qr" id="bqQr"></div></div><div class="dm-foot"><span class="dm-hint" style="margin-left:0;color:#d8fff8">Press ▶ to see the friends · Before → After</span></div></div>
   <div id="vdemo"><div class="vd-head"><span class="dm-tag">🎬 WATCH</span><span class="dm-title" id="vdTitle"></span><button class="btn ghost dm-skip" id="vdSkip">Skip ▶▶</button></div>
     <div class="vd-wrap"><video id="vdVid" playsinline controls preload="auto"></video></div>
     <div class="dm-foot"><span class="dm-hint" style="margin-left:0">▶ on the video to play · Press ▶ (next) for the QR code</span></div></div>
@@ -2824,7 +2836,9 @@ const DEMOS={
   {t:'Show your chart to Teacher Joyce! 🙋',zh:'把你的表給老師看！',py:'Bǎ nǐ de biǎo gěi lǎoshī kàn!',sc:()=>`<div class="sc" style="background:#fff;border-radius:24px;padding:20px 40px;box-shadow:0 8px 0 #cfe6e1"><div style="font-size:20px;font-weight:900;color:#5b7a80">📋 DOCTOR'S CHART</div><div class="big">Kai</div><div style="font-size:80px;font-weight:900;color:#0f8f86">3/3</div><div style="font-size:44px">⭐⭐⭐</div></div>`,h:[470,360]}]}
 };
 let DM=null,dmI=0;
-let GT=false,VD=false;
+let GT=false,VD=false,BQ=false;
+function openBQ(){BQ=true;try{$('bqQr').innerHTML=qrSvg(linkFor('draw'))}catch(e){}$('bqLink').textContent=linkFor('draw').replace(/^https?:\/\//,'');$('bigqr').classList.add('on');speak('iPads up! Scan the QR code.')}
+function closeBQ(){BQ=false;$('bigqr').classList.remove('on')}
 function openVid(D){VD=true;$('vdTitle').textContent=D.title+' · demo';const v=$('vdVid');if(v.getAttribute('src')!==D.video)v.src=D.video;v.currentTime=0;$('vdemo').classList.add('on');try{speechSynthesis.cancel();MUS&&MUS.on&&MUS.toggle()}catch(e){}v.play().catch(()=>{})}
 function closeVid(){if(!VD)return;VD=false;const v=$('vdVid');try{v.pause()}catch(e){}$('vdemo').classList.remove('on')}
 function openTitle(i){const D=DEMOS[i];GT=i;$('gtBadge').textContent='🎮 GAME '+D.n;$('gtName').textContent=D.title;$('gtSub').textContent=D.sub;const g=$('gtitle');g.classList.remove('on');void g.offsetWidth;g.classList.add('on');sfx('fan');speak('Game '+D.n+'! '+D.title.replace(/[^\w\s'!→-]/g,'').replace('→','to').trim())}
@@ -2839,8 +2853,8 @@ function dmShow(){const s=DM.steps[dmI];$('dmScene').innerHTML=s.sc();document.q
 function closeDemo(){$('demo').classList.remove('on');DM=null}
 $('dmSkip').onclick=closeDemo;$('vdSkip').onclick=()=>{closeVid();closeDemo()};$('gtitle').onclick=()=>next();
 $('demo').addEventListener('click',e=>{if(e.target.closest('#dmSkip'))return;const li=e.target.closest('#dmSteps li');if(li){dmI=[...li.parentNode.children].indexOf(li);dmShow()}});
-{const _go=go;go=function(i){closeVid();closeDemo();closeTitle();_go(i);if(DEMOS[i]){openDemo(i);openTitle(i)}}}
-{const _next=next;next=function(){if(GT!==false){const D=DEMOS[GT];closeTitle();sfx('whoosh');if(D&&D.video){openVid(D);return}dmShow();return}if(VD){closeVid();if(DM&&DM.video){closeDemo();sfx('whoosh')}else dmShow();return}if(DM){if(dmI<DM.steps.length-1){dmI++;dmShow();sfx('beep')}else{closeDemo();sfx('whoosh')}return}_next()}}
+{const _go=go;go=function(i){closeBQ();closeVid();closeDemo();closeTitle();_go(i);if(DEMOS[i]){openDemo(i);openTitle(i)}}}
+{const _next=next;next=function(){if(GT!==false){const D=DEMOS[GT];closeTitle();sfx('whoosh');if(D&&D.video){openVid(D);return}dmShow();return}if(BQ){closeBQ();sfx('whoosh');return}if(VD){closeVid();if(DM&&DM.video){closeDemo();openBQ()}else dmShow();return}if(DM){if(dmI<DM.steps.length-1){dmI++;dmShow();sfx('beep')}else{closeDemo();sfx('whoosh')}return}_next()}}
 $('bNext').onclick=()=>next();
 /* ---------- full screen start ---------- */
 function goFull(){try{const d=document.documentElement;(d.requestFullscreen||d.webkitRequestFullscreen||function(){}).call(d)}catch(e){}}
