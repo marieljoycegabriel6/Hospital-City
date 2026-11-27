@@ -655,6 +655,13 @@ body.portrait .dfr{flex-wrap:wrap;justify-content:center}
 .gt-sub{font-size:40px;font-weight:800;opacity:.9;animation:gtpop .6s .3s backwards}
 .gt-next{margin-top:40px;font-size:24px;font-weight:800;opacity:.6;animation:blink2 1.4s infinite}
 @keyframes gtpop{from{opacity:0;transform:scale(.3) translateY(40px)}}
+#vdemo{position:absolute;left:0;right:0;top:92px;bottom:86px;z-index:42;display:none;background:#10232a;padding:16px 40px;color:#fff}
+#vdemo.on{display:block;animation:enter .45s cubic-bezier(.2,1,.3,1)}
+.vd-head{display:flex;align-items:center;gap:18px}
+.vd-head .dm-title{color:#fff}
+.vd-wrap{position:absolute;left:40px;right:40px;top:90px;bottom:50px}
+#vdVid{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;border-radius:22px;background:#10232a}
+#vdemo .dm-hint{color:#9cc9c2}
 /* dialog */
 #dlg{position:absolute;inset:0;background:rgba(10,30,35,.55);display:none;place-items:center;z-index:90}
 #dlg.on{display:grid}
@@ -1054,6 +1061,9 @@ body.portrait .dfr{flex-wrap:wrap;justify-content:center}
   <div id="zhPanel"><div class="zq" id="zhQ"></div><div class="zw" id="zhW"></div><button class="btn ghost" id="zhX" style="font-size:20px;margin-top:10px">OK</button></div>
   <div id="avPick"><div><h2>🩺 Choose your doctor!</h2><p>Who will check on the five friends?</p><div class="avg" id="avg"></div></div></div>
   <div id="gtitle"><div class="gt-in"><div class="gt-badge" id="gtBadge">🎮 GAME 1</div><div class="gt-name" id="gtName"></div><div class="gt-sub" id="gtSub"></div><div class="gt-next">Press ▶ to see how to play</div></div></div>
+  <div id="vdemo"><div class="vd-head"><span class="dm-tag">🎬 WATCH</span><span class="dm-title" id="vdTitle"></span><button class="btn ghost dm-skip" id="vdSkip">Skip ▶▶</button></div>
+    <div class="vd-wrap"><video id="vdVid" playsinline controls preload="auto"></video></div>
+    <div class="dm-foot"><span class="dm-hint" style="margin-left:0">▶ on the video to play · Press ▶ (next) for the steps</span></div></div>
   <div id="demo"><div class="dm-head"><span class="dm-tag">👀 HOW TO PLAY</span><span class="dm-title" id="dmTitle"></span><button class="btn ghost dm-skip" id="dmSkip">Skip ▶▶</button></div>
     <div class="dm-body"><div class="ipadf"><div class="ipads" id="dmScene"></div><div class="dm-hand" id="dmHand">👆</div></div>
     <ol class="dm-steps" id="dmSteps"></ol></div>
@@ -2787,7 +2797,7 @@ XP.mount($('gHud'));XP.mount($('xHud'));XP.draw();
 const IM=k=>IMG[k]||'';
 const QRS_SC=()=>`<div class="sc"><div class="mqr"></div><div class="big" style="margin-top:22px">📱 Scan!</div></div>`;
 const DEMOS={
- 4:{n:1,sub:'Draw and say how the friend looks AFTER.',title:'✏️ Draw the AFTER',steps:[
+ 4:{video:'draw-and-record-demo.mp4',n:1,sub:'Draw and say how the friend looks AFTER.',title:'✏️ Draw the AFTER',steps:[
   {t:'Scan the QR code.',zh:'掃描 QR code。',py:'Sǎomiáo QR code.',sc:QRS_SC,h:[300,330]},
   {t:'Choose a friend.',zh:'選一個朋友。',py:'Xuǎn yí ge péngyou.',sc:()=>`<div class="sc"><div class="mtiles">${['Ben','Mia','Leo','Amy','Sam'].map(n=>`<div><img src="${IM('b_'+n)}" style="object-fit:cover;object-position:top"></div>`).join('')}</div><div class="big" style="margin-top:14px">Who? 🤔</div></div>`,h:[150,250]},
   {t:'Draw the AFTER.',zh:'畫出之後的樣子。',py:'Huà chū zhīhòu de yàngzi.',sc:()=>`<div class="sc"><div class="mcanvas"><svg viewBox="0 0 380 250"><path d="M120 190c10-60 40-120 80-120s70 60 70 120M150 110a8 8 0 1 0 1 0M230 110a8 8 0 1 0 1 0M160 160q30-18 60 0"/></svg></div><div class="big" style="margin-top:10px">✏️ 🤒 😢</div></div>`,h:[430,300]},
@@ -2814,7 +2824,9 @@ const DEMOS={
   {t:'Show your chart to Teacher Joyce! 🙋',zh:'把你的表給老師看！',py:'Bǎ nǐ de biǎo gěi lǎoshī kàn!',sc:()=>`<div class="sc" style="background:#fff;border-radius:24px;padding:20px 40px;box-shadow:0 8px 0 #cfe6e1"><div style="font-size:20px;font-weight:900;color:#5b7a80">📋 DOCTOR'S CHART</div><div class="big">Kai</div><div style="font-size:80px;font-weight:900;color:#0f8f86">3/3</div><div style="font-size:44px">⭐⭐⭐</div></div>`,h:[470,360]}]}
 };
 let DM=null,dmI=0;
-let GT=false;
+let GT=false,VD=false;
+function openVid(D){VD=true;$('vdTitle').textContent=D.title+' · demo';const v=$('vdVid');if(v.getAttribute('src')!==D.video)v.src=D.video;v.currentTime=0;$('vdemo').classList.add('on');try{speechSynthesis.cancel();MUS&&MUS.on&&MUS.toggle()}catch(e){}v.play().catch(()=>{})}
+function closeVid(){if(!VD)return;VD=false;const v=$('vdVid');try{v.pause()}catch(e){}$('vdemo').classList.remove('on')}
 function openTitle(i){const D=DEMOS[i];GT=i;$('gtBadge').textContent='🎮 GAME '+D.n;$('gtName').textContent=D.title;$('gtSub').textContent=D.sub;const g=$('gtitle');g.classList.remove('on');void g.offsetWidth;g.classList.add('on');sfx('fan');speak('Game '+D.n+'! '+D.title.replace(/[^\w\s'!→-]/g,'').replace('→','to').trim())}
 function closeTitle(){GT=false;$('gtitle').classList.remove('on')}
 function openDemo(i){const D=DEMOS[i];if(!D)return;DM=D;dmI=0;$('dmTitle').textContent=D.title;
@@ -2825,10 +2837,10 @@ function dmShow(){const s=DM.steps[dmI];$('dmScene').innerHTML=s.sc();document.q
  if(s.h2){setTimeout(()=>{h.classList.remove('tap');h.style.left=(s.h2[0]-20)+'px';h.style.top=(s.h2[1]-10)+'px'},1400)}
  speak(s.t.replace(/[^\w\s.,!?'…:-]/g,'').trim())}
 function closeDemo(){$('demo').classList.remove('on');DM=null}
-$('dmSkip').onclick=closeDemo;$('gtitle').onclick=()=>next();
+$('dmSkip').onclick=closeDemo;$('vdSkip').onclick=()=>{closeVid();closeDemo()};$('gtitle').onclick=()=>next();
 $('demo').addEventListener('click',e=>{if(e.target.closest('#dmSkip'))return;const li=e.target.closest('#dmSteps li');if(li){dmI=[...li.parentNode.children].indexOf(li);dmShow()}});
-{const _go=go;go=function(i){closeDemo();closeTitle();_go(i);if(DEMOS[i]){openDemo(i);openTitle(i)}}}
-{const _next=next;next=function(){if(GT!==false){closeTitle();dmShow();sfx('whoosh');return}if(DM){if(dmI<DM.steps.length-1){dmI++;dmShow();sfx('beep')}else{closeDemo();sfx('whoosh')}return}_next()}}
+{const _go=go;go=function(i){closeVid();closeDemo();closeTitle();_go(i);if(DEMOS[i]){openDemo(i);openTitle(i)}}}
+{const _next=next;next=function(){if(GT!==false){const D=DEMOS[GT];closeTitle();sfx('whoosh');if(D&&D.video){openVid(D);return}dmShow();return}if(VD){closeVid();dmShow();return}if(DM){if(dmI<DM.steps.length-1){dmI++;dmShow();sfx('beep')}else{closeDemo();sfx('whoosh')}return}_next()}}
 $('bNext').onclick=()=>next();
 /* ---------- full screen start ---------- */
 function goFull(){try{const d=document.documentElement;(d.requestFullscreen||d.webkitRequestFullscreen||function(){}).call(d)}catch(e){}}
