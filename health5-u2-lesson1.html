@@ -1063,7 +1063,7 @@ body.portrait .dfr{flex-wrap:wrap;justify-content:center}
   <div id="gtitle"><div class="gt-in"><div class="gt-badge" id="gtBadge">🎮 GAME 1</div><div class="gt-name" id="gtName"></div><div class="gt-sub" id="gtSub"></div><div class="gt-next">Press ▶ to see how to play</div></div></div>
   <div id="vdemo"><div class="vd-head"><span class="dm-tag">🎬 WATCH</span><span class="dm-title" id="vdTitle"></span><button class="btn ghost dm-skip" id="vdSkip">Skip ▶▶</button></div>
     <div class="vd-wrap"><video id="vdVid" playsinline controls preload="auto"></video></div>
-    <div class="dm-foot"><span class="dm-hint" style="margin-left:0">▶ on the video to play · Press ▶ (next) for the steps</span></div></div>
+    <div class="dm-foot"><span class="dm-hint" style="margin-left:0">▶ on the video to play · Press ▶ (next) for the QR code</span></div></div>
   <div id="demo"><div class="dm-head"><span class="dm-tag">👀 HOW TO PLAY</span><span class="dm-title" id="dmTitle"></span><button class="btn ghost dm-skip" id="dmSkip">Skip ▶▶</button></div>
     <div class="dm-body"><div class="ipadf"><div class="ipads" id="dmScene"></div><div class="dm-hand" id="dmHand">👆</div></div>
     <ol class="dm-steps" id="dmSteps"></ol></div>
@@ -2840,7 +2840,7 @@ function closeDemo(){$('demo').classList.remove('on');DM=null}
 $('dmSkip').onclick=closeDemo;$('vdSkip').onclick=()=>{closeVid();closeDemo()};$('gtitle').onclick=()=>next();
 $('demo').addEventListener('click',e=>{if(e.target.closest('#dmSkip'))return;const li=e.target.closest('#dmSteps li');if(li){dmI=[...li.parentNode.children].indexOf(li);dmShow()}});
 {const _go=go;go=function(i){closeVid();closeDemo();closeTitle();_go(i);if(DEMOS[i]){openDemo(i);openTitle(i)}}}
-{const _next=next;next=function(){if(GT!==false){const D=DEMOS[GT];closeTitle();sfx('whoosh');if(D&&D.video){openVid(D);return}dmShow();return}if(VD){closeVid();dmShow();return}if(DM){if(dmI<DM.steps.length-1){dmI++;dmShow();sfx('beep')}else{closeDemo();sfx('whoosh')}return}_next()}}
+{const _next=next;next=function(){if(GT!==false){const D=DEMOS[GT];closeTitle();sfx('whoosh');if(D&&D.video){openVid(D);return}dmShow();return}if(VD){closeVid();if(DM&&DM.video){closeDemo();sfx('whoosh')}else dmShow();return}if(DM){if(dmI<DM.steps.length-1){dmI++;dmShow();sfx('beep')}else{closeDemo();sfx('whoosh')}return}_next()}}
 $('bNext').onclick=()=>next();
 /* ---------- full screen start ---------- */
 function goFull(){try{const d=document.documentElement;(d.requestFullscreen||d.webkitRequestFullscreen||function(){}).call(d)}catch(e){}}
